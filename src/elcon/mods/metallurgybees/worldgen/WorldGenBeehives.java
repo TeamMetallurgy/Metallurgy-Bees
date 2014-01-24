@@ -5,14 +5,15 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import rebelkeithy.mods.metallurgy.api.IOreInfo;
 import cpw.mods.fml.common.IWorldGenerator;
-import elcon.mods.metallurgybees.MetallurgyBeeTypes;
 import elcon.mods.metallurgybees.MetallurgyBees;
 import elcon.mods.metallurgybees.Metals;
 import elcon.mods.metallurgybees.tileentities.TileEntityMetadata;
+import elcon.mods.metallurgybees.types.MetallurgyBeeTypes;
 
 public class WorldGenBeehives extends WorldGenerator implements IWorldGenerator {
 
@@ -24,11 +25,21 @@ public class WorldGenBeehives extends WorldGenerator implements IWorldGenerator 
 
 	@Override
 	public void generate(Random rand, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-		for(int i = 0; i < 20; i++) {
-			int x = chunkX + rand.nextInt(16);
-			int y = 20 + rand.nextInt(50);
-			int z = chunkZ + rand.nextInt(16);
-			generate(world, rand, x, y, z);
+		BiomeGenBase b = world.getBiomeGenForCoords(chunkX, chunkZ);
+		if(b.biomeName.equals("Hell")) {
+			for(int i = 0; i < 25; i++) {
+				int x = chunkX + rand.nextInt(16);
+				int y = 20 + rand.nextInt(50);
+				int z = chunkZ + rand.nextInt(16);
+				generate(world, rand, x, y, z);
+			}
+		} else {
+			for(int i = 0; i < 25; i++) {
+				int x = chunkX * 16 + rand.nextInt(16);
+				int y = 20 + rand.nextInt(50);
+				int z = chunkZ * 16 + rand.nextInt(16);
+				generate(world, rand, x, y, z);
+			}
 		}
 	}
 
@@ -44,6 +55,7 @@ public class WorldGenBeehives extends WorldGenerator implements IWorldGenerator 
 					if(block.isGenMineableReplaceable(world, x, y, z, id)) {
 						if(world.getBlockMetadata(x, y, z) == Metals.getMetal(beeType.name).oreInfo.getOre().getItemDamage()) {
 							world.setBlock(x, y, z, MetallurgyBees.beehive.blockID, 1, 0);
+							System.out.println(x + ":" + y + ":" + z);
 							((TileEntityMetadata) world.getBlockTileEntity(x, y, z)).setTileMetadata(beeType.ordinal());
 							return true;
 						}
@@ -53,4 +65,5 @@ public class WorldGenBeehives extends WorldGenerator implements IWorldGenerator 
 		}
 		return false;
 	}
+
 }

@@ -13,4 +13,9 @@ public class MBCreativeTabForestry extends CreativeTabs {
 	public ItemStack getIconItemStack() {
 		return new ItemStack(MetallurgyBees.honeyComb.itemID, 1, 0);
 	}
+	
+	@Override
+	public String getTranslatedTabLabel() {
+		return LocalizationHelper.localize("itemGroup.MetallurgyAddonForestry");
+	}
 }

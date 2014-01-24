@@ -31,6 +31,8 @@ import elcon.mods.metallurgybees.items.ItemHiveFrame;
 import elcon.mods.metallurgybees.items.ItemHoneyComb;
 import elcon.mods.metallurgybees.tileentities.TileEntityExtended;
 import elcon.mods.metallurgybees.tileentities.TileEntityMetadata;
+import elcon.mods.metallurgybees.types.MetallurgyBeeTypes;
+import elcon.mods.metallurgybees.types.MetallurgyFrameTypes;
 import elcon.mods.metallurgybees.worldgen.WorldGenBeehives;
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.apiculture.IAlleleBeeSpecies;

@@ -11,7 +11,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import elcon.mods.metallurgybees.LocalizationHelper;
 import elcon.mods.metallurgybees.MetallurgyBees;
-import elcon.mods.metallurgybees.MetallurgyFrameTypes;
+import elcon.mods.metallurgybees.types.MetallurgyFrameTypes;
 import forestry.api.apiculture.IBee;
 import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeHousing;

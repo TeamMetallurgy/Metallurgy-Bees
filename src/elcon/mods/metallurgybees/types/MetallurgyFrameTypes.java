@@ -1,4 +1,4 @@
-package elcon.mods.metallurgybees;
+package elcon.mods.metallurgybees.types;
 
 public enum MetallurgyFrameTypes {
 
@@ -8,7 +8,7 @@ public enum MetallurgyFrameTypes {
 	MIDAS(MetallurgyBeeTypes.MIDASIUM, 360), 
 	MUTATING(MetallurgyBeeTypes.VYROXERES, 360), 
 	COOLING(MetallurgyBeeTypes.CERUCLASE, 360), 
-	FERTILE(MetallurgyBeeTypes.INOLASHITE, 360), 
+	FERTILE(MetallurgyBeeTypes.INOLASHITE, 480), 
 	ANCIENT(MetallurgyBeeTypes.KALENDRITE, 360), 
 	IMMORTAL(MetallurgyBeeTypes.AMORDRINE, 360), 
 	MOLTEN(MetallurgyBeeTypes.VULCANITE, 360), 

@@ -1,8 +1,9 @@
-package elcon.mods.metallurgybees;
+package elcon.mods.metallurgybees.types;
 
 import java.util.ArrayList;
 
 import net.minecraft.util.Icon;
+import elcon.mods.metallurgybees.Metals;
 import elcon.mods.metallurgybees.Metals.Metal;
 import elcon.mods.metallurgybees.util.ColorPair;
 import forestry.api.apiculture.IAlleleBeeSpecies;
@@ -25,19 +26,20 @@ public enum MetallurgyBeeTypes {
 	GOLD("gold",					new ColorPair(248, 175, 43, 183, 97, 16), 		new ColorPair(252, 238, 75, 248, 175, 43), 		new ColorPair(255, 255, 181, 250, 190, 80), 	new ColorPair(255, 255, 181, 183, 97, 16)),
 	ELECTRUM("electrum", 			new ColorPair(185, 153, 70, 100, 83, 38), 		new ColorPair(206, 184, 127, 185, 153, 70), 	new ColorPair(223, 208, 170, 206, 184, 127), 	new ColorPair(223, 208, 170, 185, 153, 70)),
 	PLATINUM("platinum", 			new ColorPair(54, 103, 112, 38, 72, 79), 		new ColorPair(155, 201, 208, 54, 103, 112), 	new ColorPair(220, 236, 239, 155, 201, 208), 	new ColorPair(220, 236, 239, 54, 103, 112)),
-	IGNATIUS("ignatius", 			new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255),	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	SHADOW_IRON("shadowIron", 		new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	LEMURITE("lemurite", 			new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	SHADOW_STEEL("shadowSteel", 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	MIDASIUM("midasium", 			new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	VYROXERES("vyroxeres", 			new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	CERUCLASE("ceruclase", 			new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	ALDUORITE("alduorite", 			new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	INOLASHITE("inolashite",		new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	KALENDRITE("kalendrite",		new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	AMORDRINE("amordrine", 			new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	VULCANITE("vulcanite", 			new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	SANGUINITE("sanguinite", 		new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
+	IGNATIUS("ignatius", 			new ColorPair(255, 128, 0, 176, 88, 0), 	    new ColorPair(255, 169, 83, 255, 128, 0),	    new ColorPair(255, 206, 157, 255, 169, 83), 	new ColorPair(255, 169, 83, 176, 88, 0)),
+	SHADOW_IRON("shadowIron", 		new ColorPair(82, 62, 49, 56, 43, 33), 	        new ColorPair(141, 117, 101, 82, 62, 49), 	    new ColorPair(188, 171, 160, 141, 117, 101), 	new ColorPair(188, 171, 160, 82, 62, 49)),
+	LEMURITE("lemurite", 			new ColorPair(176, 176, 176, 131, 131, 131), 	new ColorPair(219, 219, 219, 176, 176, 176), 	new ColorPair(254, 255, 255, 219, 219, 219), 	new ColorPair(219, 219, 219, 131, 131, 131)),
+	SHADOW_STEEL("shadowSteel", 	new ColorPair(97, 82, 69, 58, 50, 41), 			new ColorPair(136, 115, 98, 97, 82, 69), 		new ColorPair(235, 230, 226, 199, 185, 175), 	new ColorPair(199, 185, 175, 97, 82, 69)),
+	MIDASIUM("midasium", 			new ColorPair(242, 146, 0, 109, 58, 1), 		new ColorPair(255, 203, 125, 242, 146, 0), 		new ColorPair(255, 231, 193, 255, 268, 38), 	new ColorPair(255, 203, 125, 255, 268, 38)),
+	VYROXERES("vyroxeres", 			new ColorPair(55, 146, 1, 34, 88, 1), 			new ColorPair(136, 254, 65, 55, 146, 1), 		new ColorPair(211, 255, 185, 85, 224, 1), 		new ColorPair(85, 224, 1, 55, 146, 1)),
+	CERUCLASE("ceruclase", 			new ColorPair(69, 143, 171, 29, 60, 71), 		new ColorPair(140, 189, 208, 54, 112, 133), 	new ColorPair(191, 219, 230, 140, 189, 208), 	new ColorPair(140, 189, 208, 54, 112, 133)),
+	ALDUORITE("alduorite", 			new ColorPair(163, 222, 222, 29, 78, 78), 		new ColorPair(213, 240, 240, 53, 145, 145), 	new ColorPair(241, 250, 250, 163, 222, 222), 	new ColorPair(163, 222, 222, 53, 145, 145)),
+	INOLASHITE("inolashite",		new ColorPair(64, 170, 125, 30, 79, 57), 		new ColorPair(148, 216, 187, 44, 116, 85), 		new ColorPair(199, 235, 220, 64, 170, 125), 	new ColorPair(148, 216, 187, 30, 79, 57)),
+	KALENDRITE("kalendrite",		new ColorPair(170, 91, 189, 98, 45, 111), 		new ColorPair(198, 145, 210, 122, 56, 139), 	new ColorPair(222, 193, 230, 170, 91, 189), 	new ColorPair(222, 193, 230, 122, 56, 139)),
+	AMORDRINE("amordrine", 			new ColorPair(169, 141, 177, 113, 83, 121), 	new ColorPair(210, 196, 215, 143, 107, 154), 	new ColorPair(231, 223, 234, 169, 141, 177), 	new ColorPair(231, 223, 234, 143, 107, 154)),
+	VULCANITE("vulcanite", 			new ColorPair(255, 132, 72, 204, 66, 0), 		new ColorPair(255, 176, 138, 242, 79, 0), 		new ColorPair(255, 209, 187, 255, 132, 72), 	new ColorPair(255, 209, 187, 255, 132, 72)),
+	SANGUINITE("sanguinite", 		new ColorPair(185, 0, 0, 130, 0, 0), 			new ColorPair(255, 15, 15, 185, 0, 0), 			new ColorPair(255, 125, 125, 255, 15, 15), 		new ColorPair(255, 125, 125, 185, 0, 0)),
+	
 	PROMETHEUM("prometheum", 		new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
 	DEEP_IRON("deepIron", 			new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
 	INFUSCOLIUM("infuscolium", 		new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),

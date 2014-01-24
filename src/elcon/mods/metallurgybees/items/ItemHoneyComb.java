@@ -11,8 +11,8 @@ import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import elcon.mods.metallurgybees.LocalizationHelper;
-import elcon.mods.metallurgybees.MetallurgyBeeTypes;
 import elcon.mods.metallurgybees.MetallurgyBees;
+import elcon.mods.metallurgybees.types.MetallurgyBeeTypes;
 
 public class ItemHoneyComb extends Item {
 	Icon icon1;

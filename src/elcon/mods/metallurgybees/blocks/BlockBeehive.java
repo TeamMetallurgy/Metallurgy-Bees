@@ -13,15 +13,14 @@ import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.ForgeEventFactory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import elcon.mods.metallurgybees.LocalizationHelper;
-import elcon.mods.metallurgybees.MetallurgyBeeTypes;
 import elcon.mods.metallurgybees.MetallurgyBees;
+import elcon.mods.metallurgybees.types.MetallurgyBeeTypes;
 import elcon.mods.metallurgybees.util.MBUtil;
 import forestry.api.apiculture.IHiveDrop;
 
@@ -30,7 +29,7 @@ public class BlockBeehive extends BlockExtendedMetadata {
 	public BlockBeehive(int id) {
 		super(id, MetallurgyBees.materialBeeHive);
 		setHardness(1.5F);
-		setResistance(10.0F);
+		setResistance(100.0F);
 		setLightValue(0.8F);
 		setStepSound(Block.soundStoneFootstep);
 		setCreativeTab(MetallurgyBees.creativeTab);
@@ -124,8 +123,8 @@ public class BlockBeehive extends BlockExtendedMetadata {
 		for(int i = 0; i < MetallurgyBeeTypes.values().length; i++) {
 			MetallurgyBeeTypes beeType = MetallurgyBeeTypes.values()[i];
 			if(beeType.hasHive) {
-				beeType.iconBeehiveSide = iconRegister.registerIcon("metallurgybees:forestry/beehive" + MBUtil.firstUpperCase(beeType.name) + "Side");
-				beeType.iconBeehiveTop = iconRegister.registerIcon("metallurgybees:forestry/beehive" + MBUtil.firstUpperCase(beeType.name) + "Top");
+				beeType.iconBeehiveSide = iconRegister.registerIcon("metallurgybees:beehive" + MBUtil.firstUpperCase(beeType.name) + "Side");
+				beeType.iconBeehiveTop = iconRegister.registerIcon("metallurgybees:beehive" + MBUtil.firstUpperCase(beeType.name) + "Top");
 			}
 		}
 	}
