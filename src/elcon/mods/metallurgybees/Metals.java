@@ -5,7 +5,6 @@ import java.util.HashMap;
 import rebelkeithy.mods.metallurgy.api.IMetalSet;
 import rebelkeithy.mods.metallurgy.api.IOreInfo;
 import rebelkeithy.mods.metallurgy.api.MetallurgyAPI;
-import rebelkeithy.mods.metallurgy.vanilla.MetallurgyVanilla;
 
 public class Metals {
 
@@ -42,10 +41,6 @@ public class Metals {
 			for(IOreInfo oreInfo : metalSet.getOreList().values()) {
 				registerMetal(new Metal(oreInfo.getName().replaceAll(" ", ""), MetallurgyAPI.getMetalSetNames()[i], oreInfo));
 			}
-		}
-		IMetalSet metalSet = MetallurgyVanilla.vanillaSet;
-		for(IOreInfo oreInfo : metalSet.getOreList().values()) {
-			registerMetal(new Metal(oreInfo.getName().replaceAll(" ", ""), "Vanilla", oreInfo));
 		}
 	}
 }

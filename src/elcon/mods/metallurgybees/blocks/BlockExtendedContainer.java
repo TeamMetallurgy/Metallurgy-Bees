@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import elcon.mods.metallurgybees.LocalizationHelper;
 import elcon.mods.metallurgybees.tileentities.TileEntityExtended;
 
 public abstract class BlockExtendedContainer extends BlockContainer {
@@ -22,7 +23,7 @@ public abstract class BlockExtendedContainer extends BlockContainer {
 
 	@Override
 	public String getLocalizedName() {
-		return StatCollector.translateToLocal(getUnlocalizedName());
+		return LocalizationHelper.localize(getUnlocalizedName());
 	}
 	
 	@Override

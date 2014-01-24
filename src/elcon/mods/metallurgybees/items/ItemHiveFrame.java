@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import elcon.mods.metallurgybees.LocalizationHelper;
 import elcon.mods.metallurgybees.MetallurgyBees;
 import elcon.mods.metallurgybees.MetallurgyFrameTypes;
 import forestry.api.apiculture.IBee;
@@ -30,7 +31,7 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 
 	@Override
 	public String getItemDisplayName(ItemStack stack) {
-		return StatCollector.translateToLocal("metallurgy.frames." + MetallurgyFrameTypes.values()[stack.getItemDamage()].name().toLowerCase()) + " " + StatCollector.translateToLocal(getUnlocalizedName());
+		return LocalizationHelper.localize("metallurgy.frames." + MetallurgyFrameTypes.values()[stack.getItemDamage()].name().toLowerCase()) + " " + LocalizationHelper.localize(getUnlocalizedName());
 	}
 
 	@Override

@@ -18,6 +18,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import elcon.mods.metallurgybees.LocalizationHelper;
 import elcon.mods.metallurgybees.tileentities.TileEntityMetadata;
 import elcon.mods.metallurgybees.util.MBUtilClient;
 
@@ -28,7 +29,7 @@ public class BlockExtendedMetadata extends BlockContainer {
 	}
 
 	public String getLocalizedName(ItemStack stack) {
-		return StatCollector.translateToLocal(getUnlocalizedName(stack));
+		return LocalizationHelper.localize(getUnlocalizedName(stack));
 	}
 
 	public String getUnlocalizedName(ItemStack stack) {

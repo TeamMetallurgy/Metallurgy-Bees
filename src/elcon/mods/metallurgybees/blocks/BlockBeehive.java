@@ -19,16 +19,16 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.ForgeEventFactory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import elcon.mods.metallurgybees.LocalizationHelper;
 import elcon.mods.metallurgybees.MetallurgyBeeTypes;
 import elcon.mods.metallurgybees.MetallurgyBees;
 import elcon.mods.metallurgybees.util.MBUtil;
 import forestry.api.apiculture.IHiveDrop;
-import forestry.apiculture.MaterialBeehive;
 
 public class BlockBeehive extends BlockExtendedMetadata {
 
 	public BlockBeehive(int id) {
-		super(id, new MaterialBeehive(true));
+		super(id, MetallurgyBees.materialBeeHive);
 		setHardness(1.5F);
 		setResistance(10.0F);
 		setLightValue(0.8F);
@@ -37,7 +37,7 @@ public class BlockBeehive extends BlockExtendedMetadata {
 	}
 
 	public String getLocalizedName(ItemStack stack) {
-		return StatCollector.translateToLocal("metallurgy.metals." + MetallurgyBeeTypes.values()[stack.getItemDamage()].name) + " " + StatCollector.translateToLocal(getUnlocalizedName(stack));
+		return LocalizationHelper.localize("metallurgy.metals." + MetallurgyBeeTypes.values()[stack.getItemDamage()].name) + " " + LocalizationHelper.localize(getUnlocalizedName(stack));
 	}
 
 	public String getUnlocalizedName(ItemStack stack) {

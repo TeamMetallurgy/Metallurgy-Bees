@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import net.minecraft.util.Icon;
 import elcon.mods.metallurgybees.Metals.Metal;
 import elcon.mods.metallurgybees.util.ColorPair;
+import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IHiveDrop;
-import forestry.apiculture.genetics.AlleleBeeSpecies;
 
 public enum MetallurgyBeeTypes {
 
@@ -94,7 +94,7 @@ public enum MetallurgyBeeTypes {
 	public Icon iconBeehiveTop;
 	public Icon iconBeehiveSide;
 	
-	public AlleleBeeSpecies speciesRough;
-	public AlleleBeeSpecies speciesRefined;
-	public AlleleBeeSpecies speciesReforged;
+	public IAlleleBeeSpecies speciesRough;
+	public IAlleleBeeSpecies speciesRefined;
+	public IAlleleBeeSpecies speciesReforged;
 }

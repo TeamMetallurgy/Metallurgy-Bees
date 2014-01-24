@@ -31,7 +31,7 @@ public class FlowerProviderStone implements IFlowerProvider {
 
 	@Override
 	public String getDescription() {
-		return StatCollector.translateToLocal("flowers.stone");
+		return LocalizationHelper.localize("flowers.stone");
 	}
 
 	@Override
