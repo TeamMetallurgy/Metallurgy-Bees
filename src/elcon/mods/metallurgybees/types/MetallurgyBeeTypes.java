@@ -30,7 +30,7 @@ public enum MetallurgyBeeTypes {
 	SHADOW_IRON("shadowIron", 		new ColorPair(82, 62, 49, 56, 43, 33), 	        new ColorPair(141, 117, 101, 82, 62, 49), 	    new ColorPair(188, 171, 160, 141, 117, 101), 	new ColorPair(188, 171, 160, 82, 62, 49)),
 	LEMURITE("lemurite", 			new ColorPair(176, 176, 176, 131, 131, 131), 	new ColorPair(219, 219, 219, 176, 176, 176), 	new ColorPair(254, 255, 255, 219, 219, 219), 	new ColorPair(219, 219, 219, 131, 131, 131)),
 	SHADOW_STEEL("shadowSteel", 	new ColorPair(97, 82, 69, 58, 50, 41), 			new ColorPair(136, 115, 98, 97, 82, 69), 		new ColorPair(235, 230, 226, 199, 185, 175), 	new ColorPair(199, 185, 175, 97, 82, 69)),
-	MIDASIUM("midasium", 			new ColorPair(242, 146, 0, 109, 58, 1), 		new ColorPair(255, 203, 125, 242, 146, 0), 		new ColorPair(255, 231, 193, 255, 268, 38), 	new ColorPair(255, 203, 125, 255, 268, 38)),
+	MIDASIUM("midasium", 			new ColorPair(242, 146, 0, 109, 58, 1), 		new ColorPair(255, 203, 125, 242, 146, 0), 		new ColorPair(255, 231, 193, 255, 168, 38), 	new ColorPair(255, 203, 125, 255, 168, 38)),
 	VYROXERES("vyroxeres", 			new ColorPair(55, 146, 1, 34, 88, 1), 			new ColorPair(136, 254, 65, 55, 146, 1), 		new ColorPair(211, 255, 185, 85, 224, 1), 		new ColorPair(85, 224, 1, 55, 146, 1)),
 	CERUCLASE("ceruclase", 			new ColorPair(69, 143, 171, 29, 60, 71), 		new ColorPair(140, 189, 208, 54, 112, 133), 	new ColorPair(191, 219, 230, 140, 189, 208), 	new ColorPair(140, 189, 208, 54, 112, 133)),
 	ALDUORITE("alduorite", 			new ColorPair(163, 222, 222, 29, 78, 78), 		new ColorPair(213, 240, 240, 53, 145, 145), 	new ColorPair(241, 250, 250, 163, 222, 222), 	new ColorPair(163, 222, 222, 53, 145, 145)),

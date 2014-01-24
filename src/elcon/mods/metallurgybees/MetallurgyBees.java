@@ -143,8 +143,11 @@ public class MetallurgyBees {
 			beeType.metal = Metals.getMetal(beeType.name);
 			beeType.hasHive = beeType.metal.oreInfo.getType() != OreType.ALLOY;
 
+			String beeParent1 = "";
+			String beeParent2 = "";
+
 			// init bee species alleles
-			if(beeType.metal.setName == "nether"){
+			if(beeType.metal.setName == "nether") {
 				beeType.speciesRough = new AlleleBeeSpecies(beeType.name + "Rough", true, "metallurgy.bees." + beeType.name + ".rough", branchMetal, "metallum", beeType.colorBeeRoughPrimary, beeType.colorBeeRoughSecondary, EnumTemperature.HELLISH).addProduct(new ItemStack(honeyComb.itemID, 1, i), 30);
 				beeType.speciesRefined = new AlleleBeeSpecies(beeType.name + "Refined", true, "metallurgy.bees." + beeType.name + ".refined", branchMetal, "metallum", beeType.colorBeeRefinedPrimary, beeType.colorBeeRefinedSecondary, EnumTemperature.HELLISH).addProduct(new ItemStack(honeyComb.itemID, 1, i), 50);
 				beeType.speciesReforged = new AlleleBeeSpecies(beeType.name + "Reforged", true, "metallurgy.bees." + beeType.name + ".reforged", branchMetal, "metallum", beeType.colorBeeReforgedPrimary, beeType.colorBeeReforgedSecondary, EnumTemperature.HELLISH).addProduct(new ItemStack(honeyComb.itemID, 1, i), 70);
@@ -157,11 +160,13 @@ public class MetallurgyBees {
 			beeRoot.registerTemplate(getMetalBeeRoughTemplate(beeType));
 			beeRoot.registerTemplate(getMetalBeeRefinedTemplate(beeType));
 			beeRoot.registerTemplate(getMetalBeeReforgedTemplate(beeType));
-
+			System.out.println(beeType.name);
+			System.out.println(getBeeParent1(beeType));
+			System.out.println(getBeeParent2(beeType));
 			// init bee mutations
 			if(beeType.hasHive) {
-				new BeeMutation(beeType.speciesRough, AlleleManager.alleleRegistry.getAllele("forestry.speciesUnweary"), getMetalBeeRefinedTemplate(beeType), 5);
-				new BeeMutation(beeType.speciesRefined, AlleleManager.alleleRegistry.getAllele("forestry.speciesIndustrious"), getMetalBeeReforgedTemplate(beeType), 2);
+				new BeeMutation(beeType.speciesRough, AlleleManager.alleleRegistry.getAllele(getBeeParent1(beeType)), getMetalBeeRefinedTemplate(beeType), 5);
+				new BeeMutation(beeType.speciesRefined, AlleleManager.alleleRegistry.getAllele(getBeeParent2(beeType)), getMetalBeeReforgedTemplate(beeType), 2);
 			}
 
 			// register centrifuge recipes
@@ -192,8 +197,66 @@ public class MetallurgyBees {
 
 	public void createMutations(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, MetallurgyBeeTypes child) {
 		new BeeMutation(parent1, parent2, getMetalBeeRoughTemplate(child), 10);
-		new BeeMutation(child.speciesRough, AlleleManager.alleleRegistry.getAllele("forestry.speciesUnweary"), getMetalBeeRefinedTemplate(child), 5);
-		new BeeMutation(child.speciesRefined, AlleleManager.alleleRegistry.getAllele("forestry.speciesIndustrious"), getMetalBeeReforgedTemplate(child), 2);
+		new BeeMutation(child.speciesRough, AlleleManager.alleleRegistry.getAllele(getBeeParent1(child)), getMetalBeeRefinedTemplate(child), 5);
+		new BeeMutation(child.speciesRefined, AlleleManager.alleleRegistry.getAllele(getBeeParent2(child)), getMetalBeeReforgedTemplate(child), 2);
+	}
+
+	private String getBeeParent1(MetallurgyBeeTypes types) {
+		if(types.metal.setName == "base") {
+			return "forestry.speciesUnweary";
+
+		} else if(types.metal.setName == "precious") {
+			return "forestry.speciesMajestic";
+
+		} else if(types.metal.setName == "nether") {
+			return "forestry.speciesFiendish";
+
+		} else if(types.metal.setName == "fantasy") {
+			return "forestry.speciesValiant";
+
+		} else if(types.metal.setName == "ender") {
+			return "forestry.speciesSpectral";
+
+		} else if(types.metal.setName == "utility") {
+			return "forestry.speciesRural";
+		}
+
+		if(types.name == "iron") {
+			return "forestry.speciesUnweary";
+			
+		} else if(types.name == "gold") {
+			return "forestry.speciesMajestic";
+		}
+		return "";
+	}
+
+	private String getBeeParent2(MetallurgyBeeTypes types) {
+		if(types.metal.setName == "base") {
+			return "forestry.speciesIndustrious";
+
+		} else if(types.metal.setName == "precious") {
+			return "forestry.speciesImperial";
+
+		} else if(types.metal.setName == "nether") {
+			return "forestry.speciesDemonic";
+
+		} else if(types.metal.setName == "fantasy") {
+			return "forestry.speciesHeroic";
+
+		} else if(types.metal.setName == "ender") {
+			return "forestry.speciesPhantasmal";
+
+		} else if(types.metal.setName == "utility") {
+			return "forestry.speciesRural";
+		}
+		
+		if(types.name == "iron") {
+			return "forestry.speciesIndustrious";
+			
+		} else if(types.name == "gold") {
+			return "forestry.speciesImperial";
+		}
+		return "";
 	}
 
 	public IAllele[] getDefaultMetalBeeTemplate() {
