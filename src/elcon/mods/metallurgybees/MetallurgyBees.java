@@ -192,7 +192,13 @@ public class MetallurgyBees {
 		createMutations(MetallurgyBeeTypes.IRON.speciesRough, MetallurgyBeeTypes.MANGANESE.speciesRough, MetallurgyBeeTypes.STEEL);
 		createMutations(MetallurgyBeeTypes.ZINC.speciesRough, MetallurgyBeeTypes.COPPER.speciesRough, MetallurgyBeeTypes.BRASS);
 		createMutations(MetallurgyBeeTypes.GOLD.speciesRough, MetallurgyBeeTypes.SILVER.speciesRough, MetallurgyBeeTypes.ELECTRUM);
-		createMutations(MetallurgyBeeTypes.LEMURITE.speciesRough, MetallurgyBeeTypes.SHADOW_IRON.speciesRough, MetallurgyBeeTypes.SHADOW_STEEL);
+		createMutations(MetallurgyBeeTypes.CERUCLASE.speciesRough, MetallurgyBeeTypes.ALDUORITE.speciesRough, MetallurgyBeeTypes.INOLASHITE);
+		createMutations(MetallurgyBeeTypes.KALENDRITE.speciesRough, MetallurgyBeeTypes.PLATINUM.speciesRough, MetallurgyBeeTypes.AMORDRINE);
+		createMutations(MetallurgyBeeTypes.DEEP_IRON.speciesRough, MetallurgyBeeTypes.INFUSCOLIUM.speciesRough, MetallurgyBeeTypes.BLACK_STEEL);
+		createMutations(MetallurgyBeeTypes.MITHRIL.speciesRough, MetallurgyBeeTypes.SILVER.speciesRough, MetallurgyBeeTypes.QUICKSILVER);
+		createMutations(MetallurgyBeeTypes.MITHRIL.speciesRough, MetallurgyBeeTypes.RUBRACIUM.speciesRough, MetallurgyBeeTypes.HADEROTH);
+		createMutations(MetallurgyBeeTypes.ORICHALCUM.speciesRough, MetallurgyBeeTypes.PLATINUM.speciesRough, MetallurgyBeeTypes.CELENEGIL);
+		createMutations(MetallurgyBeeTypes.ADAMANTINE.speciesRough, MetallurgyBeeTypes.ATLARUS.speciesRough, MetallurgyBeeTypes.TARTARITE);
 	}
 
 	public void createMutations(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, MetallurgyBeeTypes child) {
