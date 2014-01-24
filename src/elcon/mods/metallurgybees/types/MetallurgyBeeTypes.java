@@ -3,7 +3,6 @@ package elcon.mods.metallurgybees.types;
 import java.util.ArrayList;
 
 import net.minecraft.util.Icon;
-import elcon.mods.metallurgybees.Metals;
 import elcon.mods.metallurgybees.Metals.Metal;
 import elcon.mods.metallurgybees.util.ColorPair;
 import forestry.api.apiculture.IAlleleBeeSpecies;
