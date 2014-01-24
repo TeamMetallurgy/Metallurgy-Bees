@@ -55,7 +55,6 @@ public class WorldGenBeehives extends WorldGenerator implements IWorldGenerator 
 					if(block.isGenMineableReplaceable(world, x, y, z, id)) {
 						if(world.getBlockMetadata(x, y, z) == Metals.getMetal(beeType.name).oreInfo.getOre().getItemDamage()) {
 							world.setBlock(x, y, z, MetallurgyBees.beehive.blockID, 1, 0);
-							System.out.println(x + ":" + y + ":" + z);
 							((TileEntityMetadata) world.getBlockTileEntity(x, y, z)).setTileMetadata(beeType.ordinal());
 							return true;
 						}
