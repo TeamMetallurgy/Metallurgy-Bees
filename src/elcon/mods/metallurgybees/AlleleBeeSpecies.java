@@ -32,8 +32,13 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 	String binomial;
 	int colorBeeRoughPrimary;
 	int colorBeeRoughSecondary;
-
+	EnumTemperature temperature = EnumTemperature.NORMAL;
+	
 	public AlleleBeeSpecies(String uid, boolean dominant, String name, IClassification branch, String binomial, int colorBeeRoughPrimary, int colorBeeRoughSecondary) {
+		this(uid, dominant,name,branch,binomial,colorBeeRoughPrimary,colorBeeRoughSecondary, EnumTemperature.NORMAL);
+	}
+	
+	public AlleleBeeSpecies(String uid, boolean dominant, String name, IClassification branch, String binomial, int colorBeeRoughPrimary, int colorBeeRoughSecondary, EnumTemperature temperature) {
 		this.uid = uid;
 		this.dominant = dominant;
 		this.name = name;
@@ -41,6 +46,7 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 		this.binomial = binomial;
 		this.colorBeeRoughPrimary = colorBeeRoughPrimary;
 		this.colorBeeRoughSecondary = colorBeeRoughSecondary;
+		this.temperature = temperature;
 		AlleleManager.alleleRegistry.registerAllele(this);
 	}
 
@@ -119,9 +125,12 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 		return false;
 	}
 
+	public void setTemperature(EnumTemperature temp){
+		this.temperature = temp;
+	}
 	@Override
 	public EnumTemperature getTemperature() {
-		return EnumTemperature.NORMAL;
+		return temperature;
 	}
 
 	@Override
