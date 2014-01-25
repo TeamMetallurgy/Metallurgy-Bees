@@ -306,7 +306,7 @@ public class MetallurgyBees {
 			event.world.playAuxSFXAtEntity(event.getPlayer(), 2001, event.x, event.y, event.z, id);
 			boolean flag = false;
 			if(event.getPlayer().capabilities.isCreativeMode) {
-				flag = removeBlock(event.world, event.x, event.y, event.z, meta, event.getPlayer());
+				flag = removeBlock(event.world, event.x, event.y, event.z, meta, event.getPlayer(), true);
 				((EntityPlayerMP) event.getPlayer()).playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(event.x, event.y, event.z, event.world));
 			} else {
 				ItemStack itemstack = event.getPlayer().getCurrentEquippedItem();
@@ -321,7 +321,7 @@ public class MetallurgyBees {
 						event.getPlayer().destroyCurrentEquippedItem();
 					}
 				}
-				flag = removeBlock(event.world, event.x, event.y, event.z, meta, event.getPlayer());
+				flag = removeBlock(event.world, event.x, event.y, event.z, meta, event.getPlayer(), flag1);
 				if(flag && flag1) {
 					Block.blocksList[id].harvestBlock(event.world, event.getPlayer(), event.x, event.y, event.z, meta);
 				}
@@ -332,15 +332,23 @@ public class MetallurgyBees {
 		}
 	}
 
-	private boolean removeBlock(World world, int x, int y, int z, int meta, EntityPlayer player) {
+	private boolean removeBlock(World world, int x, int y, int z, int meta, EntityPlayer player, boolean drop) {
 		Block block = Block.blocksList[world.getBlockId(x, y, z)];
 		if(block != null) {
 			block.onBlockHarvested(world, x, y, z, meta, player);
 		}
-		boolean flag = (block != null && block.removeBlockByPlayer(world, player, x, y, z));
-		if(block != null && flag) {
-			block.onBlockDestroyedByPlayer(world, x, y, z, meta);
+		if(drop) {
+			boolean flag = (block != null && block.removeBlockByPlayer(world, player, x, y, z));
+			if(block != null && flag) {
+				block.onBlockDestroyedByPlayer(world, x, y, z, meta);
+			}
+			return flag;
+		} else {
+			boolean flag = (block != null && world.setBlockToAir(x, y, z));
+			if(block != null && flag) {
+				block.onBlockDestroyedByPlayer(world, x, y, z, meta);
+			}
+			return flag;
 		}
-		return flag;
 	}
 }

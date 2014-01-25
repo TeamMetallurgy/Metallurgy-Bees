@@ -10,9 +10,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import elcon.mods.metallurgybees.LocalizationHelper;
@@ -26,7 +28,7 @@ public class BlockBeehive extends BlockExtendedMetadata {
 	public BlockBeehive(int id) {
 		super(id, MetallurgyBees.materialBeeHive);
 		setHardness(3.5F);
-	    setResistance(10.0F);
+		setResistance(10.0F);
 		setLightValue(0.8F);
 		setStepSound(Block.soundStoneFootstep);
 		setCreativeTab(MetallurgyBees.creativeTab);
@@ -53,7 +55,22 @@ public class BlockBeehive extends BlockExtendedMetadata {
 		return true;
 	}
 
-		@Override
+	@Override
+	public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z) {
+		int meta = getMetadata(world, x, y, z);
+		float hardness = getBlockHardness(world, x, y, z);
+		if(hardness < 0.0F) {
+			return 0.0F;
+		}
+		if(!canHarvestBlock(player, meta)) {
+			float speed = ForgeEventFactory.getBreakSpeed(player, this, meta, 1.0f);
+			return (speed < 0 ? 0 : speed) / hardness / 100F;
+		} else {
+			return player.getCurrentPlayerStrVsBlock(this, false, meta) / hardness / 30F;
+		}
+	}
+
+	@Override
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int meta, int fortune) {
 		ArrayList ret = new ArrayList();
 		ArrayList<IHiveDrop> dropList = MetallurgyBeeTypes.values()[getMetadata(world, x, y, z)].hiveDrops;
