@@ -1,7 +1,6 @@
 package elcon.mods.metallurgybees.items;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;

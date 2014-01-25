@@ -4,7 +4,6 @@ import java.util.EnumSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import forestry.api.genetics.IFlowerProvider;
