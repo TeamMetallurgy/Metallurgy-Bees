@@ -36,7 +36,6 @@ import elcon.mods.metallurgybees.types.MetallurgyBeeTypes;
 import elcon.mods.metallurgybees.types.MetallurgyFrameTypes;
 import elcon.mods.metallurgybees.worldgen.WorldGenBeehives;
 import forestry.api.apiculture.EnumBeeChromosome;
-import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IBeeRoot;
 import forestry.api.core.EnumTemperature;
 import forestry.api.genetics.AlleleManager;
@@ -63,7 +62,7 @@ public class MetallurgyBees {
 	public static Item honeyComb;
 	public static Item hiveFrame;
 	public static Item beeGun;
-	
+
 	public static IBeeRoot beeRoot;
 	public static IClassification branchMetal;
 	public static AlleleFlowers alleleFlowerStone;
@@ -80,7 +79,9 @@ public class MetallurgyBees {
 		// init creative tab
 		creativeTab = new MBCreativeTabForestry("MetallurgyAddonForestry");
 
+		// init materials
 		materialBeeHive = new MaterialBeeHive();
+
 		// init blocks
 		beehive = new BlockBeehive(MBConfig.blockBeehiveID).setUnlocalizedName("metallurgyBeehive");
 
@@ -90,7 +91,8 @@ public class MetallurgyBees {
 		// init items
 		honeyComb = new ItemHoneyComb(MBConfig.itemHoneyCombID).setUnlocalizedName("metallurgyHoneyComb");
 		hiveFrame = new ItemHiveFrame(MBConfig.itemHiveFrameID).setUnlocalizedName("metallurgyFrame");
-		beeGun = new ItemBeeGun(MBConfig.beeGunID).setUnlocalizedName("beegun");
+		beeGun = new ItemBeeGun(MBConfig.itemBeeGunID).setUnlocalizedName("metallurgyBeegun");
+
 		// register items
 		GameRegistry.registerItem(honeyComb, "metallurgyHoneyComb");
 		GameRegistry.registerItem(hiveFrame, "metallurgyFrame");
@@ -105,6 +107,8 @@ public class MetallurgyBees {
 		// register render information
 		proxy.registerRenderingInformation();
 
+		// register events
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@EventHandler
@@ -227,7 +231,6 @@ public class MetallurgyBees {
 		} else if(types.metal.setName == "utility") {
 			return "forestry.speciesRural";
 		}
-
 		if(types.name == "iron") {
 			return "forestry.speciesUnweary";
 
@@ -256,7 +259,6 @@ public class MetallurgyBees {
 		} else if(types.metal.setName == "utility") {
 			return "forestry.speciesRural";
 		}
-
 		if(types.name == "iron") {
 			return "forestry.speciesIndustrious";
 
@@ -289,5 +291,56 @@ public class MetallurgyBees {
 		IAllele[] alleles = getDefaultMetalBeeTemplate();
 		alleles[EnumBeeChromosome.SPECIES.ordinal()] = beeType.speciesReforged;
 		return alleles;
+	}
+
+	@ForgeSubscribe
+	public void onBlockBreak(BreakEvent event) {
+		if(event.block.blockID == beehive.blockID) {
+			event.setCanceled(true);
+			ItemStack stack = event.getPlayer().getCurrentEquippedItem();
+			if(stack != null && stack.getItem().onBlockStartBreak(stack, event.x, event.y, event.z, event.getPlayer())) {
+				return;
+			}
+			int id = event.world.getBlockId(event.x, event.y, event.z);
+			int meta = ((BlockExtendedMetadata) event.block).getMetadata(event.world, event.x, event.y, event.z);
+			event.world.playAuxSFXAtEntity(event.getPlayer(), 2001, event.x, event.y, event.z, id);
+			boolean flag = false;
+			if(event.getPlayer().capabilities.isCreativeMode) {
+				flag = removeBlock(event.world, event.x, event.y, event.z, meta, event.getPlayer());
+				((EntityPlayerMP) event.getPlayer()).playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(event.x, event.y, event.z, event.world));
+			} else {
+				ItemStack itemstack = event.getPlayer().getCurrentEquippedItem();
+				boolean flag1 = false;
+				Block block = Block.blocksList[id];
+				if(block != null) {
+					flag1 = block.canHarvestBlock(event.getPlayer(), meta);
+				}
+				if(itemstack != null) {
+					itemstack.onBlockDestroyed(event.world, id, event.x, event.y, event.z, event.getPlayer());
+					if(itemstack.stackSize == 0) {
+						event.getPlayer().destroyCurrentEquippedItem();
+					}
+				}
+				flag = removeBlock(event.world, event.x, event.y, event.z, meta, event.getPlayer());
+				if(flag && flag1) {
+					Block.blocksList[id].harvestBlock(event.world, event.getPlayer(), event.x, event.y, event.z, meta);
+				}
+			}
+			if(!event.getPlayer().capabilities.isCreativeMode && flag && event != null) {
+				Block.blocksList[id].dropXpOnBlockBreak(event.world, event.x, event.y, event.z, event.getExpToDrop());
+			}
+		}
+	}
+
+	private boolean removeBlock(World world, int x, int y, int z, int meta, EntityPlayer player) {
+		Block block = Block.blocksList[world.getBlockId(x, y, z)];
+		if(block != null) {
+			block.onBlockHarvested(world, x, y, z, meta, player);
+		}
+		boolean flag = (block != null && block.removeBlockByPlayer(world, player, x, y, z));
+		if(block != null && flag) {
+			block.onBlockDestroyedByPlayer(world, x, y, z, meta);
+		}
+		return flag;
 	}
 }

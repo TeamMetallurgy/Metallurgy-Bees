@@ -13,7 +13,7 @@ public class MBConfig {
 
 	public static int itemHoneyCombID = 6000;
 	public static int itemHiveFrameID = 6001;
-	public static int beeGunID = 6002;
+	public static int itemBeeGunID = 6002;
 
 	public MBConfig(Configuration config) {
 		this.config = config;
@@ -36,7 +36,7 @@ public class MBConfig {
 			MetallurgyBeeTypes types = MetallurgyBeeTypes.values()[i];
 			types.isEnabled = config.get("bees", types.name, true).getBoolean(true);
 		}
-		beeGunID = config.getItem("beeGun", beeGunID).getInt();
+		itemBeeGunID = config.getItem("beeGun", itemBeeGunID).getInt();
 	}
 
 	public void save() {
