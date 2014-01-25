@@ -97,18 +97,6 @@ public class MetallurgyBees {
 		// register tileentities
 		GameRegistry.registerTileEntity(TileEntityExtended.class, "MetallurgyTileExtended");
 		GameRegistry.registerTileEntity(TileEntityMetadata.class, "MetallurgyTileMetadata");
-
-		// set block harvest levels
-		for(int i = 0; i < MetallurgyBeeTypes.values().length; i++) {
-			Metal metal = Metals.getMetal(MetallurgyBeeTypes.values()[i].name);
-			if(metal != null) {
-				ItemStack ore = metal.oreInfo.getOre();
-				MinecraftForge.setBlockHarvestLevel(beehive, i, "pickaxe", MinecraftForge.getBlockHarvestLevel(Block.blocksList[ore.itemID], ore.getItemDamage(), "pickaxe"));
-			}
-		}
-
-		// add localizations to Forestry's Localization
-		// Localization.instance.addLocalization("/assets/metallurgybees/lang/");
 	}
 
 	@EventHandler
@@ -153,20 +141,26 @@ public class MetallurgyBees {
 				beeType.speciesReforged = new AlleleBeeSpecies(beeType.name + "Reforged", true, "metallurgy.bees." + beeType.name + ".reforged", branchMetal, "metallum", beeType.colorBeeReforgedPrimary, beeType.colorBeeReforgedSecondary, EnumTemperature.HELLISH).addProduct(new ItemStack(honeyComb.itemID, 1, i), 70);
 			} else {
 				beeType.speciesRough = new AlleleBeeSpecies(beeType.name + "Rough", true, "metallurgy.bees." + beeType.name + ".rough", branchMetal, "metallum", beeType.colorBeeRoughPrimary, beeType.colorBeeRoughSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 30);
-				beeType.speciesRefined = new AlleleBeeSpecies(beeType.name + "Refined", true, "metallurgy.bees." + beeType.name + ".refined", branchMetal, "metallum", beeType.colorBeeRefinedPrimary, beeType.colorBeeRefinedSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 50);
+				if(beeType.metal.setName != "utility") {
+					beeType.speciesRefined = new AlleleBeeSpecies(beeType.name + "Refined", true, "metallurgy.bees." + beeType.name + ".refined", branchMetal, "metallum", beeType.colorBeeRefinedPrimary, beeType.colorBeeRefinedSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 50);
+				}
 				beeType.speciesReforged = new AlleleBeeSpecies(beeType.name + "Reforged", true, "metallurgy.bees." + beeType.name + ".reforged", branchMetal, "metallum", beeType.colorBeeReforgedPrimary, beeType.colorBeeReforgedSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 70);
 			}
 			// register templates
 			beeRoot.registerTemplate(getMetalBeeRoughTemplate(beeType));
-			beeRoot.registerTemplate(getMetalBeeRefinedTemplate(beeType));
+			if(beeType.metal.setName != "utility") {
+				beeRoot.registerTemplate(getMetalBeeRefinedTemplate(beeType));
+			}
 			beeRoot.registerTemplate(getMetalBeeReforgedTemplate(beeType));
-			System.out.println(beeType.name);
-			System.out.println(getBeeParent1(beeType));
-			System.out.println(getBeeParent2(beeType));
+
 			// init bee mutations
 			if(beeType.hasHive) {
-				new BeeMutation(beeType.speciesRough, AlleleManager.alleleRegistry.getAllele(getBeeParent1(beeType)), getMetalBeeRefinedTemplate(beeType), 5);
-				new BeeMutation(beeType.speciesRefined, AlleleManager.alleleRegistry.getAllele(getBeeParent2(beeType)), getMetalBeeReforgedTemplate(beeType), 2);
+				if(beeType.metal.setName != "utility") {
+					new BeeMutation(beeType.speciesRough, AlleleManager.alleleRegistry.getAllele(getBeeParent1(beeType)), getMetalBeeRefinedTemplate(beeType), 5);
+					new BeeMutation(beeType.speciesRefined, AlleleManager.alleleRegistry.getAllele(getBeeParent2(beeType)), getMetalBeeReforgedTemplate(beeType), 2);
+				} else {
+					new BeeMutation(beeType.speciesRough, AlleleManager.alleleRegistry.getAllele(getBeeParent2(beeType)), getMetalBeeReforgedTemplate(beeType), 2);
+				}
 			}
 
 			// register centrifuge recipes
@@ -182,6 +176,16 @@ public class MetallurgyBees {
 
 		// create alloy bee mutations
 		createAlloyBeeMutations();
+
+		for(int i = 0; i < MetallurgyBeeTypes.values().length; i++) {
+			Metal metal = Metals.getMetal(MetallurgyBeeTypes.values()[i].name);
+			if(metal != null) {
+				ItemStack ore = metal.oreInfo.getOre();
+				if(ore != null) {
+					MinecraftForge.setBlockHarvestLevel(beehive, i, "pickaxe", metal.oreInfo.getBlockHarvestLevel());
+				}
+			}
+		}
 	}
 
 	public void createAlloyBeeMutations() {
@@ -229,7 +233,7 @@ public class MetallurgyBees {
 
 		if(types.name == "iron") {
 			return "forestry.speciesUnweary";
-			
+
 		} else if(types.name == "gold") {
 			return "forestry.speciesMajestic";
 		}
@@ -255,10 +259,10 @@ public class MetallurgyBees {
 		} else if(types.metal.setName == "utility") {
 			return "forestry.speciesRural";
 		}
-		
+
 		if(types.name == "iron") {
 			return "forestry.speciesIndustrious";
-			
+
 		} else if(types.name == "gold") {
 			return "forestry.speciesImperial";
 		}
@@ -293,7 +297,6 @@ public class MetallurgyBees {
 	@ForgeSubscribe
 	public void onBlockBreak(BreakEvent event) {
 		if(event.block.blockID == beehive.blockID) {
-			event.setCanceled(true);
 			ItemStack stack = event.getPlayer().getCurrentEquippedItem();
 			if(stack != null && stack.getItem().onBlockStartBreak(stack, event.x, event.y, event.z, event.getPlayer())) {
 				return;
@@ -305,23 +308,6 @@ public class MetallurgyBees {
 			if(event.getPlayer().capabilities.isCreativeMode) {
 				flag = removeBlock(event.world, event.x, event.y, event.z, meta, event.getPlayer());
 				((EntityPlayerMP) event.getPlayer()).playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(event.x, event.y, event.z, event.world));
-			} else {
-				ItemStack itemstack = event.getPlayer().getCurrentEquippedItem();
-				boolean flag1 = false;
-				Block block = Block.blocksList[id];
-				if(block != null) {
-					flag1 = block.canHarvestBlock(event.getPlayer(), meta);
-				}
-				if(itemstack != null) {
-					itemstack.onBlockDestroyed(event.world, id, event.x, event.y, event.z, event.getPlayer());
-					if(itemstack.stackSize == 0) {
-						event.getPlayer().destroyCurrentEquippedItem();
-					}
-				}
-				flag = removeBlock(event.world, event.x, event.y, event.z, meta, event.getPlayer());
-				if(flag && flag1) {
-					Block.blocksList[id].harvestBlock(event.world, event.getPlayer(), event.x, event.y, event.z, meta);
-				}
 			}
 			if(!event.getPlayer().capabilities.isCreativeMode && flag && event != null) {
 				Block.blocksList[id].dropXpOnBlockBreak(event.world, event.x, event.y, event.z, event.getExpToDrop());

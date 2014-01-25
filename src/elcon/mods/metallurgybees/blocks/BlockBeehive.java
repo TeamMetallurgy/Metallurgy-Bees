@@ -28,8 +28,8 @@ public class BlockBeehive extends BlockExtendedMetadata {
 
 	public BlockBeehive(int id) {
 		super(id, MetallurgyBees.materialBeeHive);
-		setHardness(1.5F);
-		setResistance(100.0F);
+		setHardness(10.5F);
+		setResistance(0.5F);
 		setLightValue(0.8F);
 		setStepSound(Block.soundStoneFootstep);
 		setCreativeTab(MetallurgyBees.creativeTab);
