@@ -101,7 +101,7 @@
         <!-- Download necessary files -->
         <target name="download-files">
                 <get src="https://dl.dropboxusercontent.com/u/8609213/Porcupine/forestry-api-2.3.1.0.zip" dest="${download.dir}"/>
-				<get src="http://mc.aesireanempire.com/jenkins/job/Metallurgy3/8/artifact/bin/Metallurgy4-1.6.4-3.3.2.19-api.zip" dest="${download.dir}"/>
+				<get src="http://mc.aesireanempire.com/jenkins/job/Metallurgy3/8/artifact/bin/Metallurgy4-1.6.4-3.3.2.28-api.zip" dest="${download.dir}"/>
                 <antcall target="download-forge"/> 
         </target>
 
@@ -118,7 +118,7 @@
                         <fileset dir="${libs.dir}" includes="*.jar"/>
                 </delete>
                 <copy todir="${libs.dir}" file="${download.dir}/forestry-api-2.3.1.0.zip"/>
-                <copy todir="${libs.dir}" file="${download.dir}/Metallurgy4-1.6.4-3.3.2.19-api.zip"/>
+                <copy todir="${libs.dir}" file="${download.dir}/Metallurgy4-1.6.4-3.3.2.28-api.zip"/>
         </target>
         
         <target name="setup-forge" if="out-of-date">
