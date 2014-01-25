@@ -2,12 +2,10 @@ package elcon.mods.metallurgybees.types;
 
 public enum MetallurgyFrameTypes {
 
-	HEATED(MetallurgyBeeTypes.IGNATIUS, 360), 
 	REINFORCED(MetallurgyBeeTypes.SHADOW_IRON, 540), 
 	FORTIFIED(MetallurgyBeeTypes.SHADOW_STEEL, 1080), 
 	MIDAS(MetallurgyBeeTypes.MIDASIUM, 360), 
 	MUTATING(MetallurgyBeeTypes.VYROXERES, 360), 
-	COOLING(MetallurgyBeeTypes.CERUCLASE, 360), 
 	FERTILE(MetallurgyBeeTypes.INOLASHITE, 480), 
 	ANCIENT(MetallurgyBeeTypes.KALENDRITE, 360), 
 	IMMORTAL(MetallurgyBeeTypes.AMORDRINE, 360), 
@@ -29,13 +27,11 @@ public enum MetallurgyFrameTypes {
 	}
 
 	public static void init() {
-		HEATED.setProductionModifier(1.5F);
 		//
 		REINFORCED.setProductionModifier(1.5F);
 		FORTIFIED.setProductionModifier(1.5F);
 		//MIDAS.setProductionModifier(1.5F);
 		MUTATING.setProductionModifier(0.0F).setLifespanModifier(1.5F).setMutationModifier(2.0F);
-		COOLING.setProductionModifier(1.5F);
 		//
 		//
 		ANCIENT.setProductionModifier(1.75F).setLifespanModifier(1.5F);

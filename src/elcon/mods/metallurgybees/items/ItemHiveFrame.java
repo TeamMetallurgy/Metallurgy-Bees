@@ -6,11 +6,13 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import elcon.mods.metallurgybees.LocalizationHelper;
 import elcon.mods.metallurgybees.MetallurgyBees;
 import elcon.mods.metallurgybees.types.MetallurgyFrameTypes;
+import elcon.mods.metallurgybees.util.MBUtil;
 import forestry.api.apiculture.IBee;
 import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeHousing;
@@ -19,7 +21,8 @@ import forestry.api.apiculture.IHiveFrame;
 public class ItemHiveFrame extends Item implements IHiveFrame {
 
 	public String name;
-
+	private Icon[] frameIcon;
+	
 	public ItemHiveFrame(int par1) {
 		super(par1);
 		setMaxStackSize(1);
@@ -104,16 +107,22 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 		}
 		return frame;
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
+		this.frameIcon = new Icon[MetallurgyFrameTypes.values().length];
 		for(int i = 0; i < MetallurgyFrameTypes.values().length; i++) {
 			MetallurgyFrameTypes hiveFrames = MetallurgyFrameTypes.values()[i];
-			itemIcon = iconRegister.registerIcon("forestry:frameImpregnated");
+			this.frameIcon[i] = iconRegister.registerIcon("metallurgybees:frame" + MBUtil.firstUpperCase(hiveFrames.name().toLowerCase()));
 		}
 	}
 	
+	@Override
+	public Icon getIconFromDamage(int par1) {
+		return this.frameIcon[par1];
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int id, CreativeTabs creativeTab, List list) {

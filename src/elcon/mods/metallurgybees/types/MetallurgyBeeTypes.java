@@ -97,4 +97,6 @@ public enum MetallurgyBeeTypes {
 	public IAlleleBeeSpecies speciesRough;
 	public IAlleleBeeSpecies speciesRefined;
 	public IAlleleBeeSpecies speciesReforged;
+	
+	public boolean isEnabled;
 }
