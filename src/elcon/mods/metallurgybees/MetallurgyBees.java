@@ -78,7 +78,7 @@ public class MetallurgyBees {
 		// init creative tab
 		creativeTab = new MBCreativeTabForestry("MetallurgyAddonForestry");
 
-		materialBeeHive = new MaterialBeeHive(true);
+		materialBeeHive = new MaterialBeeHive();
 		// init blocks
 		beehive = new BlockBeehive(MBConfig.blockBeehiveID).setUnlocalizedName("metallurgyBeehive");
 
@@ -103,8 +103,6 @@ public class MetallurgyBees {
 		// register render information
 		proxy.registerRenderingInformation();
 
-		// register events
-		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@EventHandler
@@ -129,9 +127,6 @@ public class MetallurgyBees {
 			MetallurgyBeeTypes beeType = MetallurgyBeeTypes.values()[i];
 			beeType.metal = Metals.getMetal(beeType.name);
 			beeType.hasHive = beeType.metal.oreInfo.getType() != OreType.ALLOY;
-
-			String beeParent1 = "";
-			String beeParent2 = "";
 
 			// init bee species alleles
 			if(beeType.metal.setName == "nether") {
@@ -182,6 +177,7 @@ public class MetallurgyBees {
 				ItemStack ore = metal.oreInfo.getOre();
 				if(ore != null) {
 					MinecraftForge.setBlockHarvestLevel(beehive, i, "pickaxe", metal.oreInfo.getBlockHarvestLevel());
+					System.out.println(MinecraftForge.getBlockHarvestLevel(beehive, i, "pickaxe"));
 				}
 			}
 		}
@@ -202,6 +198,7 @@ public class MetallurgyBees {
 		createMutations(MetallurgyBeeTypes.MITHRIL.speciesRough, MetallurgyBeeTypes.RUBRACIUM.speciesRough, MetallurgyBeeTypes.HADEROTH);
 		createMutations(MetallurgyBeeTypes.ORICHALCUM.speciesRough, MetallurgyBeeTypes.PLATINUM.speciesRough, MetallurgyBeeTypes.CELENEGIL);
 		createMutations(MetallurgyBeeTypes.ADAMANTINE.speciesRough, MetallurgyBeeTypes.ATLARUS.speciesRough, MetallurgyBeeTypes.TARTARITE);
+		createMutations(MetallurgyBeeTypes.EXIMITE.speciesRough, MetallurgyBeeTypes.MEUTOITE.speciesRough, MetallurgyBeeTypes.DESICHALKOS);
 	}
 
 	public void createMutations(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, MetallurgyBeeTypes child) {
@@ -291,38 +288,5 @@ public class MetallurgyBees {
 		IAllele[] alleles = getDefaultMetalBeeTemplate();
 		alleles[EnumBeeChromosome.SPECIES.ordinal()] = beeType.speciesReforged;
 		return alleles;
-	}
-
-	@ForgeSubscribe
-	public void onBlockBreak(BreakEvent event) {
-		if(event.block.blockID == beehive.blockID) {
-			ItemStack stack = event.getPlayer().getCurrentEquippedItem();
-			if(stack != null && stack.getItem().onBlockStartBreak(stack, event.x, event.y, event.z, event.getPlayer())) {
-				return;
-			}
-			int id = event.world.getBlockId(event.x, event.y, event.z);
-			int meta = ((BlockExtendedMetadata) event.block).getMetadata(event.world, event.x, event.y, event.z);
-			event.world.playAuxSFXAtEntity(event.getPlayer(), 2001, event.x, event.y, event.z, id);
-			boolean flag = false;
-			if(event.getPlayer().capabilities.isCreativeMode) {
-				flag = removeBlock(event.world, event.x, event.y, event.z, meta, event.getPlayer());
-				((EntityPlayerMP) event.getPlayer()).playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(event.x, event.y, event.z, event.world));
-			}
-			if(!event.getPlayer().capabilities.isCreativeMode && flag && event != null) {
-				Block.blocksList[id].dropXpOnBlockBreak(event.world, event.x, event.y, event.z, event.getExpToDrop());
-			}
-		}
-	}
-
-	private boolean removeBlock(World world, int x, int y, int z, int meta, EntityPlayer player) {
-		Block block = Block.blocksList[world.getBlockId(x, y, z)];
-		if(block != null) {
-			block.onBlockHarvested(world, x, y, z, meta, player);
-		}
-		boolean flag = (block != null && block.removeBlockByPlayer(world, player, x, y, z));
-		if(block != null && flag) {
-			block.onBlockDestroyedByPlayer(world, x, y, z, meta);
-		}
-		return flag;
 	}
 }

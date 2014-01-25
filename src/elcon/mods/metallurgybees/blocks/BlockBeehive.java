@@ -28,8 +28,8 @@ public class BlockBeehive extends BlockExtendedMetadata {
 
 	public BlockBeehive(int id) {
 		super(id, MetallurgyBees.materialBeeHive);
-		setHardness(10.5F);
-		setResistance(0.5F);
+		setHardness(3.5F);
+	    setResistance(10.0F);
 		setLightValue(0.8F);
 		setStepSound(Block.soundStoneFootstep);
 		setCreativeTab(MetallurgyBees.creativeTab);
@@ -56,27 +56,7 @@ public class BlockBeehive extends BlockExtendedMetadata {
 		return true;
 	}
 
-	@Override
-	public boolean canHarvestBlock(EntityPlayer player, int meta) {
-		return ForgeHooks.canHarvestBlock(this, player, meta);
-	}
-
-	@Override
-	public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z) {
-		int meta = getMetadata(world, x, y, z);
-		float hardness = getBlockHardness(world, x, y, z);
-		if(hardness < 0.0F) {
-			return 0.0F;
-		}
-		if(!canHarvestBlock(player, meta)) {
-			float speed = ForgeEventFactory.getBreakSpeed(player, this, meta, 1.0f);
-			return (speed < 0 ? 0 : speed) / hardness / 100F;
-		} else {
-			return player.getCurrentPlayerStrVsBlock(this, false, meta) / hardness / 30F;
-		}
-	}
-
-	@Override
+		@Override
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int meta, int fortune) {
 		ArrayList ret = new ArrayList();
 		ArrayList<IHiveDrop> dropList = MetallurgyBeeTypes.values()[getMetadata(world, x, y, z)].hiveDrops;

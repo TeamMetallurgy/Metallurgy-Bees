@@ -5,10 +5,9 @@ import net.minecraft.block.material.Material;
 
 public class MaterialBeeHive extends Material {
 
-	public MaterialBeeHive(boolean noHarvest) {
+	public MaterialBeeHive() {
 		super(MapColor.stoneColor);
-		if(noHarvest)
-			setRequiresTool();
+		setRequiresTool();
 		setImmovableMobility();
 	}
 }
