@@ -54,16 +54,15 @@ public enum MetallurgyBeeTypes {
 	ADAMANTINE("adamantine",		new ColorPair(175, 1, 1, 101, 1, 1), 			new ColorPair(254, 67, 67, 175, 1, 1), 			new ColorPair(254, 160, 160, 254, 67, 67), 		new ColorPair(254, 67, 67, 175, 1, 1)),
 	ATLARUS("atlarus", 				new ColorPair(204, 179, 0, 98, 86, 0), 			new ColorPair(255, 224, 4, 204, 179, 0), 		new ColorPair(255, 245, 174, 255, 224, 4), 		new ColorPair(255, 245, 174, 204, 179, 0)),
 	TARTARITE("tartarite", 			new ColorPair(255, 118, 60, 121, 36, 0), 		new ColorPair(255, 182, 151, 174, 52, 0), 		new ColorPair(255, 226, 215, 255, 118, 60), 	new ColorPair(255, 182, 151, 174, 52, 0)),
-	
-	PHOSPHORITE("phosphorite", 		new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	SULFUR("sulfur", 				new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	SALTPETER("saltpeter", 			new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	MAGNESIUM("magnesium", 			new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	BITUMEN("bitumen", 				new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	POTASH("potash", 				new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	EXIMITE("eximite", 				new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	MEUTOITE("meutoite", 			new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255)),
-	DESICHALKOS("desichalkos", 		new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(255, 255, 255, 255, 255, 255));
+	PHOSPHORITE("phosphorite", 		new ColorPair(162, 119, 119, 105, 71, 71),	 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(176, 140, 140, 120, 82, 82), 		new ColorPair(176, 140, 140, 105, 71, 71)),
+	SULFUR("sulfur", 				new ColorPair(255, 242, 0, 252, 215, 3), 		new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(254, 243, 186, 255, 242, 0), 		new ColorPair(254, 243, 186, 252, 215, 3)),
+	SALTPETER("saltpeter", 			new ColorPair(240, 240, 240, 225, 225, 225), 	new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(249, 249, 249, 240, 240, 240), 	new ColorPair(249, 249, 249, 240, 240, 240)),
+	MAGNESIUM("magnesium", 			new ColorPair(147, 124, 108, 101, 84, 73), 		new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(179, 151, 132, 119, 100, 87), 	new ColorPair(147, 124, 108, 101, 84, 73)),
+	BITUMEN("bitumen", 				new ColorPair(49, 49, 49, 22, 22, 22), 			new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(91, 91, 91, 36, 36, 36), 			new ColorPair(91, 91, 91, 49, 49, 49)),
+	POTASH("potash", 				new ColorPair(239, 145, 3, 176, 88, 0), 		new ColorPair(255, 255, 255, 255, 255, 255), 	new ColorPair(253, 200, 121, 239, 145, 3), 		new ColorPair(253, 200, 121, 218, 132, 3)),
+	EXIMITE("eximite", 				new ColorPair(101, 73, 122, 47, 33, 56), 		new ColorPair(124, 90, 150, 101, 73, 122), 		new ColorPair(158, 131, 180, 124, 90, 150), 	new ColorPair(158, 131, 180, 101, 73, 122)),
+	MEUTOITE("meutoite", 			new ColorPair(70, 60, 78, 28, 24, 31), 			new ColorPair(95, 82, 105, 51, 44, 56), 		new ColorPair(152, 136, 164, 95, 82, 105), 		new ColorPair(152, 136, 164, 70, 60, 78)),
+	DESICHALKOS("desichalkos", 		new ColorPair(114, 47, 168, 63, 26, 94), 		new ColorPair(158, 96, 210, 80, 33, 118), 		new ColorPair(187, 142, 223, 114, 47, 168), 	new ColorPair(187, 142, 223, 114, 47, 168));
 	
 	MetallurgyBeeTypes(String name, ColorPair rough, ColorPair refined, ColorPair reforged , ColorPair comb) {
 		this.name = name;
