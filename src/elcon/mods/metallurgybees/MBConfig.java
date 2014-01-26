@@ -10,7 +10,6 @@ public class MBConfig {
 	public Configuration config;
 
 	public static int blockBeehiveID = 1002;
-	public static int blockApiaryID = 1001;
 	
 	public static int itemHoneyCombID = 6000;
 	public static int itemHiveFrameID = 6001;
@@ -31,7 +30,7 @@ public class MBConfig {
 
 		// load block ids
 		blockBeehiveID = config.getBlock("beehive", blockBeehiveID).getInt();
-		blockApiaryID = config.getBlock("apiary", blockApiaryID).getInt();
+
 		// load item ids
 		itemHoneyCombID = config.getItem("honeyComb", itemHoneyCombID).getInt();
 		itemHiveFrameID = config.getItem("hiveFrame", itemHiveFrameID).getInt();

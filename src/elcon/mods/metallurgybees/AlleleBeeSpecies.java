@@ -16,7 +16,6 @@ import forestry.api.apiculture.IBeeRoot;
 import forestry.api.core.EnumHumidity;
 import forestry.api.core.EnumTemperature;
 import forestry.api.core.IIconProvider;
-import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IClassification;
 import forestry.api.genetics.IIndividual;
 
@@ -35,10 +34,6 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 	EnumTemperature temperature = EnumTemperature.NORMAL;
 
 	public AlleleBeeSpecies(String uid, boolean dominant, String name, IClassification branch, String binomial, int colorBeeRoughPrimary, int colorBeeRoughSecondary) {
-		this(uid, dominant, name, branch, binomial, colorBeeRoughPrimary, colorBeeRoughSecondary, EnumTemperature.NORMAL);
-	}
-
-	public AlleleBeeSpecies(String uid, boolean dominant, String name, IClassification branch, String binomial, int colorBeeRoughPrimary, int colorBeeRoughSecondary, EnumTemperature temperature) {
 		this.uid = uid;
 		this.dominant = dominant;
 		this.name = name;
@@ -46,7 +41,6 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 		this.binomial = binomial;
 		this.colorBeeRoughPrimary = colorBeeRoughPrimary;
 		this.colorBeeRoughSecondary = colorBeeRoughSecondary;
-		this.temperature = temperature;
 	}
 
 	@Override
