@@ -2,7 +2,7 @@ package elcon.mods.metallurgybees.types;
 
 public enum MetallurgyFrameTypes {
 
-	REINFORCED(MetallurgyBeeTypes.SHADOW_IRON, 540), 
+	REINFORCED(MetallurgyBeeTypes.SHADOW_IRON, 540),
 	FORTIFIED(MetallurgyBeeTypes.SHADOW_STEEL, 1080), 
 	MIDAS(MetallurgyBeeTypes.MIDASIUM, 360), 
 	MUTATING(MetallurgyBeeTypes.VYROXERES, 360), 
@@ -27,17 +27,28 @@ public enum MetallurgyFrameTypes {
 	}
 
 	public static void init() {
-		//
-		REINFORCED.setProductionModifier(1.5F);
+		REINFORCED.setProductionModifier(2F);
 		FORTIFIED.setProductionModifier(1.5F);
-		//MIDAS.setProductionModifier(1.5F);
-		MUTATING.setProductionModifier(0.0F).setLifespanModifier(1.5F).setMutationModifier(2.0F);
-		//
-		//
-		ANCIENT.setProductionModifier(1.75F).setLifespanModifier(1.5F);
-		IMMORTAL.setProductionModifier(1.75F).setLifespanModifier(2.0F);
-		MOLTEN.setProductionModifier(3.0F).setLifespanModifier(0.25F);
-		SANGUINE.setProductionModifier(1.25F).setLifespanModifier(3.0F).setMutationModifier(0.0F);
+
+		MUTATING.setProductionModifier(0.0F);
+		MUTATING.setLifespanModifier(1.5F);
+		MUTATING.setMutationModifier(2.0F);
+
+		FERTILE.setProductionModifier(2f);
+		FERTILE.setLifespanModifier(0.5f);
+		
+		ANCIENT.setProductionModifier(2.0F);
+		ANCIENT.setLifespanModifier(1.5F);
+		
+		IMMORTAL.setProductionModifier(2.0F);
+		IMMORTAL.setLifespanModifier(2.0F);
+		
+		MOLTEN.setProductionModifier(3.0F);
+		MOLTEN.setLifespanModifier(0.5F);
+		
+		SANGUINE.setProductionModifier(2.0F);
+		SANGUINE.setLifespanModifier(3.0F);
+		SANGUINE.setMutationModifier(0.0F);
 	}
 
 	public MetallurgyFrameTypes setFloweringModifier(float modifer) {

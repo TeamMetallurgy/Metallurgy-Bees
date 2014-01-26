@@ -21,20 +21,20 @@ import forestry.api.apiculture.IHiveFrame;
 
 public class ItemHiveFrame extends Item implements IHiveFrame {
 
-	public String name;
 	private Icon[] frameIcon;
-	
-	public ItemHiveFrame(int par1) {
+	MetallurgyFrameTypes types;
+
+	public ItemHiveFrame(int par1, MetallurgyFrameTypes types) {
 		super(par1);
+		this.types = types;
 		setMaxStackSize(1);
 		setMaxDamage(0);
-		setHasSubtypes(true);
 		setCreativeTab(MetallurgyBees.creativeTab);
 	}
 
 	@Override
 	public String getItemDisplayName(ItemStack stack) {
-		return LocalizationHelper.localize("metallurgy.frames." + MetallurgyFrameTypes.values()[stack.getItemDamage()].name().toLowerCase()) + " " + LocalizationHelper.localize(getUnlocalizedName());
+		return LocalizationHelper.localize("metallurgy.frames." + types.name().toLowerCase()) + " " + LocalizationHelper.localize(getUnlocalizedName());
 	}
 
 	@Override
@@ -44,8 +44,7 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 
 	@Override
 	public float getFloweringModifier(IBeeGenome beeGenome, float currentModifier) {
-		MetallurgyFrameTypes frame = MetallurgyFrameTypes.valueOf(name);
-		return frame.floweringModifer;
+		return types.floweringModifer;
 	}
 
 	@Override
@@ -55,26 +54,22 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 
 	@Override
 	public float getLifespanModifier(IBeeGenome beeGenome1, IBeeGenome beeGenome2, float currentModifier) {
-		MetallurgyFrameTypes frame = MetallurgyFrameTypes.valueOf(name);
-		return frame.lifespanModifer;
+		return types.lifespanModifer;
 	}
 
 	@Override
 	public float getMutationModifier(IBeeGenome beeGenome1, IBeeGenome beeGenome2, float currentModifier) {
-		MetallurgyFrameTypes frame = MetallurgyFrameTypes.valueOf(name);
-		return frame.mutationModifier;
+		return types.mutationModifier;
 	}
 
 	@Override
 	public float getProductionModifier(IBeeGenome beeGenome, float currentModifier) {
-		MetallurgyFrameTypes frame = MetallurgyFrameTypes.valueOf(name);
-		return currentModifier < 16.0F ? frame.productionModifer : 1.0F;
+		return currentModifier < 16.0F ? types.productionModifer : 1.0F;
 	}
 
 	@Override
 	public float getTerritoryModifier(IBeeGenome beeGenome, float currentModifier) {
-		MetallurgyFrameTypes frame = MetallurgyFrameTypes.valueOf(name);
-		return frame.territoryModifer;
+		return types.territoryModifer;
 	}
 
 	@Override
@@ -100,7 +95,7 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 	@Override
 	public ItemStack frameUsed(IBeeHousing housing, ItemStack frame, IBee queen, int wear) {
 		if(getMaxDamage() == 0) {
-			setMaxDamage(MetallurgyFrameTypes.values()[frame.getItemDamage()].maxDamage);
+			setMaxDamage(types.maxDamage);
 		}
 		frame.setItemDamage(frame.getItemDamage() + wear);
 		if(frame.getItemDamage() >= frame.getMaxDamage()) {
@@ -112,30 +107,16 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
-		this.frameIcon = new Icon[MetallurgyFrameTypes.values().length];
-		for(int i = 0; i < MetallurgyFrameTypes.values().length; i++) {
-			MetallurgyFrameTypes hiveFrames = MetallurgyFrameTypes.values()[i];
-			this.frameIcon[i] = iconRegister.registerIcon("metallurgybees:frame" + MBUtil.firstUpperCase(hiveFrames.name().toLowerCase()));
-		}
-	}
-	@Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		par3List.add("Mutation Modifier:" + MetallurgyFrameTypes.values()[par1ItemStack.getItemDamage()].mutationModifier);
-		par3List.add("Flowering Modifier:" + MetallurgyFrameTypes.values()[par1ItemStack.getItemDamage()].floweringModifer);
-		par3List.add("Production Modifier:" + MetallurgyFrameTypes.values()[par1ItemStack.getItemDamage()].productionModifer);
-		par3List.add("Territory Modifier:" + MetallurgyFrameTypes.values()[par1ItemStack.getItemDamage()].territoryModifer);
-	}
-	@Override
-	public Icon getIconFromDamage(int par1) {
-		return this.frameIcon[par1];
+		this.itemIcon = iconRegister.registerIcon("metallurgybees:frame" + MBUtil.firstUpperCase(types.name().toLowerCase()));
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(int id, CreativeTabs creativeTab, List list) {
-		for(int i = 0; i < MetallurgyFrameTypes.values().length; i++) {
-			list.add(new ItemStack(id, 1, i));
-			name = MetallurgyFrameTypes.values()[i].name();
-		}
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+		par3List.add("Mutation Modifier:" + types.mutationModifier);
+		par3List.add("Flowering Modifier:" + types.floweringModifer);
+		par3List.add("Production Modifier:" + types.productionModifer);
+		par3List.add("Territory Modifier:" + types.territoryModifer);
+		par3List.add("LifeSpan Modifier:" + types.lifespanModifer);
 	}
+
 }

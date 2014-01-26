@@ -86,11 +86,14 @@ public class MetallurgyBees {
 
 		// register blocks
 		GameRegistry.registerBlock(beehive, ItemBlockExtendedMetadata.class, "metallurgyBeehive");
-		
+
 		MetallurgyFrameTypes.init();
 		// init items
 		honeyComb = new ItemHoneyComb(MBConfig.itemHoneyCombID).setUnlocalizedName("metallurgyHoneyComb");
-		hiveFrame = new ItemHiveFrame(MBConfig.itemHiveFrameID).setUnlocalizedName("metallurgyFrame");
+		for(int i = 0; i < MetallurgyFrameTypes.values().length; i++) {
+			MetallurgyFrameTypes frames = MetallurgyFrameTypes.values()[i];
+			hiveFrame = new ItemHiveFrame(config.getFrameID(frames), frames).setUnlocalizedName("metallurgyFrame");
+		}
 		beeGun = new ItemBeeGun(MBConfig.itemBeeGunID).setUnlocalizedName("metallurgyBeegun");
 
 		// register items
