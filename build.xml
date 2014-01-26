@@ -195,9 +195,8 @@
                 </copy>
 
                 <!-- Reset src dir to post-forge-install state -->
-                <delete dir="${mcpsrc.dir}/minecraft/rebelkeithy"/>
-                <delete dir="${classes.dir}/rebelkeithy/mods/keithyutils"/>
-                <delete dir="${mcpsrc.dir}/minecraft/KeithyUtils-master"/>
+                <delete dir="${mcpsrc.dir}/minecraft/elcon"/>
+                <delete dir="${classes.dir}/elcon"/>
                 
         </target>
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -117,7 +118,13 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 			this.frameIcon[i] = iconRegister.registerIcon("metallurgybees:frame" + MBUtil.firstUpperCase(hiveFrames.name().toLowerCase()));
 		}
 	}
-	
+	@Override
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+		par3List.add("Mutation Modifier:" + MetallurgyFrameTypes.values()[par1ItemStack.getItemDamage()].mutationModifier);
+		par3List.add("Flowering Modifier:" + MetallurgyFrameTypes.values()[par1ItemStack.getItemDamage()].floweringModifer);
+		par3List.add("Production Modifier:" + MetallurgyFrameTypes.values()[par1ItemStack.getItemDamage()].productionModifer);
+		par3List.add("Territory Modifier:" + MetallurgyFrameTypes.values()[par1ItemStack.getItemDamage()].territoryModifer);
+	}
 	@Override
 	public Icon getIconFromDamage(int par1) {
 		return this.frameIcon[par1];
@@ -128,6 +135,7 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 	public void getSubItems(int id, CreativeTabs creativeTab, List list) {
 		for(int i = 0; i < MetallurgyFrameTypes.values().length; i++) {
 			list.add(new ItemStack(id, 1, i));
+			name = MetallurgyFrameTypes.values()[i].name();
 		}
 	}
 }

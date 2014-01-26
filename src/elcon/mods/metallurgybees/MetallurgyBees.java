@@ -87,6 +87,7 @@ public class MetallurgyBees {
 		// register blocks
 		GameRegistry.registerBlock(beehive, ItemBlockExtendedMetadata.class, "metallurgyBeehive");
 		
+		MetallurgyFrameTypes.init();
 		// init items
 		honeyComb = new ItemHoneyComb(MBConfig.itemHoneyCombID).setUnlocalizedName("metallurgyHoneyComb");
 		hiveFrame = new ItemHiveFrame(MBConfig.itemHiveFrameID).setUnlocalizedName("metallurgyFrame");
