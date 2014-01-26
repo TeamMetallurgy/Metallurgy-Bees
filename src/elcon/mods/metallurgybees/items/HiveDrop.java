@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import elcon.mods.metallurgybees.MetallurgyBees;
 import forestry.api.apiculture.EnumBeeType;
 import forestry.api.apiculture.IBeeRoot;
 import forestry.api.apiculture.IHiveDrop;
@@ -49,7 +50,7 @@ public class HiveDrop implements IHiveDrop {
 	}
 
 	public IBeeRoot getRoot() {
-		return (IBeeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootBees");
+		return MetallurgyBees.beeRoot;
 	}
 
 }

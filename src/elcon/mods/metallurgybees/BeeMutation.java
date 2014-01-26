@@ -13,9 +13,9 @@ import forestry.api.genetics.IGenome;
 
 public class BeeMutation implements IBeeMutation {
 
-	IAllele parent1;
-	IAllele parent2;
-	IAllele[] template;
+	IAllele parent1 = null;
+	IAllele parent2 = null;
+	IAllele[] template = new IAllele[0];
 	int chance;
 
 	public BeeMutation(IAllele parent1, IAllele parent2, IAllele[] template, int chance) {
@@ -53,15 +53,15 @@ public class BeeMutation implements IBeeMutation {
 
 	@Override
 	public boolean isPartner(IAllele allele) {
-		return (this.parent1.getUID().equals(allele.getUID())) || (this.parent2.getUID().equals(allele.getUID()));
+		return parent1.getUID().equals(allele.getUID()) || parent2.getUID().equals(allele.getUID());
 	}
 
 	@Override
 	public IAllele getPartner(IAllele allele) {
-		if(this.parent1.getUID().equals(allele.getUID())) {
-			return this.parent2;
-		}
-		return this.parent1;
+		IAllele val = parent1;
+		if(val.getUID().equals(allele.getUID()))
+			val = parent2;
+		return val;
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class BeeMutation implements IBeeMutation {
 
 	@Override
 	public IBeeRoot getRoot() {
-		return (IBeeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootBees");
+		return MetallurgyBees.beeRoot;
 	}
 
 	@Override

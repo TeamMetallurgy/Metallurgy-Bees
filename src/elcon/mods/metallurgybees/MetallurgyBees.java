@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet53BlockChange;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -23,6 +24,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import elcon.mods.metallurgybees.Metals.Metal;
+import elcon.mods.metallurgybees.blocks.BlockApiary;
 import elcon.mods.metallurgybees.blocks.BlockBeehive;
 import elcon.mods.metallurgybees.blocks.BlockExtendedMetadata;
 import elcon.mods.metallurgybees.items.HiveDrop;
@@ -58,7 +60,7 @@ public class MetallurgyBees {
 	public static MBCreativeTabForestry creativeTab;
 
 	public static Block beehive;
-
+	public static Block apiary;
 	public static Item honeyComb;
 	public static Item hiveFrame;
 	public static Item beeGun;
@@ -84,10 +86,18 @@ public class MetallurgyBees {
 
 		// init blocks
 		beehive = new BlockBeehive(MBConfig.blockBeehiveID).setUnlocalizedName("metallurgyBeehive");
+		// apiary = new BlockApiary(MBConfig.blockApiaryID).setUnlocalizedName("metallurgyApiary");
 
 		// register blocks
 		GameRegistry.registerBlock(beehive, ItemBlockExtendedMetadata.class, "metallurgyBeehive");
-
+		// GameRegistry.registerBlock(apiary, "metallurgyApiary");
+		// Class<TileEntity> test = null;
+		// try {
+		// test = (Class<TileEntity>) Class.forName("forestry.apiculture.gadgets.TileApiary");
+		// } catch(ClassNotFoundException e) {
+		// e.printStackTrace();
+		// }
+		// GameRegistry.registerTileEntity(test, "metallurgyApiaryTile");
 		// init items
 		honeyComb = new ItemHoneyComb(MBConfig.itemHoneyCombID).setUnlocalizedName("metallurgyHoneyComb");
 		hiveFrame = new ItemHiveFrame(MBConfig.itemHiveFrameID).setUnlocalizedName("metallurgyFrame");
@@ -131,54 +141,55 @@ public class MetallurgyBees {
 
 		for(int i = 0; i < MetallurgyBeeTypes.values().length; i++) {
 			MetallurgyBeeTypes beeType = MetallurgyBeeTypes.values()[i];
-			if(beeType.isEnabled) {
-				beeType.metal = Metals.getMetal(beeType.name);
-				beeType.hasHive = beeType.metal.oreInfo.getType() != OreType.ALLOY;
+			beeType.metal = Metals.getMetal(beeType.name);
+			beeType.hasHive = beeType.metal.oreInfo.getType() != OreType.ALLOY;
 
-				// init bee species alleles
-				if(beeType.metal.setName == "nether") {
-					beeType.speciesRough = new AlleleBeeSpecies(beeType.name + "Rough", true, "metallurgy.bees." + beeType.name + ".rough", branchMetal, "metallum", beeType.colorBeeRoughPrimary, beeType.colorBeeRoughSecondary, EnumTemperature.HELLISH).addProduct(new ItemStack(honeyComb.itemID, 1, i), 30);
-					beeType.speciesRefined = new AlleleBeeSpecies(beeType.name + "Refined", true, "metallurgy.bees." + beeType.name + ".refined", branchMetal, "metallum", beeType.colorBeeRefinedPrimary, beeType.colorBeeRefinedSecondary, EnumTemperature.HELLISH).addProduct(new ItemStack(honeyComb.itemID, 1, i), 50);
-					beeType.speciesReforged = new AlleleBeeSpecies(beeType.name + "Reforged", true, "metallurgy.bees." + beeType.name + ".reforged", branchMetal, "metallum", beeType.colorBeeReforgedPrimary, beeType.colorBeeReforgedSecondary, EnumTemperature.HELLISH).addProduct(new ItemStack(honeyComb.itemID, 1, i), 70);
-				} else {
-					beeType.speciesRough = new AlleleBeeSpecies(beeType.name + "Rough", true, "metallurgy.bees." + beeType.name + ".rough", branchMetal, "metallum", beeType.colorBeeRoughPrimary, beeType.colorBeeRoughSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 30);
-					if(beeType.metal.setName != "utility") {
-						beeType.speciesRefined = new AlleleBeeSpecies(beeType.name + "Refined", true, "metallurgy.bees." + beeType.name + ".refined", branchMetal, "metallum", beeType.colorBeeRefinedPrimary, beeType.colorBeeRefinedSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 50);
-					}
-					beeType.speciesReforged = new AlleleBeeSpecies(beeType.name + "Reforged", true, "metallurgy.bees." + beeType.name + ".reforged", branchMetal, "metallum", beeType.colorBeeReforgedPrimary, beeType.colorBeeReforgedSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 70);
-				}
-				// register templates
-				beeRoot.registerTemplate(getMetalBeeRoughTemplate(beeType));
+			// init bee species alleles
+			if(beeType.metal.setName == "nether") {
+				beeType.speciesRough = new AlleleBeeSpecies(beeType.name + "Rough", true, "metallurgy.bees." + beeType.name + ".rough", branchMetal, "metallum", beeType.colorBeeRoughPrimary, beeType.colorBeeRoughSecondary, EnumTemperature.HELLISH).addProduct(new ItemStack(honeyComb.itemID, 1, i), 30);
+				beeType.speciesRefined = new AlleleBeeSpecies(beeType.name + "Refined", true, "metallurgy.bees." + beeType.name + ".refined", branchMetal, "metallum", beeType.colorBeeRefinedPrimary, beeType.colorBeeRefinedSecondary, EnumTemperature.HELLISH).addProduct(new ItemStack(honeyComb.itemID, 1, i), 50);
+				beeType.speciesReforged = new AlleleBeeSpecies(beeType.name + "Reforged", true, "metallurgy.bees." + beeType.name + ".reforged", branchMetal, "metallum", beeType.colorBeeReforgedPrimary, beeType.colorBeeReforgedSecondary, EnumTemperature.HELLISH).addProduct(new ItemStack(honeyComb.itemID, 1, i), 70);
+			} else {
+				beeType.speciesRough = new AlleleBeeSpecies(beeType.name + "Rough", true, "metallurgy.bees." + beeType.name + ".rough", branchMetal, "metallum", beeType.colorBeeRoughPrimary, beeType.colorBeeRoughSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 30);
 				if(beeType.metal.setName != "utility") {
-					beeRoot.registerTemplate(getMetalBeeRefinedTemplate(beeType));
+					beeType.speciesRefined = new AlleleBeeSpecies(beeType.name + "Refined", true, "metallurgy.bees." + beeType.name + ".refined", branchMetal, "metallum", beeType.colorBeeRefinedPrimary, beeType.colorBeeRefinedSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 50);
 				}
-				beeRoot.registerTemplate(getMetalBeeReforgedTemplate(beeType));
+				beeType.speciesReforged = new AlleleBeeSpecies(beeType.name + "Reforged", true, "metallurgy.bees." + beeType.name + ".reforged", branchMetal, "metallum", beeType.colorBeeReforgedPrimary, beeType.colorBeeReforgedSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 70);
+			}
+			// register templates
+			beeRoot.registerTemplate(getMetalBeeRoughTemplate(beeType));
+			AlleleManager.alleleRegistry.registerAllele(beeType.speciesRough);
+			if(beeType.metal.setName != "utility") {
+				beeRoot.registerTemplate(getMetalBeeRefinedTemplate(beeType));
+				AlleleManager.alleleRegistry.registerAllele(beeType.speciesRefined);
+			}
+			beeRoot.registerTemplate(getMetalBeeReforgedTemplate(beeType));
+			AlleleManager.alleleRegistry.registerAllele(beeType.speciesReforged);
 
-				// init bee mutations
-				if(beeType.hasHive) {
-					if(beeType.metal.setName != "utility") {
-						new BeeMutation(beeType.speciesRough, AlleleManager.alleleRegistry.getAllele(getBeeParent1(beeType)), getMetalBeeRefinedTemplate(beeType), 5);
-						new BeeMutation(beeType.speciesRefined, AlleleManager.alleleRegistry.getAllele(getBeeParent2(beeType)), getMetalBeeReforgedTemplate(beeType), 2);
-					} else {
-						new BeeMutation(beeType.speciesRough, AlleleManager.alleleRegistry.getAllele(getBeeParent2(beeType)), getMetalBeeReforgedTemplate(beeType), 2);
-					}
+			// init bee mutations
+			if(beeType.hasHive) {
+				if(beeType.metal.setName != "utility") {
+					new BeeMutation(beeType.speciesRough, AlleleManager.alleleRegistry.getAllele(getBeeParent1(beeType)), getMetalBeeRefinedTemplate(beeType), 5);
+					new BeeMutation(beeType.speciesRefined, AlleleManager.alleleRegistry.getAllele(getBeeParent2(beeType)), getMetalBeeReforgedTemplate(beeType), 2);
+				} else {
+					new BeeMutation(beeType.speciesRough, AlleleManager.alleleRegistry.getAllele(getBeeParent2(beeType)), getMetalBeeReforgedTemplate(beeType), 2);
 				}
+			}
 
-				// register centrifuge recipes
-				RecipeManagers.centrifugeManager.addRecipe(20, new ItemStack(honeyComb.itemID, 1, i), new ItemStack[]{Metals.getMetal(beeType.name).oreInfo.getDust(), new ItemStack(GameRegistry.findItem("Forestry", "beeswax")), new ItemStack(GameRegistry.findItem("Forestry", "honeyDrop"))}, new int[]{25, 50, 25});
+			// register centrifuge recipes
+			RecipeManagers.centrifugeManager.addRecipe(20, new ItemStack(honeyComb.itemID, 1, i), new ItemStack[]{Metals.getMetal(beeType.name).oreInfo.getDust(), new ItemStack(GameRegistry.findItem("Forestry", "beeswax")), new ItemStack(GameRegistry.findItem("Forestry", "honeyDrop"))}, new int[]{25, 50, 25});
 
-				// add hives and their drops
-				if(beeType.hasHive) {
-					beeType.hiveDrops.add(new HiveDrop(getMetalBeeRoughTemplate(beeType), new ItemStack[]{new ItemStack(honeyComb.itemID, 1, i)}, 80));
+			// add hives and their drops
+			if(beeType.hasHive) {
+				beeType.hiveDrops.add(new HiveDrop(getMetalBeeRoughTemplate(beeType), new ItemStack[]{new ItemStack(honeyComb.itemID, 1, i)}, 80));
 
-					GameRegistry.registerWorldGenerator(new WorldGenBeehives(beeType));
-				}
-				Metal metal = Metals.getMetal(beeType.name);
-				if(metal != null) {
-					ItemStack ore = metal.oreInfo.getOre();
-					if(ore != null) {
-						MinecraftForge.setBlockHarvestLevel(beehive, i, "pickaxe", metal.oreInfo.getBlockHarvestLevel());
-					}
+				GameRegistry.registerWorldGenerator(new WorldGenBeehives(beeType));
+			}
+			Metal metal = Metals.getMetal(beeType.name);
+			if(metal != null) {
+				ItemStack ore = metal.oreInfo.getOre();
+				if(ore != null) {
+					MinecraftForge.setBlockHarvestLevel(beehive, i, "pickaxe", metal.oreInfo.getBlockHarvestLevel());
 				}
 			}
 		}
@@ -205,11 +216,9 @@ public class MetallurgyBees {
 	}
 
 	public void createMutations(MetallurgyBeeTypes parent1, MetallurgyBeeTypes parent2, MetallurgyBeeTypes child) {
-		if(parent1 != null && parent2 != null && child != null) {
-			new BeeMutation(parent1.speciesRough, parent2.speciesRough, getMetalBeeRoughTemplate(child), 10);
-			new BeeMutation(child.speciesRough, AlleleManager.alleleRegistry.getAllele(getBeeParent1(child)), getMetalBeeRefinedTemplate(child), 5);
-			new BeeMutation(child.speciesRefined, AlleleManager.alleleRegistry.getAllele(getBeeParent2(child)), getMetalBeeReforgedTemplate(child), 2);
-		}
+		new BeeMutation(parent1.speciesRough, parent2.speciesRough, getMetalBeeRoughTemplate(child), 10);
+		new BeeMutation(child.speciesRough, AlleleManager.alleleRegistry.getAllele(getBeeParent1(child)), getMetalBeeRefinedTemplate(child), 5);
+		new BeeMutation(child.speciesRefined, AlleleManager.alleleRegistry.getAllele(getBeeParent2(child)), getMetalBeeReforgedTemplate(child), 2);
 	}
 
 	private String getBeeParent1(MetallurgyBeeTypes types) {

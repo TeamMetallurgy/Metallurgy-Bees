@@ -9,11 +9,14 @@ public class MBConfig {
 
 	public Configuration config;
 
-	public static int blockBeehiveID = 1500;
-
+	public static int blockBeehiveID = 1002;
+	public static int blockApiaryID = 1001;
+	
 	public static int itemHoneyCombID = 6000;
 	public static int itemHiveFrameID = 6001;
 	public static int itemBeeGunID = 6002;
+
+	
 
 	public MBConfig(Configuration config) {
 		this.config = config;
@@ -28,14 +31,10 @@ public class MBConfig {
 
 		// load block ids
 		blockBeehiveID = config.getBlock("beehive", blockBeehiveID).getInt();
-
+		blockApiaryID = config.getBlock("apiary", blockApiaryID).getInt();
 		// load item ids
 		itemHoneyCombID = config.getItem("honeyComb", itemHoneyCombID).getInt();
 		itemHiveFrameID = config.getItem("hiveFrame", itemHiveFrameID).getInt();
-		for(int i = 0; i < MetallurgyBeeTypes.values().length; i++) {
-			MetallurgyBeeTypes types = MetallurgyBeeTypes.values()[i];
-			types.isEnabled = config.get("bees", types.name, true).getBoolean(true);
-		}
 		itemBeeGunID = config.getItem("beeGun", itemBeeGunID).getInt();
 	}
 

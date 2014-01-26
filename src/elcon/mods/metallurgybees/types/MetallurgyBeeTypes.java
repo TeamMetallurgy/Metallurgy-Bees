@@ -7,11 +7,12 @@ import elcon.mods.metallurgybees.Metals.Metal;
 import elcon.mods.metallurgybees.util.ColorPair;
 import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IHiveDrop;
+import forestry.api.genetics.IAlleleSpecies;
 
 public enum MetallurgyBeeTypes {
 
-	COPPER("copper", 				new ColorPair(192, 81, 14, 137, 57, 10), 		new ColorPair(238, 104, 23, 192, 81, 14), 		new ColorPair(241, 136, 73, 238, 104, 23), 		new ColorPair(241, 136, 73, 192, 81, 14)),
-	TIN("tin", 						new ColorPair(170, 170, 170, 126, 126, 126), 	new ColorPair(192, 192, 192, 170, 170, 170), 	new ColorPair(210, 210, 210, 192, 192, 192), 	new ColorPair(210, 210, 210, 170, 170, 170)),
+	COPPER("copper",				new ColorPair(192, 81, 14, 137, 57, 10),		new ColorPair(238, 104, 23, 192, 81, 14),		new ColorPair(241, 136, 73, 238, 104, 23), 		new ColorPair(241, 136, 73, 192, 81, 14)),
+	TIN("tin",						new ColorPair(170, 170, 170, 126, 126, 126),	new ColorPair(192, 192, 192, 170, 170, 170),	new ColorPair(210, 210, 210, 192, 192, 192), 	new ColorPair(210, 210, 210, 170, 170, 170)),
 	BRONZE("bronze",				new ColorPair(132, 80, 32, 94, 56, 23), 		new ColorPair(186, 112, 44, 132, 80, 32), 		new ColorPair(225, 175, 130, 186, 112, 44),		new ColorPair(225, 175, 130, 132, 80, 32)),
 	IRON("iron", 					new ColorPair(175, 142, 119, 130, 98, 77), 		new ColorPair(216, 175, 147, 175, 142, 119),	new ColorPair(235, 210, 194, 216, 175, 147), 	new ColorPair(235, 210, 194, 188, 153, 128)),
 	HEPATIZON("hepatizon", 			new ColorPair(97, 78, 97, 73, 58, 73),			new ColorPair(148, 122, 148, 97, 78, 97), 		new ColorPair(180, 160, 180, 148, 122, 148), 	new ColorPair(180, 160, 180, 97, 78, 97)),
@@ -94,9 +95,7 @@ public enum MetallurgyBeeTypes {
 	public Icon iconBeehiveTop;
 	public Icon iconBeehiveSide;
 	
-	public IAlleleBeeSpecies speciesRough;
-	public IAlleleBeeSpecies speciesRefined;
-	public IAlleleBeeSpecies speciesReforged;
-	
-	public boolean isEnabled;
+	public IAlleleSpecies speciesRough;
+	public IAlleleSpecies speciesRefined;
+	public IAlleleSpecies speciesReforged;
 }
