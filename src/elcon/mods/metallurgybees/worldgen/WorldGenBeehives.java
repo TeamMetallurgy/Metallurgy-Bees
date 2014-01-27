@@ -26,9 +26,9 @@ public class WorldGenBeehives extends WorldGenerator implements IWorldGenerator 
 	@Override
 	public void generate(Random rand, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
 		BiomeGenBase b = world.getBiomeGenForCoords(chunkX, chunkZ);
-		for(int i = 0; i < 25; i++) {
+		for(int i = 0; i < 30; i++) {
 			int x = chunkX * 16 + rand.nextInt(16);
-			int y = 20 + rand.nextInt(50);
+			int y = 5 + rand.nextInt(64);
 			int z = chunkZ * 16 + rand.nextInt(16);
 			generate(world, rand, x, y, z);
 		}

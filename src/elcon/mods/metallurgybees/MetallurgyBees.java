@@ -37,6 +37,7 @@ import elcon.mods.metallurgybees.types.MetallurgyFrameTypes;
 import elcon.mods.metallurgybees.worldgen.WorldGenBeehives;
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.apiculture.IBeeRoot;
+import forestry.api.core.EnumTemperature;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IClassification;
@@ -145,9 +146,9 @@ public class MetallurgyBees {
 
 			// init bee species alleles
 			if(beeType.metal.setName == "nether") {
-				// ((AlleleBeeSpecies) beeType.speciesRough).setTemperature(EnumTemperature.HELLISH);
-				// ((AlleleBeeSpecies) beeType.speciesRefined).setTemperature(EnumTemperature.HELLISH);
-				// ((AlleleBeeSpecies) beeType.speciesReforged).setTemperature(EnumTemperature.HELLISH);
+				((AlleleBeeSpecies) beeType.speciesRough).setTemperature(EnumTemperature.HELLISH);
+				((AlleleBeeSpecies) beeType.speciesRefined).setTemperature(EnumTemperature.HELLISH);
+				((AlleleBeeSpecies) beeType.speciesReforged).setTemperature(EnumTemperature.HELLISH);
 			}
 
 			// register templates
@@ -301,39 +302,41 @@ public class MetallurgyBees {
 
 	@ForgeSubscribe
 	public void onBlockBreak(BreakEvent event) {
-		if(event.block.blockID == beehive.blockID) {
-			event.setCanceled(true);
-			ItemStack stack = event.getPlayer().getCurrentEquippedItem();
-			if(stack != null && stack.getItem().onBlockStartBreak(stack, event.x, event.y, event.z, event.getPlayer())) {
-				return;
-			}
-			int id = event.world.getBlockId(event.x, event.y, event.z);
-			int meta = ((BlockExtendedMetadata) event.block).getMetadata(event.world, event.x, event.y, event.z);
-			event.world.playAuxSFXAtEntity(event.getPlayer(), 2001, event.x, event.y, event.z, id);
-			boolean flag = false;
-			if(event.getPlayer().capabilities.isCreativeMode) {
-				flag = removeBlock(event.world, event.x, event.y, event.z, meta, event.getPlayer(), true);
-				((EntityPlayerMP) event.getPlayer()).playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(event.x, event.y, event.z, event.world));
-			} else {
-				ItemStack itemstack = event.getPlayer().getCurrentEquippedItem();
-				boolean flag1 = false;
-				Block block = Block.blocksList[id];
-				if(block != null) {
-					flag1 = block.canHarvestBlock(event.getPlayer(), meta);
+		if(event.block != null) {
+			if(event.block.blockID == beehive.blockID) {
+				event.setCanceled(true);
+				ItemStack stack = event.getPlayer().getCurrentEquippedItem();
+				if(stack != null && stack.getItem().onBlockStartBreak(stack, event.x, event.y, event.z, event.getPlayer())) {
+					return;
 				}
-				if(itemstack != null) {
-					itemstack.onBlockDestroyed(event.world, id, event.x, event.y, event.z, event.getPlayer());
-					if(itemstack.stackSize == 0) {
-						event.getPlayer().destroyCurrentEquippedItem();
+				int id = event.world.getBlockId(event.x, event.y, event.z);
+				int meta = ((BlockExtendedMetadata) event.block).getMetadata(event.world, event.x, event.y, event.z);
+				event.world.playAuxSFXAtEntity(event.getPlayer(), 2001, event.x, event.y, event.z, id);
+				boolean flag = false;
+				if(event.getPlayer().capabilities.isCreativeMode) {
+					flag = removeBlock(event.world, event.x, event.y, event.z, meta, event.getPlayer(), true);
+					((EntityPlayerMP) event.getPlayer()).playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(event.x, event.y, event.z, event.world));
+				} else {
+					ItemStack itemstack = event.getPlayer().getCurrentEquippedItem();
+					boolean flag1 = false;
+					Block block = Block.blocksList[id];
+					if(block != null) {
+						flag1 = block.canHarvestBlock(event.getPlayer(), meta);
+					}
+					if(itemstack != null) {
+						itemstack.onBlockDestroyed(event.world, id, event.x, event.y, event.z, event.getPlayer());
+						if(itemstack.stackSize == 0) {
+							event.getPlayer().destroyCurrentEquippedItem();
+						}
+					}
+					flag = removeBlock(event.world, event.x, event.y, event.z, meta, event.getPlayer(), flag1);
+					if(flag && flag1) {
+						Block.blocksList[id].harvestBlock(event.world, event.getPlayer(), event.x, event.y, event.z, meta);
 					}
 				}
-				flag = removeBlock(event.world, event.x, event.y, event.z, meta, event.getPlayer(), flag1);
-				if(flag && flag1) {
-					Block.blocksList[id].harvestBlock(event.world, event.getPlayer(), event.x, event.y, event.z, meta);
+				if(!event.getPlayer().capabilities.isCreativeMode && flag && event != null) {
+					Block.blocksList[id].dropXpOnBlockBreak(event.world, event.x, event.y, event.z, event.getExpToDrop());
 				}
-			}
-			if(!event.getPlayer().capabilities.isCreativeMode && flag && event != null) {
-				Block.blocksList[id].dropXpOnBlockBreak(event.world, event.x, event.y, event.z, event.getExpToDrop());
 			}
 		}
 	}
