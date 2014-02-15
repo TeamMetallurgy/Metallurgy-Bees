@@ -2,9 +2,8 @@ package elcon.mods.metallurgybees;
 
 import java.io.File;
 
-import elcon.mods.metallurgybees.types.MetallurgyBeeTypes;
-import elcon.mods.metallurgybees.types.MetallurgyFrameTypes;
 import net.minecraftforge.common.Configuration;
+import elcon.mods.metallurgybees.types.MetallurgyFrameTypes;
 
 public class MBConfig {
 

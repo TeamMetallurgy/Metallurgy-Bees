@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import net.minecraft.util.Icon;
 import elcon.mods.metallurgybees.Metals.Metal;
 import elcon.mods.metallurgybees.util.ColorPair;
-import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IHiveDrop;
 import forestry.api.genetics.IAlleleSpecies;
 

@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import net.minecraftforge.oredict.OreDictionary;
 import rebelkeithy.mods.metallurgy.api.OreType;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -129,6 +130,7 @@ public class MetallurgyBees {
 		// init flower provider
 		alleleFlowerStone = new AlleleFlowers();
 		AlleleManager.alleleRegistry.registerAllele(alleleFlowerStone);
+		
 		// init bee branches
 		branchMetal = new BranchBees();
 		AlleleManager.alleleRegistry.getClassification("family.apidae").addMemberGroup(branchMetal);
@@ -138,11 +140,11 @@ public class MetallurgyBees {
 			beeType.metal = Metals.getMetal(beeType.name);
 			beeType.hasHive = beeType.metal.oreInfo.getType() != OreType.ALLOY;
 
-			beeType.speciesRough = new AlleleBeeSpecies(beeType.name + "Rough", true, "metallurgy.bees." + beeType.name + ".rough", branchMetal, "metallum", beeType.colorBeeRoughPrimary, beeType.colorBeeRoughSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 30);
+			beeType.speciesRough = new AlleleBeeSpecies("metallurgy.species." + beeType.name + "Rough", true, "metallurgy.bees." + beeType.name + ".rough", branchMetal, "metallum", beeType.colorBeeRoughPrimary, beeType.colorBeeRoughSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 30);
 			if(beeType.metal.setName != "utility") {
-				beeType.speciesRefined = new AlleleBeeSpecies(beeType.name + "Refined", true, "metallurgy.bees." + beeType.name + ".refined", branchMetal, "metallum", beeType.colorBeeRefinedPrimary, beeType.colorBeeRefinedSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 50);
+				beeType.speciesRefined = new AlleleBeeSpecies("metallurgy.species." + beeType.name + "Refined", true, "metallurgy.bees." + beeType.name + ".refined", branchMetal, "metallum", beeType.colorBeeRefinedPrimary, beeType.colorBeeRefinedSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 50);
 			}
-			beeType.speciesReforged = new AlleleBeeSpecies(beeType.name + "Reforged", true, "metallurgy.bees." + beeType.name + ".reforged", branchMetal, "metallum", beeType.colorBeeReforgedPrimary, beeType.colorBeeReforgedSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 70);
+			beeType.speciesReforged = new AlleleBeeSpecies("metallurgy.species." + beeType.name + "Reforged", true, "metallurgy.bees." + beeType.name + ".reforged", branchMetal, "metallum", beeType.colorBeeReforgedPrimary, beeType.colorBeeReforgedSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 70);
 
 			// init bee species alleles
 			if(beeType.metal.setName == "nether") {
@@ -172,8 +174,10 @@ public class MetallurgyBees {
 				}
 			}
 
+			System.out.println(beeType.name.toUpperCase() + ": " + getMetalDust(beeType.name));
+			
 			// register centrifuge recipes
-			RecipeManagers.centrifugeManager.addRecipe(20, new ItemStack(honeyComb.itemID, 1, i), new ItemStack[]{Metals.getMetal(beeType.name).oreInfo.getDust(), new ItemStack(GameRegistry.findItem("Forestry", "beeswax")), new ItemStack(GameRegistry.findItem("Forestry", "honeyDrop"))}, new int[]{25, 50, 25});
+			RecipeManagers.centrifugeManager.addRecipe(20, new ItemStack(honeyComb.itemID, 1, i), new ItemStack[]{getMetalDust(beeType.name), new ItemStack(GameRegistry.findItem("Forestry", "beeswax")), new ItemStack(GameRegistry.findItem("Forestry", "honeyDrop"))}, new int[]{25, 50, 25});
 
 			// add hives and their drops
 			if(beeType.hasHive) {
@@ -273,6 +277,19 @@ public class MetallurgyBees {
 			return "forestry.speciesImperial";
 		}
 		return "";
+	}
+	
+	public ItemStack getMetalDust(String beeType) {
+		if(beeType.equalsIgnoreCase("iron")) {
+			return OreDictionary.getOres("dustIron").get(0);
+		} else if(beeType.equalsIgnoreCase("gold")) {
+			return OreDictionary.getOres("dustGold").get(0);
+		} else if(Metals.getMetal(beeType).setName.equalsIgnoreCase("Utility")) {
+			ItemStack drop = Metals.getMetal(beeType).oreInfo.getDrop().copy();
+			drop.stackSize = 1;
+			return drop;
+		}
+		return Metals.getMetal(beeType).oreInfo.getDust();
 	}
 
 	public IAllele[] getDefaultMetalBeeTemplate() {

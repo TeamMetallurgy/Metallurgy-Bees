@@ -8,13 +8,13 @@ import elcon.mods.metallurgybees.MetallurgyBees;
 import forestry.api.apiculture.EnumBeeType;
 import forestry.api.apiculture.IBeeRoot;
 import forestry.api.apiculture.IHiveDrop;
-import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
 
 public class HiveDrop implements IHiveDrop {
-	IAllele[] template;
+	
+	public IAllele[] template;
 	private ArrayList<ItemStack> additional = new ArrayList();
-	int chance;
+	public int chance;
 
 	public HiveDrop(IAllele[] template, ItemStack[] bonus, int chance) {
 		this.template = template;
@@ -52,5 +52,4 @@ public class HiveDrop implements IHiveDrop {
 	public IBeeRoot getRoot() {
 		return MetallurgyBees.beeRoot;
 	}
-
 }

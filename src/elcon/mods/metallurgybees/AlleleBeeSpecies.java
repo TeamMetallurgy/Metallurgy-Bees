@@ -70,7 +70,7 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 
 	@Override
 	public String getAuthority() {
-		return null;
+		return "Shadowclaimer";
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 
 	@Override
 	public Map<ItemStack, Integer> getSpecialty() {
-		return null;
+		return new HashMap<ItemStack, Integer>();
 	}
 
 	@Override

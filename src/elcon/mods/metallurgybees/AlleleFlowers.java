@@ -7,7 +7,7 @@ public class AlleleFlowers implements IAlleleFlowers {
 
 	@Override
 	public String getUID() {
-		return "flowerStone";
+		return "metallurgy.flower.stone";
 	}
 
 	@Override

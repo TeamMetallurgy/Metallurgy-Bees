@@ -7,16 +7,15 @@ import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeHousing;
 import forestry.api.apiculture.IBeeMutation;
 import forestry.api.apiculture.IBeeRoot;
-import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IGenome;
 
 public class BeeMutation implements IBeeMutation {
 
-	IAllele parent1 = null;
-	IAllele parent2 = null;
-	IAllele[] template = new IAllele[0];
-	int chance;
+	public IAllele parent1 = null;
+	public IAllele parent2 = null;
+	public IAllele[] template = new IAllele[0];
+	public int chance;
 
 	public BeeMutation(IAllele parent1, IAllele parent2, IAllele[] template, int chance) {
 		this.parent1 = parent1;
