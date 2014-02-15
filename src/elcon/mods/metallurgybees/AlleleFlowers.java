@@ -24,5 +24,4 @@ public class AlleleFlowers implements IAlleleFlowers {
 	public IFlowerProvider getProvider() {
 		return new FlowerProviderStone();
 	}
-
 }

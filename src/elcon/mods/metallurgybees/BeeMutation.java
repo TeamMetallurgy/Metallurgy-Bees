@@ -1,5 +1,6 @@
 package elcon.mods.metallurgybees;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import net.minecraft.world.World;
@@ -47,7 +48,7 @@ public class BeeMutation implements IBeeMutation {
 
 	@Override
 	public Collection<String> getSpecialConditions() {
-		return null;
+		return new ArrayList<String>();
 	}
 
 	@Override
@@ -89,5 +90,4 @@ public class BeeMutation implements IBeeMutation {
 		}
 		return 0.0F;
 	}
-
 }

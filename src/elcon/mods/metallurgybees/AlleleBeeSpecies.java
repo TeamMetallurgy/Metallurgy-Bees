@@ -90,7 +90,7 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 
 	@Override
 	public ItemStack[] getResearchBounty(World world, String researcher, IIndividual individual, int bountyLevel) {
-		return null;
+		return new ItemStack[0];
 	}
 
 	@Override
