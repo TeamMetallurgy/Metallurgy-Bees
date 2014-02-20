@@ -156,12 +156,8 @@
                 <mkdir dir="${classes.dir}"/>
 
                 <!-- Recompile -->
-                <exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
+                <exec dir="${mcp.dir}" executable="cmd">
                         <arg line="/c recompile.bat"/>
-                </exec>
-
-                <exec dir="${mcp.dir}" executable="sh" osfamily="unix">
-                        <arg value="recompile.sh"/>
                 </exec>
 
                 <!-- Check for failure -->
@@ -176,12 +172,8 @@
         <target name="reobf" depends="compile">
 
                 <!-- Reobfuscate -->
-                <exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
+                <exec dir="${mcp.dir}" executable="cmd">
                         <arg line="/c reobfuscate_srg.bat"/>
-                </exec>
-
-                <exec dir="${mcp.dir}" executable="sh" osfamily="unix">
-                        <arg value="reobfuscate_srg.sh"/>
                 </exec>
 
                 <!-- Copy classes -->
