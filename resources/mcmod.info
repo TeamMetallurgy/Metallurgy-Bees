@@ -5,20 +5,21 @@
   "description": "Metallurgy Addon for Forestry to add bees",
   "credits": "",
   "logoFile": "",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "mcversion": "1.6.4",
   "url": "",
   "updateUrl": "",
   "authors": [
     "ElConquistador",
     "lclc98",
-    "ShadowClaimer"
+    "Shadowclaimer"
   ],
   "screenshots": [
   ],
   "parent":"",
   "dependencies": [
-  	"Metallurgy3Base"
+  	"Metallurgy3Base",
+	"Forestry"
   ]
 }
 ]
