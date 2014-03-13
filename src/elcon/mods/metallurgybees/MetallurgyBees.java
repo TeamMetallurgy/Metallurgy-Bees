@@ -1,5 +1,7 @@
 package elcon.mods.metallurgybees;
 
+import java.lang.reflect.Field;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,6 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.oredict.OreDictionary;
+import rebelkeithy.mods.metallurgy.api.IMetalSet;
 import rebelkeithy.mods.metallurgy.api.OreType;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -130,7 +133,7 @@ public class MetallurgyBees {
 		// init flower provider
 		alleleFlowerStone = new AlleleFlowers();
 		AlleleManager.alleleRegistry.registerAllele(alleleFlowerStone);
-		
+
 		// init bee branches
 		branchMetal = new BranchBees();
 		AlleleManager.alleleRegistry.getClassification("family.apidae").addMemberGroup(branchMetal);
@@ -138,6 +141,7 @@ public class MetallurgyBees {
 		for(int i = 0; i < MetallurgyBeeTypes.values().length; i++) {
 			MetallurgyBeeTypes beeType = MetallurgyBeeTypes.values()[i];
 			beeType.metal = Metals.getMetal(beeType.name);
+
 			beeType.hasHive = beeType.metal.oreInfo.getType() != OreType.ALLOY;
 
 			beeType.speciesRough = new AlleleBeeSpecies("metallurgy.species." + beeType.name + "Rough", true, "metallurgy.bees." + beeType.name + ".rough", branchMetal, "metallum", beeType.colorBeeRoughPrimary, beeType.colorBeeRoughSecondary).addProduct(new ItemStack(honeyComb.itemID, 1, i), 30);
@@ -174,8 +178,6 @@ public class MetallurgyBees {
 				}
 			}
 
-			System.out.println(beeType.name.toUpperCase() + ": " + getMetalDust(beeType.name));
-			
 			// register centrifuge recipes
 			RecipeManagers.centrifugeManager.addRecipe(20, new ItemStack(honeyComb.itemID, 1, i), new ItemStack[]{getMetalDust(beeType.name), new ItemStack(GameRegistry.findItem("Forestry", "beeswax")), new ItemStack(GameRegistry.findItem("Forestry", "honeyDrop"))}, new int[]{25, 50, 25});
 
@@ -191,7 +193,7 @@ public class MetallurgyBees {
 			if(metal != null) {
 				ItemStack ore = metal.oreInfo.getOre();
 				if(ore != null) {
-					MinecraftForge.setBlockHarvestLevel(beehive, i, "pickaxe", metal.oreInfo.getBlockHarvestLevel());
+					MinecraftForge.setBlockHarvestLevel(beehive, i, "pickaxe", MinecraftForge.getBlockHarvestLevel(Block.blocksList[ore.itemID], ore.getItemDamage(), "pickaxe"));
 				}
 			}
 		}
@@ -278,7 +280,7 @@ public class MetallurgyBees {
 		}
 		return "";
 	}
-	
+
 	public ItemStack getMetalDust(String beeType) {
 		if(beeType.equalsIgnoreCase("iron")) {
 			return OreDictionary.getOres("dustIron").get(0);
