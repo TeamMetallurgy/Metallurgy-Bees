@@ -1,5 +1,5 @@
 <!-- Originally built on BuildCraft build.xml -->
-<project name="MetallurgyBees" default="main">
+<project name="Metallurgy-Bees" default="main">
 	<property environment="env" />
 	<!-- Properties -->
 
@@ -145,6 +145,8 @@
 	<target name="copy-src">
 		<!-- Copy sources -->
 		<copy todir="${mcpsrc.dir}/minecraft">
+			<fileset dir="${libs.dir}">
+			</fileset>
 			<fileset dir="${src.dir}" />
 		</copy>
 	</target>
