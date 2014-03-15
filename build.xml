@@ -100,6 +100,8 @@
 
 	<!-- Download necessary files -->
 	<target name="download-files">
+		<get src="https://dl.dropboxusercontent.com/u/8609213/Porcupine/forestry-api-2.3.1.0.zip" dest="${download.dir}" />
+		<get src="http://mc.aesireanempire.com/jenkins/job/Metallurgy3/10/artifact/bin/Metallurgy-1.6.4-3.3.2.30-api.zip" dest="${download.dir}" />
 		<antcall target="download-forge" />
 	</target>
 
