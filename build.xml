@@ -1,5 +1,5 @@
 <!-- Originally built on BuildCraft build.xml -->
-<project name="Metallurgy" default="main">
+<project name="MetallurgyBees" default="main">
 	<property environment="env" />
 	<!-- Properties -->
 
@@ -14,8 +14,6 @@
 
 	<property name="classes.dir" value="${build.dir}/classes" />
 	<property name="deopf.dir" value="${build.dir}/deopf" />
-	<property name="api.dir" value="${build.dir}/api" />
-
 
 	<property name="jar.dir" value="bin" />
 
@@ -102,8 +100,6 @@
 
 	<!-- Download necessary files -->
 	<target name="download-files">
-		<get src="https://dl.dropboxusercontent.com/u/8609213/Porcupine/forestry-api-2.3.1.0.zip" dest="${download.dir}" />
-		<get src="http://mc.aesireanempire.com/jenkins/job/Metallurgy3/10/artifact/bin/Metallurgy-1.6.4-3.3.2.30-api.zip" dest="${download.dir}" />
 		<antcall target="download-forge" />
 	</target>
 
@@ -119,9 +115,9 @@
 			<fileset dir="${libs.dir}" includes="*.zip" />
 			<fileset dir="${libs.dir}" includes="*.jar" />
 		</delete>
+
 		<unzip dest="${libs.dir}" src="${download.dir}/forestry-api-2.3.1.0.zip" />
 		<unzip dest="${libs.dir}" src="${download.dir}/Metallurgy-1.6.4-3.3.2.30-api.zip" />
-
 	</target>
 
 	<target name="setup-forge" if="out-of-date">
@@ -146,8 +142,6 @@
 	<target name="copy-src">
 		<!-- Copy sources -->
 		<copy todir="${mcpsrc.dir}/minecraft">
-			<fileset dir="${libs.dir}">
-			</fileset>
 			<fileset dir="${src.dir}" />
 		</copy>
 	</target>
@@ -173,6 +167,7 @@
 			</condition>
 		</fail>
 	</target>
+
 
 	<target name="reobf" depends="compile">
 
@@ -225,4 +220,5 @@
 
 	<!-- Default target to run -->
 	<target name="main" depends="deobf" />
+
 </project>
