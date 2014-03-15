@@ -27,7 +27,7 @@
 	<property name="forge.version" value="9.11.1.965" />
 
 	<property name="version.major" value="0" />
-	<property name="version.minor" value="0" />
+	<property name="version.minor" value="1" />
 
 	<property name="forge.name" value="forge-${mc.version}-${forge.version}-src.zip" />
 
