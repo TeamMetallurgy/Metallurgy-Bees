@@ -208,7 +208,7 @@
 
 		<delete dir="${jar.dir}" />
 		<mkdir dir="${jar.dir}" />
-		<jar destfile="${jar.dir}/Metallurgy-Bees{mc.version}-${project.version}.jar" basedir="${classes.dir}" />
+		<jar destfile="${jar.dir}/Metallurgy-Bees-${mc.version}-${project.version}.jar" basedir="${classes.dir}" />
 
 	</target>
 
@@ -220,7 +220,7 @@
 			</fileset>
 		</copy>
 
-		<jar destfile="${jar.dir}/Metallurgy-Bees{mc.version}-${project.version}-deobf.jar" basedir="${deopf.dir}" />
+		<jar destfile="${jar.dir}/Metallurgy-Bees-${mc.version}-${project.version}-deobf.jar" basedir="${deopf.dir}" />
 	</target>
 
 	<!-- Default target to run -->
