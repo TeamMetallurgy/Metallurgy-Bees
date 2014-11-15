@@ -1,11 +1,5 @@
 package elcon.mods.metallurgybees.items;
 
-import java.util.List;
-
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import elcon.mods.metallurgybees.MetallurgyBees;
@@ -15,7 +9,13 @@ import forestry.api.apiculture.IBee;
 import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeHousing;
 import forestry.api.apiculture.IHiveFrame;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+
+import java.util.List;
 
 public class ItemHiveFrame extends Item implements IHiveFrame {
 
@@ -91,11 +91,11 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 
     @Override
     public ItemStack frameUsed(IBeeHousing housing, ItemStack frame, IBee queen, int wear) {
-        if(getMaxDamage() == 0) {
+        if (getMaxDamage() == 0) {
             setMaxDamage(types.maxDamage);
         }
         frame.setItemDamage(frame.getItemDamage() + wear);
-        if(frame.getItemDamage() >= frame.getMaxDamage()) {
+        if (frame.getItemDamage() >= frame.getMaxDamage()) {
             return null;
         }
         return frame;

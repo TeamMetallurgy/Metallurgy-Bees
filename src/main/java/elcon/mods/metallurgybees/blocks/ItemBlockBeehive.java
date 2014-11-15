@@ -13,6 +13,6 @@ public class ItemBlockBeehive extends ItemBlock {
 
     @Override
     public String getItemStackDisplayName(ItemStack par1ItemStack) {
-        return StatCollector.translateToLocal("metallurgy.metals." + ((BlockBeehive) Block.getBlockFromItem(par1ItemStack.getItem())).beeName.replace(" ", "")) + " " + StatCollector.translateToLocal("tile.metallurgyBeehive.name") ;
+        return StatCollector.translateToLocal("metallurgy.metals." + ((BlockBeehive) Block.getBlockFromItem(par1ItemStack.getItem())).beeName.replace(" ", "")) + " " + StatCollector.translateToLocal("tile.metallurgyBeehive.name");
     }
 }

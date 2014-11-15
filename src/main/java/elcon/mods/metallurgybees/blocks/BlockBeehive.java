@@ -9,23 +9,18 @@ import forestry.api.apiculture.IHiveDrop;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class BlockBeehive extends Block {
     String beeName;
@@ -56,7 +51,7 @@ public class BlockBeehive extends Block {
             return 0.0F;
         }
         if (!canHarvestBlock(player, 0)) {
-            float speed = ForgeEventFactory.getBreakSpeed(player, this, 0, 1.0f, x,y,z);
+            float speed = ForgeEventFactory.getBreakSpeed(player, this, 0, 1.0f, x, y, z);
             return (speed < 0 ? 0 : speed) / hardness / 100F;
         } else {
             return player.getBreakSpeed(this, false, 0, x, y, z) / hardness / 30F;

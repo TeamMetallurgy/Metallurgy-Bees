@@ -1,8 +1,8 @@
-package elcon.mods.metallurgybees;
+package elcon.mods.metallurgybees.util;
 
+import elcon.mods.metallurgybees.MetallurgyBees;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class MBCreativeTabForestry extends CreativeTabs {
 

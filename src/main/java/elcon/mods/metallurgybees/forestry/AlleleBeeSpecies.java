@@ -1,5 +1,7 @@
-package elcon.mods.metallurgybees;
+package elcon.mods.metallurgybees.forestry;
 
+import com.mojang.authlib.GameProfile;
+import elcon.mods.metallurgybees.MetallurgyBees;
 import forestry.api.apiculture.*;
 import forestry.api.core.EnumHumidity;
 import forestry.api.core.EnumTemperature;
@@ -19,8 +21,6 @@ import java.util.Map;
 public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 
     IIcon[][] icons;
-    private HashMap<ItemStack, Integer> products = new HashMap();
-
     String uid;
     boolean dominant;
     String name;
@@ -29,6 +29,7 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
     int colorBeeRoughPrimary;
     int colorBeeRoughSecondary;
     EnumTemperature temperature = EnumTemperature.NORMAL;
+    private HashMap<ItemStack, Integer> products = new HashMap();
 
     public AlleleBeeSpecies(String uid, boolean dominant, String name, IClassification branch, String binomial, int colorBeeRoughPrimary, int colorBeeRoughSecondary) {
         this.uid = uid;
@@ -51,13 +52,18 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
     }
 
     @Override
+    public String getUnlocalizedName() {
+        return this.uid;
+    }
+
+    @Override
     public IBeeRoot getRoot() {
         return MetallurgyBees.beeRoot;
     }
 
     @Override
     public String getDescription() {
-        return "test";
+        return "";
     }
 
     @Override
@@ -86,7 +92,7 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
     }
 
     @Override
-    public ItemStack[] getResearchBounty(World world, String researcher, IIndividual individual, int bountyLevel) {
+    public ItemStack[] getResearchBounty(World world, GameProfile gameProfile, IIndividual individual, int bountyLevel) {
         return new ItemStack[0];
     }
 
@@ -115,13 +121,13 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
         return false;
     }
 
-    public void setTemperature(EnumTemperature temp) {
-        this.temperature = temp;
-    }
-
     @Override
     public EnumTemperature getTemperature() {
         return temperature;
+    }
+
+    public void setTemperature(EnumTemperature temp) {
+        this.temperature = temp;
     }
 
     @Override

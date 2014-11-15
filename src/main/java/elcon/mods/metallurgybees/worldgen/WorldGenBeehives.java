@@ -1,8 +1,7 @@
 package elcon.mods.metallurgybees.worldgen;
 
 import cpw.mods.fml.common.IWorldGenerator;
-import elcon.mods.metallurgybees.MetallurgyBees;
-import elcon.mods.metallurgybees.Metals;
+import elcon.mods.metallurgybees.forestry.Metals;
 import elcon.mods.metallurgybees.types.MetallurgyBeeTypes;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;

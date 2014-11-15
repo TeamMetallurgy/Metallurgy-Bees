@@ -5,6 +5,7 @@
 /ui/
 /eclipse/
 /out/
+/run/
 /.gradle/
 *.iml
 *.ipr

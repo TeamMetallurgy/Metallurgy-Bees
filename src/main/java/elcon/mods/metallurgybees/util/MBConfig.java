@@ -1,4 +1,4 @@
-package elcon.mods.metallurgybees;
+package elcon.mods.metallurgybees.util;
 
 import net.minecraftforge.common.config.Configuration;
 

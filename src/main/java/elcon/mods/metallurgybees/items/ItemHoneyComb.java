@@ -75,8 +75,8 @@ public class ItemHoneyComb extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs creativeTab, List list) {
-        for (int i = 0; i < MetallurgyBeeTypes.values().length; i++) {
-            list.add(new ItemStack(item, 1, i));
+        for (MetallurgyBeeTypes beeTypes: MetallurgyBeeTypes.values()) {
+            list.add(new ItemStack(item, 1, beeTypes.ordinal()));
         }
     }
 }

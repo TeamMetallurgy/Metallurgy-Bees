@@ -1,4 +1,4 @@
-package elcon.mods.metallurgybees;
+package elcon.mods.metallurgybees.forestry;
 
 import forestry.api.genetics.IFlowerProvider;
 import forestry.api.genetics.IIndividual;
