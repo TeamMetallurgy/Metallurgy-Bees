@@ -2,3 +2,9 @@
 /download/
 /build/
 /bin/
+/out/
+/eclipse/
+/.gradle/
+*iml
+*ipr
+*iws
