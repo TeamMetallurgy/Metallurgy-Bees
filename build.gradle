@@ -6,24 +6,29 @@ buildscript {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
+        
+         maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.0-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
     }
 }
 
 repositories {
     maven {
         name = "Team Metallurgy Maven"
-        url = "http://mc.aesireanempire.com/maven"
+        url = "http://shadow.gcod.net/maven"
     }
     maven {
         name = "ChickenBones"
         url = "http://chickenbones.net/maven"
     }
 	maven {
-        name = "Forestry"
-        url = "http://forestry.sengir.net/files/"
+        name = "Player's Maven"
+        url = "http://maven.ic2.player.to/"
     }
 }
 apply plugin: 'forge'
@@ -42,11 +47,12 @@ configFile.withReader {
  
 minecraft {
     version = config.minecraft_version + "-" + config.forge_version
-    assetDir = "eclipse/assets"
+    runDir = "run"
 }
  
 dependencies {
-    compile "rebelkeithy.mods.metallurgy:Metallurgy:${config.minecraft_version}-${config.metallurgy_version}:deobf"
+    compile "com.teammetallurgy:Metallurgy:${config.minecraft_version}-${config.metallurgy_version}:deobf"
+    compile "net.sengir.forestry:forestry_${config.minecraft_version}:${config.forestry_version}:api"
 }
  
 task buildInfo() {
