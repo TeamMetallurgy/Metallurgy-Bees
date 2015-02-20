@@ -2,7 +2,7 @@ package elcon.mods.metallurgybees;
 
 import java.io.File;
 
-import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.config.Configuration;
 import elcon.mods.metallurgybees.types.MetallurgyFrameTypes;
 
 public class MBConfig {
@@ -36,23 +36,7 @@ public class MBConfig {
 	public void load() {
 		config.load();
 
-		// load block ids
-		blockBeehiveID = config.getBlock("beehive", blockBeehiveID).getInt();
-
-		// load item ids
-		itemHoneyCombID = config.getItem("honeyComb", itemHoneyCombID).getInt();
-
-		itemFrameReinforcedID = config.getItem("frameReinforced", itemFrameReinforcedID).getInt();
-		itemFrameFortifiedID = config.getItem("frameFortified", itemFrameFortifiedID).getInt();
-		itemFrameMidas = config.getItem("frameMidas", itemFrameMidas).getInt();
-		itemFrameMutatingID = config.getItem("frameMutating", itemFrameMutatingID).getInt();
-		itemFrameFertileID = config.getItem("frameFertile", itemFrameFertileID).getInt();
-		itemFrameAncientID = config.getItem("frameAncient", itemFrameAncientID).getInt();
-		itemFrameImmortalID = config.getItem("frameImmortal", itemFrameImmortalID).getInt();
-		itemFrameMoltenID = config.getItem("frameMolten", itemFrameMoltenID).getInt();
-		itemFrameSanguineID = config.getItem("frameSanguine", itemFrameSanguineID).getInt();
-
-		itemBeeGunID = config.getItem("beeGun", itemBeeGunID).getInt();
+		
 	}
 
 	public void save() {

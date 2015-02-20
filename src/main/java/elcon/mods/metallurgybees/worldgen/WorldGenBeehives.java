@@ -8,10 +8,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import rebelkeithy.mods.metallurgy.api.IOreInfo;
 import cpw.mods.fml.common.IWorldGenerator;
 import elcon.mods.metallurgybees.MetallurgyBees;
 import elcon.mods.metallurgybees.Metals;
+import elcon.mods.metallurgybees.Metals.Metal;
 import elcon.mods.metallurgybees.tileentities.TileEntityMetadata;
 import elcon.mods.metallurgybees.types.MetallurgyBeeTypes;
 
@@ -36,17 +36,17 @@ public class WorldGenBeehives extends WorldGenerator implements IWorldGenerator 
 
 	@Override
 	public boolean generate(World world, Random random, int x, int y, int z) {
-		Block block = Block.blocksList[world.getBlockId(x, y, z)];
+		Block block = world.getBlock(x, y, z);
 		if(block != null) {
-			IOreInfo info = Metals.getMetal(beeType.name).oreInfo;
-			if(info != null) {
-				ItemStack ore = info.getOre();
-				if(ore != null) {
-					int id = ore.itemID;
-					if(block.isGenMineableReplaceable(world, x, y, z, id)) {
-						if(world.getBlockMetadata(x, y, z) == Metals.getMetal(beeType.name).oreInfo.getOre().getItemDamage()) {
-							world.setBlock(x, y, z, MetallurgyBees.beehive.blockID, 1, 0);
-							((TileEntityMetadata) world.getBlockTileEntity(x, y, z)).setTileMetadata(beeType.ordinal());
+			Metal metal = Metals.getMetal(beeType.name);
+			if(metal.metalSet != null && metal.oreInfo != null) {
+				Block ore = metal.metalSet.getDefaultOre();
+				ItemStack oreStack = metal.metalSet.getOre(metal.oreInfo.getName());
+				if(ore != null && oreStack != null) {
+					if(block.isReplaceableOreGen(world, x, y, z, ore)) {
+						if(world.getBlockMetadata(x, y, z) == oreStack.getItemDamage()) {
+							world.setBlock(x, y, z, MetallurgyBees.beehive, 1, 0);
+							((TileEntityMetadata) world.getTileEntity(x, y, z)).setTileMetadata(beeType.ordinal());
 							return true;
 						}
 					}

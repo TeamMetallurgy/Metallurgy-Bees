@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,36 +14,32 @@ import elcon.mods.metallurgybees.tileentities.TileEntityMetadata;
 
 public class ItemBlockExtendedMetadata extends ItemBlock {
 
-	public ItemBlockExtendedMetadata(int id) {
-		super(id);
+	public ItemBlockExtendedMetadata(Block block) {
+		super(block);
 		setMaxDamage(0);
 		setHasSubtypes(true);
 	}
 	
 	@Override
-	public String getItemDisplayName(ItemStack stack) {
-		return getItemStackDisplayName(stack);
-	}
-	
-	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		return ((BlockExtendedMetadata) Block.blocksList[getBlockID()]).getLocalizedName(stack);
+		return ((BlockExtendedMetadata) Block.getBlockFromItem(stack.getItem())).getLocalizedName(stack);
 	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		return ((BlockExtendedMetadata) Block.blocksList[getBlockID()]).getUnlocalizedName(stack);
+		return ((BlockExtendedMetadata) Block.getBlockFromItem(stack.getItem())).getUnlocalizedName(stack);
 	}
 	
 	@Override
 	public String getUnlocalizedName() {
-		return Block.blocksList[getBlockID()].getUnlocalizedName();
+		// block
+		return field_150939_a.getUnlocalizedName();
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack stack, int renderPass) {
-		return Block.blocksList[getBlockID()].getRenderColor(stack.getItemDamage());
+		return field_150939_a.getRenderColor(stack.getItemDamage());
 	}
 	
 	@Override
@@ -53,26 +49,26 @@ public class ItemBlockExtendedMetadata extends ItemBlock {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIconFromDamage(int meta) {
-		return Block.blocksList[getBlockID()].getIcon(2, meta);
+	public IIcon getIconFromDamage(int meta) {
+		return field_150939_a.getIcon(2, meta);
 	}
 	
 	@Override
 	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta) {
-		Block block = Block.blocksList[getBlockID()];
+		Block block = field_150939_a;
 		if(!(block instanceof BlockExtendedMetadata)) {
 			return false;
 		}
 		int placedMeta = ((BlockExtendedMetadata) block).getPlacedMetadata(player, stack, world, x, y, z, side, hitX, hitY, hitZ);
-		if(!world.setBlock(x, y, z, getBlockID(), meta, 2)) {
+		if(!world.setBlock(x, y, z, block, meta, 2)) {
 			return false;
 		}
-		if(world.getBlockId(x, y, z) == getBlockID()) {
-			TileEntity tile = world.getBlockTileEntity(x, y, z);
+		if(world.getBlock(x, y, z) == block) {
+			TileEntity tile = world.getTileEntity(x, y, z);
 			if(tile != null) {
 				if(!(tile instanceof TileEntityMetadata)) {
 					tile = new TileEntityMetadata();
-					world.setBlockTileEntity(x, y, z, tile);
+					world.setTileEntity(x, y, z, tile);
 				}
 				((TileEntityMetadata) tile).setTileMetadata(placedMeta);
 			}

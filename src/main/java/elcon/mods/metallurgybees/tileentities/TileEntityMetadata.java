@@ -4,8 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 
 public class TileEntityMetadata extends TileEntityExtended {
 	
@@ -28,7 +26,8 @@ public class TileEntityMetadata extends TileEntityExtended {
 		return false;
 	}
 	
-	@Override
+	// TODO: Fix networking
+	/*@Override
 	public Packet getDescriptionPacket() {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		DataOutputStream dos = new DataOutputStream(bos);
@@ -49,6 +48,7 @@ public class TileEntityMetadata extends TileEntityExtended {
 		packet.isChunkDataPacket = true;
 		return packet;
 	}
+	*/
 	
 	public int getTileMetadata() {
 		return meta;

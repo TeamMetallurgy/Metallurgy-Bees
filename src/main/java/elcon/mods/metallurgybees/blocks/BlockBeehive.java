@@ -5,19 +5,21 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import elcon.mods.metallurgybees.LocalizationHelper;
 import elcon.mods.metallurgybees.MetallurgyBees;
 import elcon.mods.metallurgybees.types.MetallurgyBeeTypes;
 import elcon.mods.metallurgybees.util.MBUtil;
@@ -26,16 +28,16 @@ import forestry.api.apiculture.IHiveDrop;
 public class BlockBeehive extends BlockExtendedMetadata {
 
 	public BlockBeehive(int id) {
-		super(id, MetallurgyBees.materialBeeHive);
+		super(MetallurgyBees.materialBeeHive);
 		setHardness(3.5F);
 		setResistance(10.0F);
-		setLightValue(0.8F);
-		setStepSound(Block.soundStoneFootstep);
+		setLightLevel(0.8F);
+		setStepSound(Block.soundTypeStone);
 		setCreativeTab(MetallurgyBees.creativeTab);
 	}
 
 	public String getLocalizedName(ItemStack stack) {
-		return LocalizationHelper.localize("metallurgy.metals." + MetallurgyBeeTypes.values()[stack.getItemDamage()].name) + " " + LocalizationHelper.localize(getUnlocalizedName(stack));
+		return StatCollector.translateToLocal("metallurgy.metals." + MetallurgyBeeTypes.values()[stack.getItemDamage()].name) + " " + StatCollector.translateToLocal(getUnlocalizedName(stack));
 	}
 
 	public String getUnlocalizedName(ItemStack stack) {
@@ -48,7 +50,7 @@ public class BlockBeehive extends BlockExtendedMetadata {
 	}
 
 	@Override
-	public boolean canEntityDestroy(World world, int x, int y, int z, Entity entity) {
+	public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
 		if(entity instanceof EntityDragon || entity instanceof EntityWither) {
 			return false;
 		}
@@ -63,16 +65,16 @@ public class BlockBeehive extends BlockExtendedMetadata {
 			return 0.0F;
 		}
 		if(!canHarvestBlock(player, meta)) {
-			float speed = ForgeEventFactory.getBreakSpeed(player, this, meta, 1.0f);
+			float speed = ForgeEventFactory.getBreakSpeed(player, this, meta, 1.0f, x, y, z);
 			return (speed < 0 ? 0 : speed) / hardness / 100F;
 		} else {
-			return player.getCurrentPlayerStrVsBlock(this, false, meta) / hardness / 30F;
+			return player.getBreakSpeed(this, false, meta, x, y, z) / hardness / 30F;
 		}
 	}
 
 	@Override
-	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int meta, int fortune) {
-		ArrayList ret = new ArrayList();
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune) {
+		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 		ArrayList<IHiveDrop> dropList = MetallurgyBeeTypes.values()[getMetadata(world, x, y, z)].hiveDrops;
 		Collections.shuffle(dropList);
 		int tries = 0;
@@ -104,7 +106,7 @@ public class BlockBeehive extends BlockExtendedMetadata {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int side, int meta) {
+	public IIcon getIcon(int side, int meta) {
 		if(side == 0 || side == 1) {
 			return MetallurgyBeeTypes.values()[meta].iconBeehiveTop;
 		}
@@ -113,7 +115,7 @@ public class BlockBeehive extends BlockExtendedMetadata {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerBlockIcons(IIconRegister iconRegister) {
 		for(int i = 0; i < MetallurgyBeeTypes.values().length; i++) {
 			MetallurgyBeeTypes beeType = MetallurgyBeeTypes.values()[i];
 			if(beeType.hasHive) {
@@ -125,11 +127,12 @@ public class BlockBeehive extends BlockExtendedMetadata {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int id, CreativeTabs creativeTab, List list) {
+	public void getSubBlocks(Item item, CreativeTabs creativeTab, List list) {
 		for(int i = 0; i < MetallurgyBeeTypes.values().length; i++) {
 			if(MetallurgyBeeTypes.values()[i].hasHive) {
-				list.add(new ItemStack(id, 1, i));
+				list.add(new ItemStack(item, 1, i));
 			}
 		}
 	}
+	
 }

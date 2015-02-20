@@ -2,7 +2,7 @@ package elcon.mods.metallurgybees.types;
 
 import java.util.ArrayList;
 
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import elcon.mods.metallurgybees.Metals.Metal;
 import elcon.mods.metallurgybees.util.ColorPair;
 import forestry.api.apiculture.IHiveDrop;
@@ -91,8 +91,8 @@ public enum MetallurgyBeeTypes {
 	
 	public ArrayList<IHiveDrop> hiveDrops = new ArrayList<IHiveDrop>();
 	
-	public Icon iconBeehiveTop;
-	public Icon iconBeehiveSide;
+	public IIcon iconBeehiveTop;
+	public IIcon iconBeehiveSide;
 	
 	public IAlleleSpecies speciesRough;
 	public IAlleleSpecies speciesRefined;

@@ -6,7 +6,7 @@
   "credits": "",
   "logoFile": "",
   "version": "0.1.2",
-  "mcversion": "1.6.4",
+  "mcversion": "1.7.10",
   "url": "",
   "updateUrl": "",
   "authors": [
@@ -18,7 +18,7 @@
   ],
   "parent":"",
   "dependencies": [
-  	"Metallurgy3Base",
+  	"Metallurgy",
 	"Forestry"
   ]
 }

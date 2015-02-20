@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import com.mojang.authlib.GameProfile;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import forestry.api.apiculture.EnumBeeType;
 import forestry.api.apiculture.IAlleleBeeSpecies;
@@ -21,8 +24,8 @@ import forestry.api.genetics.IIndividual;
 
 public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 
-	Icon[][] icons;
-	private HashMap<ItemStack, Integer> products = new HashMap();
+	IIcon[][] icons;
+	private HashMap<ItemStack, Integer> products = new HashMap<ItemStack, Integer>();
 
 	String uid;
 	boolean dominant;
@@ -49,8 +52,13 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 	}
 
 	@Override
-	public String getName() {
-		return LocalizationHelper.localize(this.name);
+	public String getName() {		
+		return StatCollector.translateToLocal(this.getUnlocalizedName());
+	}
+	
+	@Override
+	public String getUnlocalizedName() {
+		return "metallurgy.bees." + this.name;
 	}
 
 	@Override
@@ -89,7 +97,7 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 	}
 
 	@Override
-	public ItemStack[] getResearchBounty(World world, String researcher, IIndividual individual, int bountyLevel) {
+	public ItemStack[] getResearchBounty(World world, GameProfile gameProfile, IIndividual individual, int bountyLevel) {
 		return new ItemStack[0];
 	}
 
@@ -167,18 +175,18 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 	}
 
 	@Override
-	public Icon getIcon(short texUID) {
+	public IIcon getIcon(short texUID) {
 		return null;
 	}
 
 	@Override
-	public void registerIcons(IconRegister register) {
+	public void registerIcons(IIconRegister register) {
 		String iconType = "default";
 		String mod = "forestry";
 
-		this.icons = new Icon[EnumBeeType.values().length][3];
+		this.icons = new IIcon[EnumBeeType.values().length][3];
 
-		Icon body1 = register.registerIcon(mod + ":bees/" + iconType + "/body1");
+		IIcon body1 = register.registerIcon(mod + ":bees/" + iconType + "/body1");
 
 		for(int i = 0; i < EnumBeeType.values().length; i++)
 			if(EnumBeeType.values()[i] != EnumBeeType.NONE) {
@@ -190,7 +198,7 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 	}
 
 	@Override
-	public Icon getIcon(EnumBeeType type, int renderPass) {
+	public IIcon getIcon(EnumBeeType type, int renderPass) {
 		return this.icons[type.ordinal()][renderPass];
 	}
 

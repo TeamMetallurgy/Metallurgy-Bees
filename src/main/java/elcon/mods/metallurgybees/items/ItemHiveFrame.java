@@ -2,13 +2,13 @@ package elcon.mods.metallurgybees.items;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import elcon.mods.metallurgybees.LocalizationHelper;
 import elcon.mods.metallurgybees.MetallurgyBees;
 import elcon.mods.metallurgybees.types.MetallurgyFrameTypes;
 import elcon.mods.metallurgybees.util.MBUtil;
@@ -21,8 +21,7 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 
 	public MetallurgyFrameTypes types;
 
-	public ItemHiveFrame(int id, MetallurgyFrameTypes types) {
-		super(id);
+	public ItemHiveFrame(MetallurgyFrameTypes types) {
 		this.types = types;
 		setMaxStackSize(1);
 		setMaxDamage(0);
@@ -30,8 +29,8 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 	}
 
 	@Override
-	public String getItemDisplayName(ItemStack stack) {
-		return LocalizationHelper.localize("metallurgy.frames." + types.name().toLowerCase()) + " " + LocalizationHelper.localize(getUnlocalizedName());
+	public String getItemStackDisplayName(ItemStack stack) {
+		return StatCollector.translateToLocal("metallurgy.frames." + types.name().toLowerCase()) + " " + StatCollector.translateToLocal(getUnlocalizedName());
 	}
 
 	@Override
@@ -103,7 +102,7 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister) {
+	public void registerIcons(IIconRegister iconRegister) {
 		this.itemIcon = iconRegister.registerIcon("metallurgybees:frame" + MBUtil.firstUpperCase(types.name().toLowerCase()));
 	}
 

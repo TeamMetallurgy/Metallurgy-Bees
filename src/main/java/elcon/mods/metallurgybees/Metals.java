@@ -1,11 +1,10 @@
 package elcon.mods.metallurgybees;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 
-import rebelkeithy.mods.metallurgy.api.IMetalSet;
-import rebelkeithy.mods.metallurgy.api.IOreInfo;
-import rebelkeithy.mods.metallurgy.api.MetallurgyAPI;
+import com.teammetallurgy.metallurgy.api.IMetalInfo;
+import com.teammetallurgy.metallurgy.api.IMetalSet;
+import com.teammetallurgy.metallurgy.api.MetallurgyApi;
 
 public class Metals {
 
@@ -13,12 +12,15 @@ public class Metals {
 
 		public String name;
 		public String setName;
-		public IOreInfo oreInfo;
+		// TODO: Rename to metalInfo
+		public IMetalInfo oreInfo;
+		public IMetalSet metalSet;
 
-		public Metal(String name, String setName, IOreInfo oreInfo) {
+		public Metal(String name, String setName, IMetalInfo metalInfo, IMetalSet metalSet) {
 			this.name = name;
 			this.setName = setName;
-			this.oreInfo = oreInfo;
+			this.oreInfo = metalInfo;
+			this.metalSet = metalSet;
 		}
 	}
 
@@ -37,10 +39,11 @@ public class Metals {
 	}
 
 	public static void init() {
-		for(int i = 0; i < MetallurgyAPI.getMetalSetNames().length; i++) {
-			IMetalSet metalSet = MetallurgyAPI.getMetalSet(MetallurgyAPI.getMetalSetNames()[i]);
-			for(IOreInfo oreInfo : metalSet.getOreList().values()) {
-				registerMetal(new Metal(oreInfo.getName().replaceAll(" ", ""), MetallurgyAPI.getMetalSetNames()[i], oreInfo));
+		String [] setNames = MetallurgyApi.getSetNames();
+		for(int i = 0; i < setNames.length; i++) {
+			IMetalSet metalSet = MetallurgyApi.getMetalSet(setNames[i]);
+			for(String metalName : metalSet.getMetalNames()) {
+				registerMetal(new Metal(metalName.replaceAll(" ", ""), setNames[i], metalSet.getMetal(metalName), metalSet));
 			}
 		}
 	}

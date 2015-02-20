@@ -3,7 +3,9 @@ package elcon.mods.metallurgybees;
 import java.util.EnumSet;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import forestry.api.genetics.IFlowerProvider;
@@ -14,7 +16,7 @@ public class FlowerProviderStone implements IFlowerProvider {
 
 	@Override
 	public boolean isAcceptedFlower(World world, IIndividual individual, int x, int y, int z) {
-		return world.getBlockId(x, y, z) == Block.stone.blockID;
+		return world.getBlock(x, y, z) == Blocks.stone;
 	}
 
 	@Override
@@ -30,7 +32,11 @@ public class FlowerProviderStone implements IFlowerProvider {
 
 	@Override
 	public String getDescription() {
-		return LocalizationHelper.localize("flowers.stone");
+		return StatCollector.translateToLocal(getUnlocalizedDescription());
+	}
+	
+	public String getUnlocalizedDescription() {
+		return "flowers.stone";
 	}
 
 	@Override
@@ -40,6 +46,6 @@ public class FlowerProviderStone implements IFlowerProvider {
 
 	@Override
 	public ItemStack[] getItemStacks() {
-		return new ItemStack[]{new ItemStack(Block.stone)};
+		return new ItemStack[]{new ItemStack(Blocks.stone)};
 	}
 }

@@ -31,7 +31,7 @@ public class MBUtilClient {
 		int y = target.blockY;
 		int z = target.blockZ;
 		int sideHit = target.sideHit;
-		Block block = Block.blocksList[world.getBlockId(x, y, z)];
+		Block block = world.getBlock(x, y, z);
 
 		float f = 0.1F;
 		double xx = (double) x + world.rand.nextDouble() * (block.getBlockBoundsMaxX() - block.getBlockBoundsMinX() - (double) (f * 2.0F)) + (double) f + block.getBlockBoundsMinX();

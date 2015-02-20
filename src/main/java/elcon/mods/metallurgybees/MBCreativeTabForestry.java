@@ -1,6 +1,7 @@
 package elcon.mods.metallurgybees;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class MBCreativeTabForestry extends CreativeTabs {
@@ -11,11 +12,12 @@ public class MBCreativeTabForestry extends CreativeTabs {
 	
 	@Override
 	public ItemStack getIconItemStack() {
-		return new ItemStack(MetallurgyBees.honeyComb.itemID, 1, 0);
+		return new ItemStack(MetallurgyBees.honeyComb, 1, 0);
 	}
 	
 	@Override
-	public String getTranslatedTabLabel() {
-		return LocalizationHelper.localize("itemGroup.MetallurgyAddonForestry");
+	public Item getTabIconItem() {
+		return MetallurgyBees.honeyComb;
 	}
+	
 }
