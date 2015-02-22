@@ -107,6 +107,7 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 	}
 
 	@Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		par3List.add("Mutation Modifier:" + types.mutationModifier);
 		par3List.add("Flowering Modifier:" + types.floweringModifer);

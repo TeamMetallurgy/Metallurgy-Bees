@@ -7,8 +7,8 @@ import forestry.api.genetics.IAlleleSpecies;
 import forestry.api.genetics.IClassification;
 
 public class BranchBees implements IClassification {
-	private ArrayList<IClassification> groups = new ArrayList();
-	private ArrayList<IAlleleSpecies> members = new ArrayList();
+	private ArrayList<IClassification> groups = new ArrayList<IClassification>();
+	private ArrayList<IAlleleSpecies> members = new ArrayList<IAlleleSpecies>();
 	private IClassification parent;
 
 	public BranchBees() {

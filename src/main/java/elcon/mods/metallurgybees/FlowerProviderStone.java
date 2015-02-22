@@ -2,7 +2,6 @@ package elcon.mods.metallurgybees;
 
 import java.util.EnumSet;
 
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -21,7 +20,7 @@ public class FlowerProviderStone implements IFlowerProvider {
 
 	@Override
 	public boolean isAcceptedPollinatable(World world, IPollinatable pollinatable) {
-		EnumSet types = pollinatable.getPlantType();
+		EnumSet<EnumPlantType> types = pollinatable.getPlantType();
 		return (types.size() > 1) || (!types.contains(EnumPlantType.Nether));
 	}
 

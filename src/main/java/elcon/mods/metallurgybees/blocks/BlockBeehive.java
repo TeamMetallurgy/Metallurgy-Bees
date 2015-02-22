@@ -27,7 +27,7 @@ import forestry.api.apiculture.IHiveDrop;
 
 public class BlockBeehive extends BlockExtendedMetadata {
 
-	public BlockBeehive(int id) {
+	public BlockBeehive() {
 		super(MetallurgyBees.materialBeeHive);
 		setHardness(3.5F);
 		setResistance(10.0F);
@@ -127,6 +127,7 @@ public class BlockBeehive extends BlockExtendedMetadata {
 
 	@Override
 	@SideOnly(Side.CLIENT)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void getSubBlocks(Item item, CreativeTabs creativeTab, List list) {
 		for(int i = 0; i < MetallurgyBeeTypes.values().length; i++) {
 			if(MetallurgyBeeTypes.values()[i].hasHive) {

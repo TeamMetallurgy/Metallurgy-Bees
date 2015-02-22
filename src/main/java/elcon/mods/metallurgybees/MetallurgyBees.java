@@ -82,7 +82,7 @@ public class MetallurgyBees {
 		materialBeeHive = new MaterialBeeHive();
 
 		// init blocks
-		beehive = new BlockBeehive(MBConfig.blockBeehiveID).setBlockName("metallurgyBeehive");
+		beehive = new BlockBeehive().setBlockName("metallurgyBeehive");
 
 		// register blocks
 		GameRegistry.registerBlock(beehive, ItemBlockExtendedMetadata.class, "metallurgyBeehive");
@@ -193,6 +193,7 @@ public class MetallurgyBees {
 			if(metal != null) {
 				ItemStack ore = metal.metalSet.getOre(metal.metalInfo.getName());
 				if(ore != null) {
+					// TODO: fix mining level
 					//MinecraftForge.setBlockHarvestLevel(beehive, i, "pickaxe", MinecraftForge.getBlockHarvestLevel(Block.blocksList[ore.itemID], ore.getItemDamage(), "pickaxe"));
 				}
 			}

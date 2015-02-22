@@ -13,7 +13,7 @@ import forestry.api.genetics.IAllele;
 public class HiveDrop implements IHiveDrop {
 	
 	public IAllele[] template;
-	private ArrayList<ItemStack> additional = new ArrayList();
+	private ArrayList<ItemStack> additional = new ArrayList<ItemStack>();
 	public int chance;
 
 	public HiveDrop(IAllele[] template, ItemStack[] bonus, int chance) {
@@ -30,14 +30,14 @@ public class HiveDrop implements IHiveDrop {
 
 	@Override
 	public ArrayList<ItemStack> getDrones(World world, int x, int y, int z, int fortune) {
-		ArrayList ret = new ArrayList();
+		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 		ret.add(getRoot().getMemberStack(getRoot().templateAsIndividual(this.template), EnumBeeType.DRONE.ordinal()));
 		return ret;
 	}
 
 	@Override
 	public ArrayList<ItemStack> getAdditional(World world, int x, int y, int z, int fortune) {
-		ArrayList ret = new ArrayList();
+		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 		for(ItemStack stack : this.additional) {
 			ret.add(stack.copy());
 		}
