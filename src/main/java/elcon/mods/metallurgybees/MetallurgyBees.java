@@ -3,8 +3,10 @@ package elcon.mods.metallurgybees;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.S23PacketBlockChange;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
@@ -137,10 +139,10 @@ public class MetallurgyBees {
 			MetallurgyBeeTypes beeType = MetallurgyBeeTypes.values()[i];
 			beeType.metal = Metals.getMetal(beeType.name);
 
-			if (beeType.metal == null || beeType.metal.oreInfo == null)
+			if (beeType.metal == null || beeType.metal.metalInfo == null)
 				continue;
 
-			beeType.hasHive = beeType.metal.oreInfo.getType() != MetalType.Alloy;
+			beeType.hasHive = beeType.metal.metalInfo.getType() != MetalType.Alloy;
 
 			beeType.speciesRough = new AlleleBeeSpecies("metallurgy.species." + beeType.name + "Rough", true, "metallurgy.bees." + beeType.name + ".rough", branchMetal, "metallum", beeType.colorBeeRoughPrimary, beeType.colorBeeRoughSecondary).addProduct(new ItemStack(honeyComb, 1, i), 30);
 			if(beeType.metal.setName != "utility") {
@@ -189,7 +191,7 @@ public class MetallurgyBees {
 
 			Metal metal = Metals.getMetal(beeType.name);
 			if(metal != null) {
-				ItemStack ore = metal.metalSet.getOre(metal.oreInfo.getName());
+				ItemStack ore = metal.metalSet.getOre(metal.metalInfo.getName());
 				if(ore != null) {
 					//MinecraftForge.setBlockHarvestLevel(beehive, i, "pickaxe", MinecraftForge.getBlockHarvestLevel(Block.blocksList[ore.itemID], ore.getItemDamage(), "pickaxe"));
 				}
@@ -289,12 +291,12 @@ public class MetallurgyBees {
 			return OreDictionary.getOres("dustGold").get(0);
 		} else if(Metals.getMetal(beeType).setName.equalsIgnoreCase("Utility")) {
 			Metal metal = Metals.getMetal(beeType);
-			ItemStack drop = metal.metalSet.getDrop(metal.oreInfo.getName()).copy();
+			ItemStack drop = metal.metalSet.getDrop(metal.metalInfo.getName()).copy();
 			drop.stackSize = 1;
 			return drop;
 		}
 		Metal metal = Metals.getMetal(beeType);
-		return metal.metalSet.getDust(metal.oreInfo.getName()).copy();
+		return metal.metalSet.getDust(metal.metalInfo.getName()).copy();
 	}
 
 	public IAllele[] getDefaultMetalBeeTemplate() {
@@ -337,8 +339,7 @@ public class MetallurgyBees {
 				boolean flag = false;
 				if(event.getPlayer().capabilities.isCreativeMode) {
 					flag = removeBlock(event.world, event.x, event.y, event.z, meta, event.getPlayer(), true);
-					// TODO: Find replacement
-					//((EntityPlayerMP) event.getPlayer()).playerNetServerHandler.sendPacketToPlayer(new Packet53BlockChange(event.x, event.y, event.z, event.world));
+					((EntityPlayerMP) event.getPlayer()).playerNetServerHandler.sendPacket(new S23PacketBlockChange(event.x, event.y, event.z, event.world));
 				} else {
 					ItemStack itemstack = event.getPlayer().getCurrentEquippedItem();
 					boolean flag1 = false;

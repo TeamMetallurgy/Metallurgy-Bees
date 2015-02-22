@@ -12,14 +12,13 @@ public class Metals {
 
 		public String name;
 		public String setName;
-		// TODO: Rename to metalInfo
-		public IMetalInfo oreInfo;
+		public IMetalInfo metalInfo;
 		public IMetalSet metalSet;
 
 		public Metal(String name, String setName, IMetalInfo metalInfo, IMetalSet metalSet) {
 			this.name = name;
 			this.setName = setName;
-			this.oreInfo = metalInfo;
+			this.metalInfo = metalInfo;
 			this.metalSet = metalSet;
 		}
 	}

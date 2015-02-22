@@ -39,9 +39,9 @@ public class WorldGenBeehives extends WorldGenerator implements IWorldGenerator 
 		Block block = world.getBlock(x, y, z);
 		if(block != null) {
 			Metal metal = Metals.getMetal(beeType.name);
-			if(metal.metalSet != null && metal.oreInfo != null) {
+			if(metal.metalSet != null && metal.metalInfo != null) {
 				Block ore = metal.metalSet.getDefaultOre();
-				ItemStack oreStack = metal.metalSet.getOre(metal.oreInfo.getName());
+				ItemStack oreStack = metal.metalSet.getOre(metal.metalInfo.getName());
 				if(ore != null && oreStack != null) {
 					if(block.isReplaceableOreGen(world, x, y, z, ore)) {
 						if(world.getBlockMetadata(x, y, z) == oreStack.getItemDamage()) {

@@ -1,9 +1,9 @@
 package elcon.mods.metallurgybees.tileentities;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 
 public class TileEntityMetadata extends TileEntityExtended {
 	
@@ -26,29 +26,21 @@ public class TileEntityMetadata extends TileEntityExtended {
 		return false;
 	}
 	
-	// TODO: Fix networking
-	/*@Override
+	@Override
 	public Packet getDescriptionPacket() {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		DataOutputStream dos = new DataOutputStream(bos);
-		try {
-			dos.writeByte(0);
-			dos.writeInt(xCoord);
-			dos.writeInt(yCoord);
-			dos.writeInt(zCoord);
-
-			dos.writeInt(getTileMetadata());
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		Packet250CustomPayload packet = new Packet250CustomPayload();
-		packet.channel = "MetallurgyAddons";
-		packet.data = bos.toByteArray();
-		packet.length = bos.size();
-		packet.isChunkDataPacket = true;
+		NBTTagCompound nbt = new NBTTagCompound();
+		writeToNBT(nbt);
+		S35PacketUpdateTileEntity packet = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, getTileMetadata(), nbt);
 		return packet;
 	}
-	*/
+	
+	@Override
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+    {
+		if (pkt != null && pkt.func_148857_g() != null)
+		readFromNBT(pkt.func_148857_g());
+    }
+	
 	
 	public int getTileMetadata() {
 		return meta;
