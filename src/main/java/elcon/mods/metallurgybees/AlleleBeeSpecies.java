@@ -58,7 +58,7 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 	
 	@Override
 	public String getUnlocalizedName() {
-		return "metallurgy.bees." + this.name;
+		return this.name;
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 
 	@Override
 	public String getDescription() {
-		return "test";
+		return null;
 	}
 
 	@Override
