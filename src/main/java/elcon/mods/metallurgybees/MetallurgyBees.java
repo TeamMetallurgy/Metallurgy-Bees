@@ -1,5 +1,7 @@
 package elcon.mods.metallurgybees;
 
+import java.util.HashMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +15,7 @@ import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.teammetallurgy.metallurgy.api.MetalType;
+import com.teammetallurgy.metallurgy.api.MetallurgyApi;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -57,7 +60,7 @@ public class MetallurgyBees {
 
 	public static MBCreativeTabForestry creativeTab;
 
-	public static Block beehive;
+	public static HashMap<String, Block> beehives = new HashMap<String, Block>();
 	public static Item honeyComb;
 	public static Item hiveFrame;
 	public static Item beeGun;
@@ -81,12 +84,19 @@ public class MetallurgyBees {
 		// init materials
 		materialBeeHive = new MaterialBeeHive();
 
-		// init blocks
-		beehive = new BlockBeehive().setBlockName("metallurgyBeehive");
-
-		// register blocks
-		GameRegistry.registerBlock(beehive, ItemBlockExtendedMetadata.class, "metallurgyBeehive");
-
+		// init and register beehive blocks
+		
+		String[] setNames = MetallurgyApi.getSetNames();
+		for (String setName : setNames) {
+			
+			String blockSetName = setName.substring(0, 1).toUpperCase() + setName.substring(1).toLowerCase();
+			Block beehive = new BlockBeehive().setSetName(setName).setBlockName("metallurgyBeehive" + blockSetName);
+		
+			GameRegistry.registerBlock(beehive, ItemBlockExtendedMetadata.class, "metallurgyBeehive" + blockSetName);
+			
+			beehives.put(setName, beehive);
+		}
+		
 		MetallurgyFrameTypes.init();
 		// init items
 		honeyComb = new ItemHoneyComb().setUnlocalizedName("metallurgyHoneyComb");
@@ -328,7 +338,7 @@ public class MetallurgyBees {
 	@SubscribeEvent
 	public void onBlockBreak(BreakEvent event) {
 		if(event.block != null) {
-			if(event.block == beehive) {
+			if(beehives.containsValue(event.block)) {
 				event.setCanceled(true);
 				ItemStack stack = event.getPlayer().getCurrentEquippedItem();
 				if(stack != null && stack.getItem().onBlockStartBreak(stack, event.x, event.y, event.z, event.getPlayer())) {

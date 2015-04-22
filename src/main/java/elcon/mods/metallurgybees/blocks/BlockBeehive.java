@@ -27,6 +27,7 @@ import forestry.api.apiculture.IHiveDrop;
 
 public class BlockBeehive extends BlockExtendedMetadata {
 
+	private String setName = "default";
 	public BlockBeehive() {
 		super(MetallurgyBees.materialBeeHive);
 		setHardness(3.5F);
@@ -34,6 +35,11 @@ public class BlockBeehive extends BlockExtendedMetadata {
 		setLightLevel(0.8F);
 		setStepSound(Block.soundTypeStone);
 		setCreativeTab(MetallurgyBees.creativeTab);
+	}
+	
+	public Block setSetName(String setName) {
+		this.setName = setName;
+		return this;
 	}
 
 	public String getLocalizedName(ItemStack stack) {
@@ -130,7 +136,7 @@ public class BlockBeehive extends BlockExtendedMetadata {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void getSubBlocks(Item item, CreativeTabs creativeTab, List list) {
 		for(int i = 0; i < MetallurgyBeeTypes.values().length; i++) {
-			if(MetallurgyBeeTypes.values()[i].hasHive) {
+			if(MetallurgyBeeTypes.values()[i].hasHive && MetallurgyBeeTypes.values()[i].metal.setName.equalsIgnoreCase(this.setName)) {
 				list.add(new ItemStack(item, 1, i));
 			}
 		}

@@ -45,7 +45,8 @@ public class WorldGenBeehives extends WorldGenerator implements IWorldGenerator 
 				if(ore != null && oreStack != null) {
 					if(block.isReplaceableOreGen(world, x, y, z, ore)) {
 						if(world.getBlockMetadata(x, y, z) == oreStack.getItemDamage()) {
-							world.setBlock(x, y, z, MetallurgyBees.beehive, 1, 0);
+							Block beehive = MetallurgyBees.beehives.get(metal.setName);
+							world.setBlock(x, y, z, beehive, 1, 0);
 							((TileEntityMetadata) world.getTileEntity(x, y, z)).setTileMetadata(beeType.ordinal());
 							return true;
 						}
