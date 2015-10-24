@@ -6,11 +6,7 @@ import java.util.Map;
 
 import com.mojang.authlib.GameProfile;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
+import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeType;
 import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IBeeGenome;
@@ -21,11 +17,18 @@ import forestry.api.core.EnumTemperature;
 import forestry.api.core.IIconProvider;
 import forestry.api.genetics.IClassification;
 import forestry.api.genetics.IIndividual;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 
 	IIcon[][] icons;
-	private HashMap<ItemStack, Integer> products = new HashMap<ItemStack, Integer>();
+	private HashMap<ItemStack, Float> products;
+	private HashMap<ItemStack, Float> specialties;
 
 	String uid;
 	boolean dominant;
@@ -44,6 +47,8 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 		this.binomial = binomial;
 		this.colorBeeRoughPrimary = colorBeeRoughPrimary;
 		this.colorBeeRoughSecondary = colorBeeRoughSecondary;
+		this.products = new HashMap<ItemStack, Float>();
+		this.specialties = new HashMap<ItemStack, Float>();
 	}
 
 	@Override
@@ -92,8 +97,40 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 	}
 
 	@Override
-	public float getResearchSuitability(ItemStack itemstack) {
-		return 0;
+	public float getResearchSuitability(ItemStack itemStack) {
+		if (itemStack == null) {
+			return 0f;
+		}
+
+		for (ItemStack product : this.products.keySet()) {
+			if (itemStack.isItemEqual(product)) {
+				return 1f;
+			}
+		}
+
+		for (ItemStack specialty : this.specialties.keySet()) {
+			if (specialty.isItemEqual(itemStack)) {
+				return 1f;
+			}
+		}
+
+		/*if (itemStack.getItem() == ForestryHelper.honeyDrop) {
+			return 0.5f;
+		} else if (itemStack.getItem() == ForestryHelper.honeydew) {
+			return 0.7f;
+		} else if (itemStack.getItem() == ForestryHelper.beeComb || itemStack.getItem() == Config.combs) {
+			return 0.4f;
+		} else*/ if (getRoot().isMember(itemStack)) {
+			return 1.0f;
+		} else {
+			for (Map.Entry<ItemStack, Float> catalyst : BeeManager.beeRoot.getResearchCatalysts().entrySet()) {
+				if (OreDictionary.itemMatches(itemStack, catalyst.getKey(), false)) {
+					return catalyst.getValue();
+				}
+			}
+		}
+
+		return 0f;
 	}
 
 	@Override
@@ -154,19 +191,14 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 		return this;
 	}
 
-	public AlleleBeeSpecies addProduct(ItemStack product, int chance) {
-		this.products.put(product, Integer.valueOf(chance));
+	public AlleleBeeSpecies addProduct(ItemStack product, float chance) {
+		products.put(product, chance);
 		return this;
 	}
-
-	@Override
-	public Map<ItemStack, Integer> getProducts() {
-		return this.products;
-	}
-
-	@Override
-	public Map<ItemStack, Integer> getSpecialty() {
-		return new HashMap<ItemStack, Integer>();
+	
+	public AlleleBeeSpecies addSpecialty(ItemStack produce, float chance) {
+		specialties.put(produce, chance);
+		return this;
 	}
 
 	@Override
@@ -205,6 +237,16 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 	@Override
 	public String getEntityTexture() {
 		return "textures/entity/bees/honeyBee.png";
+	}
+
+	@Override
+	public Map<ItemStack, Float> getProductChances() {
+		return products;
+	}
+
+	@Override
+	public Map<ItemStack, Float> getSpecialtyChances() {
+		return specialties;
 	}
 
 }

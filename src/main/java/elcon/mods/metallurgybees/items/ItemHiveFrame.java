@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import elcon.mods.metallurgybees.MetallurgyBees;
@@ -15,16 +16,17 @@ import elcon.mods.metallurgybees.util.MBUtil;
 import forestry.api.apiculture.IBee;
 import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeHousing;
+import forestry.api.apiculture.IBeeModifier;
 import forestry.api.apiculture.IHiveFrame;
 
 public class ItemHiveFrame extends Item implements IHiveFrame {
 
 	public MetallurgyFrameTypes types;
 
-	public ItemHiveFrame(MetallurgyFrameTypes types) {
-		this.types = types;
+	public ItemHiveFrame(MetallurgyFrameTypes frameType) {
+		this.types = frameType;
 		setMaxStackSize(1);
-		setMaxDamage(0);
+		setMaxDamage(frameType.maxDamage);
 		setCreativeTab(MetallurgyBees.creativeTab);
 	}
 
@@ -32,71 +34,21 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 	public String getItemStackDisplayName(ItemStack stack) {
 		return StatCollector.translateToLocal("metallurgy.frames." + types.name().toLowerCase()) + " " + StatCollector.translateToLocal(getUnlocalizedName());
 	}
-
+	
 	@Override
 	public String getUnlocalizedName() {
 		return "item.metallurgyFrame.name";
 	}
 
 	@Override
-	public float getFloweringModifier(IBeeGenome beeGenome, float currentModifier) {
-		return types.floweringModifer;
-	}
-
-	@Override
-	public float getGeneticDecay(IBeeGenome beeGenome, float currentModifier) {
-		return 1.0F;
-	}
-
-	@Override
-	public float getLifespanModifier(IBeeGenome beeGenome1, IBeeGenome beeGenome2, float currentModifier) {
-		return types.lifespanModifer;
-	}
-
-	@Override
-	public float getMutationModifier(IBeeGenome beeGenome1, IBeeGenome beeGenome2, float currentModifier) {
-		return types.mutationModifier;
-	}
-
-	@Override
-	public float getProductionModifier(IBeeGenome beeGenome, float currentModifier) {
-		return currentModifier < 16.0F ? types.productionModifer : 1.0F;
-	}
-
-	@Override
-	public float getTerritoryModifier(IBeeGenome beeGenome, float currentModifier) {
-		return types.territoryModifer;
-	}
-
-	@Override
-	public boolean isHellish() {
-		return false;
-	}
-
-	@Override
-	public boolean isSealed() {
-		return false;
-	}
-
-	@Override
-	public boolean isSelfLighted() {
-		return false;
-	}
-
-	@Override
-	public boolean isSunlightSimulated() {
-		return false;
-	}
-
-	@Override
 	public ItemStack frameUsed(IBeeHousing housing, ItemStack frame, IBee queen, int wear) {
-		if(getMaxDamage() == 0) {
-			setMaxDamage(types.maxDamage);
-		}
 		frame.setItemDamage(frame.getItemDamage() + wear);
-		if(frame.getItemDamage() >= frame.getMaxDamage()) {
-			return null;
-		}
+
+		if (frame.getItemDamage() >= frame.getMaxDamage()) {
+ 			// Break the frame.
+ 			frame = null;
+ 		}
+
 		return frame;
 	}
 
@@ -107,12 +59,16 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 	}
 
 	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		par3List.add("Mutation Modifier:" + types.mutationModifier);
-		par3List.add("Flowering Modifier:" + types.floweringModifer);
-		par3List.add("Production Modifier:" + types.productionModifer);
-		par3List.add("Territory Modifier:" + types.territoryModifer);
-		par3List.add("LifeSpan Modifier:" + types.lifespanModifer);
+		par3List.add("Mutation Modifier:" + types.getMutationModifier(null, null, 0f));
+		par3List.add("Flowering Modifier:" + types.getFloweringModifier(null, 0f));
+		par3List.add("Production Modifier:" + types.getProductionModifier(null, 0f));
+		par3List.add("Territory Modifier:" + types.getTerritoryModifier(null, 0f));
+		par3List.add("LifeSpan Modifier:" + types.getLifespanModifier(null, null, 0f));
+	}
+
+	@Override
+	public IBeeModifier getBeeModifier() {
+		return types;
 	}
 }

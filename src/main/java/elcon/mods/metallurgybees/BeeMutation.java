@@ -3,22 +3,25 @@ package elcon.mods.metallurgybees;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.minecraft.world.World;
+import forestry.api.apiculture.BeeManager;
+import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeHousing;
+import forestry.api.apiculture.IBeeModifier;
 import forestry.api.apiculture.IBeeMutation;
 import forestry.api.apiculture.IBeeRoot;
 import forestry.api.genetics.IAllele;
-import forestry.api.genetics.IGenome;
+import forestry.api.genetics.IAlleleSpecies;
+import net.minecraft.world.World;
 
 public class BeeMutation implements IBeeMutation {
 
-	public IAllele parent1 = null;
-	public IAllele parent2 = null;
-	public IAllele[] template = new IAllele[0];
+	public IAlleleSpecies parent1 = null;
+	public IAlleleSpecies parent2 = null;
+	public IAllele[] template = new IAlleleSpecies[0];
 	public int chance;
 
-	public BeeMutation(IAllele parent1, IAllele parent2, IAllele[] template, int chance) {
+	public BeeMutation(IAlleleSpecies parent1, IAlleleSpecies parent2, IAllele[] template, int chance) {
 		this.parent1 = parent1;
 		this.parent2 = parent2;
 		this.template = template;
@@ -27,12 +30,12 @@ public class BeeMutation implements IBeeMutation {
 	}
 
 	@Override
-	public IAllele getAllele0() {
+	public IAlleleSpecies getAllele0() {
 		return parent1;
 	}
 
 	@Override
-	public IAllele getAllele1() {
+	public IAlleleSpecies getAllele1() {
 		return parent2;
 	}
 
@@ -75,10 +78,13 @@ public class BeeMutation implements IBeeMutation {
 	}
 
 	@Override
-	public float getChance(IBeeHousing housing, IAllele allele0, IAllele allele1, IGenome genome0, IGenome genome1) {
+	public float getChance(IBeeHousing housing, IAlleleBeeSpecies allele0, IAlleleBeeSpecies allele1, IBeeGenome genome0, IBeeGenome genome1) {
 		World world = housing.getWorld();
 
-		int processedChance = Math.round(this.chance * housing.getMutationModifier((IBeeGenome) genome0, (IBeeGenome) genome1, 1.0F) * getRoot().getBeekeepingMode(world).getMutationModifier((IBeeGenome) genome0, (IBeeGenome) genome1, 1.0F));
+		IBeeModifier housingBeeModifier = BeeManager.beeRoot.createBeeHousingModifier(housing);
+		IBeeModifier modeBeeModifier = BeeManager.beeRoot.getBeekeepingMode(housing.getWorld()).getBeeModifier();
+		
+		int processedChance = Math.round(this.chance * housingBeeModifier.getMutationModifier((IBeeGenome) genome0, (IBeeGenome) genome1, 1.0F) * modeBeeModifier.getMutationModifier((IBeeGenome) genome0, (IBeeGenome) genome1, 1.0F));
 
 		if(processedChance <= 0.0F) {
 			return 0.0F;
