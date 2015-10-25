@@ -2,18 +2,18 @@ package elcon.mods.metallurgybees.worldgen;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.feature.WorldGenerator;
 import cpw.mods.fml.common.IWorldGenerator;
 import elcon.mods.metallurgybees.MetallurgyBees;
 import elcon.mods.metallurgybees.Metals;
 import elcon.mods.metallurgybees.Metals.Metal;
 import elcon.mods.metallurgybees.tileentities.TileEntityMetadata;
 import elcon.mods.metallurgybees.types.MetallurgyBeeTypes;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class WorldGenBeehives extends WorldGenerator implements IWorldGenerator {
 
