@@ -1,19 +1,34 @@
 package elcon.mods.metallurgybees.types;
 
-public enum MetallurgyFrameTypes {
+import elcon.mods.metallurgybees.items.ItemHiveFrame;
+import forestry.api.apiculture.IBeeGenome;
+import forestry.api.apiculture.IBeeModifier;
 
-	REINFORCED(MetallurgyBeeTypes.SHADOW_IRON, 540),
-	FORTIFIED(MetallurgyBeeTypes.SHADOW_STEEL, 1080), 
-	MIDAS(MetallurgyBeeTypes.MIDASIUM, 360), 
-	MUTATING(MetallurgyBeeTypes.VYROXERES, 360), 
-	FERTILE(MetallurgyBeeTypes.INOLASHITE, 480), 
-	ANCIENT(MetallurgyBeeTypes.KALENDRITE, 360), 
-	IMMORTAL(MetallurgyBeeTypes.AMORDRINE, 360), 
-	MOLTEN(MetallurgyBeeTypes.VULCANITE, 360), 
-	SANGUINE(MetallurgyBeeTypes.SANGUINITE, 360);
+public enum MetallurgyFrameTypes implements IBeeModifier {
+
+	REINFORCED(MetallurgyBeeTypes.SHADOW_IRON.name, 540, 1f, 1f, 2.5f, 2f, 0.8f),
+	FORTIFIED(MetallurgyBeeTypes.SHADOW_STEEL.name, 1080, 1f, 1f, 2.5f, 1.5f, 0.8f),
+	MIDAS(MetallurgyBeeTypes.MIDASIUM.name, 360, 1f, 1f, 2.5f, 1f, 0.8f),
+	MUTATING(MetallurgyBeeTypes.VYROXERES.name, 360, 1f, 2.0f, 1.5f, 0.0f, 0.8f),
+	FERTILE(MetallurgyBeeTypes.INOLASHITE.name, 480, 1f, 1f, 0.5f, 2f, 0.8f),
+	ANCIENT(MetallurgyBeeTypes.KALENDRITE.name, 360, 1f, 1f, 1.5f, 2.0f, 0.8f),
+	IMMORTAL(MetallurgyBeeTypes.AMORDRINE.name, 360, 1f, 1f, 2.0f, 2.0f, 0.8f),
+	MOLTEN(MetallurgyBeeTypes.VULCANITE.name, 360, 1f, 1f, 0.5f, 3.0f, 0.8f),
+	SANGUINE(MetallurgyBeeTypes.SANGUINITE.name, 360, 1f, 0.0f, 3.0f, 2.0f, 0.8f);
 
 	public int maxDamage;
-	public MetallurgyBeeTypes type;
+	public String frameName;
+	
+	private final float territoryMod;
+	private final float mutationMod;
+	private final float lifespanMod;
+	private final float productionMod;
+	private final float floweringMod;
+	private final float geneticDecayMod;
+	private final boolean isSealed;
+	private final boolean isLit;
+	private final boolean isSunlit;
+	private final boolean isHellish;
 
 	public float productionModifer = 1;
 	public float floweringModifer = 1;
@@ -21,58 +36,78 @@ public enum MetallurgyFrameTypes {
 	public float mutationModifier = 1;
 	public float territoryModifer = 1;
 
-	MetallurgyFrameTypes(MetallurgyBeeTypes type, int maxDamage) {
-		this.type = type;
+	MetallurgyFrameTypes(String name, int damage, float territory, float mutation, float lifespan, float production, float geneticDecay) {
+		this(name, damage, territory, mutation, lifespan, production, 1f, geneticDecay, false, false, false, false);
+	}
+	
+	MetallurgyFrameTypes(String name, int maxDamage, float territory, float mutation, float lifespan, float production, float flowering,
+			float geneticDecay, boolean sealed, boolean lit, boolean sunlit, boolean hellish) {
+		this.frameName = name;
 		this.maxDamage = maxDamage;
-	}
-
-	public static void init() {
-		REINFORCED.setProductionModifier(2F);
-		FORTIFIED.setProductionModifier(1.5F);
-
-		MUTATING.setProductionModifier(0.0F);
-		MUTATING.setLifespanModifier(1.5F);
-		MUTATING.setMutationModifier(2.0F);
-
-		FERTILE.setProductionModifier(2f);
-		FERTILE.setLifespanModifier(0.5f);
 		
-		ANCIENT.setProductionModifier(2.0F);
-		ANCIENT.setLifespanModifier(1.5F);
-		
-		IMMORTAL.setProductionModifier(2.0F);
-		IMMORTAL.setLifespanModifier(2.0F);
-		
-		MOLTEN.setProductionModifier(3.0F);
-		MOLTEN.setLifespanModifier(0.5F);
-		
-		SANGUINE.setProductionModifier(2.0F);
-		SANGUINE.setLifespanModifier(3.0F);
-		SANGUINE.setMutationModifier(0.0F);
+		this.territoryMod = territory;
+		this.mutationMod = mutation;
+		this.lifespanMod = lifespan;
+		this.productionMod = production;
+		this.floweringMod = flowering;
+		this.geneticDecayMod = geneticDecay;
+		this.isSealed = sealed;
+		this.isLit = lit;
+		this.isSunlit = sunlit;
+		this.isHellish = hellish;
+	}
+	
+	public String getName() {
+		return this.frameName;
 	}
 
-	public MetallurgyFrameTypes setFloweringModifier(float modifer) {
-		this.floweringModifer = modifer;
-		return this;
+	@Override
+	public float getTerritoryModifier(IBeeGenome genome, float currentModifier) {
+		return territoryMod;
 	}
 
-	public MetallurgyFrameTypes setLifespanModifier(float modifer) {
-		this.lifespanModifer = modifer;
-		return this;
+	@Override
+	public float getMutationModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
+		return mutationMod;
 	}
 
-	public MetallurgyFrameTypes setMutationModifier(float modifer) {
-		this.mutationModifier = modifer;
-		return this;
+	@Override
+	public float getLifespanModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
+		return lifespanMod;
 	}
 
-	public MetallurgyFrameTypes setProductionModifier(float modifer) {
-		this.productionModifer = modifer;
-		return this;
+	@Override
+	public float getProductionModifier(IBeeGenome genome, float currentModifier) {
+		return productionMod;
 	}
 
-	public MetallurgyFrameTypes setTerritoryModifier(float modifer) {
-		this.territoryModifer = modifer;
-		return this;
+	@Override
+	public float getFloweringModifier(IBeeGenome genome, float currentModifier) {
+		return floweringMod;
+	}
+
+	@Override
+	public float getGeneticDecay(IBeeGenome genome, float currentModifier) {
+		return geneticDecayMod;
+	}
+
+	@Override
+	public boolean isSealed() {
+		return isSealed;
+	}
+
+	@Override
+	public boolean isSelfLighted() {
+		return isLit;
+	}
+
+	@Override
+	public boolean isSunlightSimulated() {
+		return isSunlit;
+	}
+
+	@Override
+	public boolean isHellish() {
+		return isHellish;
 	}
 }

@@ -2,11 +2,11 @@ package elcon.mods.metallurgybees.types;
 
 import java.util.ArrayList;
 
-import net.minecraft.util.IIcon;
 import elcon.mods.metallurgybees.Metals.Metal;
 import elcon.mods.metallurgybees.util.ColorPair;
 import forestry.api.apiculture.IHiveDrop;
 import forestry.api.genetics.IAlleleSpecies;
+import net.minecraft.util.IIcon;
 
 public enum MetallurgyBeeTypes {
 
