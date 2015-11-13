@@ -35,6 +35,7 @@ public class BlockBeehive extends BlockExtendedMetadata {
 		setLightLevel(0.8F);
 		setStepSound(Block.soundTypeStone);
 		setCreativeTab(MetallurgyBees.creativeTab);
+		setHarvestLevel("scoop", 0);
 	}
 	
 	public Block setSetName(String setName) {
@@ -65,7 +66,7 @@ public class BlockBeehive extends BlockExtendedMetadata {
 
 	@Override
 	public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z) {
-		int meta = getMetadata(world, x, y, z);
+		int meta = world.getBlockMetadata(x, y, z);
 		float hardness = getBlockHardness(world, x, y, z);
 		if(hardness < 0.0F) {
 			return 0.0F;
@@ -133,7 +134,6 @@ public class BlockBeehive extends BlockExtendedMetadata {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void getSubBlocks(Item item, CreativeTabs creativeTab, List list) {
 		for(int i = 0; i < MetallurgyBeeTypes.values().length; i++) {
 			if(MetallurgyBeeTypes.values()[i].hasHive && MetallurgyBeeTypes.values()[i].metal.setName.equalsIgnoreCase(this.setName)) {

@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import elcon.mods.metallurgybees.MetallurgyBees;
+import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeType;
+import forestry.api.apiculture.IBee;
 import forestry.api.apiculture.IBeeRoot;
 import forestry.api.apiculture.IHiveDrop;
 import forestry.api.genetics.IAllele;
@@ -15,6 +17,7 @@ public class HiveDrop implements IHiveDrop {
 	public IAllele[] template;
 	private ArrayList<ItemStack> additional = new ArrayList<ItemStack>();
 	public int chance;
+	private float ignoblePercent = 0f;
 
 	public HiveDrop(IAllele[] template, ItemStack[] bonus, int chance) {
 		this.template = template;
@@ -25,13 +28,13 @@ public class HiveDrop implements IHiveDrop {
 
 	@Override
 	public ItemStack getPrincess(World world, int x, int y, int z, int fortune) {
-		return getRoot().getMemberStack(getRoot().getBee(world, getRoot().templateAsGenome(this.template)), EnumBeeType.PRINCESS.ordinal());
+		return getRoot().getMemberStack(getBee(world), EnumBeeType.PRINCESS.ordinal());
 	}
 
 	@Override
 	public ArrayList<ItemStack> getDrones(World world, int x, int y, int z, int fortune) {
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-		ret.add(getRoot().getMemberStack(getRoot().templateAsIndividual(this.template), EnumBeeType.DRONE.ordinal()));
+		ret.add(getRoot().getMemberStack(getBee(world), EnumBeeType.DRONE.ordinal()));
 		return ret;
 	}
 
@@ -51,5 +54,14 @@ public class HiveDrop implements IHiveDrop {
 
 	public IBeeRoot getRoot() {
 		return MetallurgyBees.beeRoot;
+	}
+	
+	private IBee getBee(World w) {
+		IBee bee = BeeManager.beeRoot.getBee(w, BeeManager.beeRoot.templateAsGenome(this.template));
+		if (w.rand.nextFloat() < this.ignoblePercent) {
+			bee.setIsNatural(false);
+		}
+		
+		return bee;
 	}
 }

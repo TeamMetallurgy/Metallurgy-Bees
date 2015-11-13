@@ -1,18 +1,8 @@
 package elcon.mods.metallurgybees;
 
 import java.util.HashMap;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.S23PacketBlockChange;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.BlockEvent.BreakEvent;
-import net.minecraftforge.oredict.OreDictionary;
+import java.util.Hashtable;
+import java.util.Map;
 
 import com.teammetallurgy.metallurgy.api.MetalType;
 import com.teammetallurgy.metallurgy.api.MetallurgyApi;
@@ -38,14 +28,28 @@ import elcon.mods.metallurgybees.tileentities.TileEntityExtended;
 import elcon.mods.metallurgybees.tileentities.TileEntityMetadata;
 import elcon.mods.metallurgybees.types.MetallurgyBeeTypes;
 import elcon.mods.metallurgybees.types.MetallurgyFrameTypes;
+import elcon.mods.metallurgybees.util.LogHelper;
 import elcon.mods.metallurgybees.worldgen.WorldGenBeehives;
 import forestry.api.apiculture.EnumBeeChromosome;
+import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IBeeRoot;
 import forestry.api.core.EnumTemperature;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
+import forestry.api.genetics.IAlleleSpecies;
 import forestry.api.genetics.IClassification;
 import forestry.api.recipes.RecipeManagers;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.S23PacketBlockChange;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import net.minecraftforge.oredict.OreDictionary;
 
 @Mod(modid = MBReference.MOD_ID, name = MBReference.NAME, version = MBReference.VERSION, acceptedMinecraftVersions = MBReference.MC_VERSION, dependencies = MBReference.DEPENDENCIES)
 public class MetallurgyBees {
@@ -62,7 +66,6 @@ public class MetallurgyBees {
 
 	public static HashMap<String, Block> beehives = new HashMap<String, Block>();
 	public static Item honeyComb;
-	public static Item hiveFrame;
 	public static Item beeGun;
 
 	public static IBeeRoot beeRoot;
@@ -73,6 +76,8 @@ public class MetallurgyBees {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		LogHelper.info("Preinit started");
+
 		// init config
 		config = new MBConfig(event.getSuggestedConfigurationFile());
 		config.load();
@@ -96,23 +101,25 @@ public class MetallurgyBees {
 			
 			beehives.put(setName, beehive);
 		}
-		
-		MetallurgyFrameTypes.init();
+
 		// init items
 		honeyComb = new ItemHoneyComb().setUnlocalizedName("metallurgyHoneyComb");
-		for(int i = 0; i < MetallurgyFrameTypes.values().length; i++) {
-			MetallurgyFrameTypes frames = MetallurgyFrameTypes.values()[i];
-			hiveFrame = new ItemHiveFrame(frames).setUnlocalizedName("metallurgyFrame");
+		for(MetallurgyFrameTypes frames :  MetallurgyFrameTypes.values()) {
+			String itemSetName = frames.getName().substring(0, 1).toUpperCase() + frames.getName().substring(1).toLowerCase();
+			Item hiveFrame = new ItemHiveFrame(frames).setUnlocalizedName("metallurgyFrame" + itemSetName);
+			GameRegistry.registerItem(hiveFrame, "metallurgyFrame" + itemSetName);
 		}
 		beeGun = new ItemBeeGun().setUnlocalizedName("metallurgyBeegun");
 
 		// register items
 		GameRegistry.registerItem(honeyComb, "metallurgyHoneyComb");
-		GameRegistry.registerItem(hiveFrame, "metallurgyFrame");
+		
 
 		// register tileentities
 		GameRegistry.registerTileEntity(TileEntityExtended.class, "MetallurgyTileExtended");
 		GameRegistry.registerTileEntity(TileEntityMetadata.class, "MetallurgyTileMetadata");
+
+		LogHelper.info("Preinit completed");
 	}
 
 	@EventHandler
@@ -122,16 +129,14 @@ public class MetallurgyBees {
 
 		// register events
 		MinecraftForge.EVENT_BUS.register(this);
+		
+		LogHelper.info("Init completed");
 	}
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		// init metals
 		Metals.init();
-
-		// init frame types
-		MetallurgyFrameTypes.init();
-
 
 		// get bee root
 		beeRoot = (IBeeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootBees");
@@ -145,12 +150,13 @@ public class MetallurgyBees {
 		AlleleManager.alleleRegistry.getClassification("family.apidae").addMemberGroup(branchMetal);
 
 
-		for(int i = 0; i < MetallurgyBeeTypes.values().length; i++) {
-			MetallurgyBeeTypes beeType = MetallurgyBeeTypes.values()[i];
+		int i = 0;
+		for(MetallurgyBeeTypes beeType : MetallurgyBeeTypes.values()) {
 			beeType.metal = Metals.getMetal(beeType.name);
 
-			if (beeType.metal == null || beeType.metal.metalInfo == null)
+			if (beeType.metal == null || beeType.metal.metalInfo == null){
 				continue;
+			}
 
 			beeType.hasHive = beeType.metal.metalInfo.getType() != MetalType.Alloy;
 
@@ -181,15 +187,19 @@ public class MetallurgyBees {
 			// init bee mutations
 			if(beeType.hasHive) {
 				if(beeType.metal.setName == "utility") {
-					new BeeMutation(beeType.speciesRough, AlleleManager.alleleRegistry.getAllele(getBeeParent2(beeType)), getMetalBeeReforgedTemplate(beeType), 2);
+					new BeeMutation(beeType.speciesRough, getBeeParent2(beeType), getMetalBeeReforgedTemplate(beeType), 2);
 				} else {
-					new BeeMutation(beeType.speciesRough, AlleleManager.alleleRegistry.getAllele(getBeeParent1(beeType)), getMetalBeeRefinedTemplate(beeType), 5);
-					new BeeMutation(beeType.speciesRefined, AlleleManager.alleleRegistry.getAllele(getBeeParent2(beeType)), getMetalBeeReforgedTemplate(beeType), 2);
+					new BeeMutation(beeType.speciesRough, getBeeParent1(beeType), getMetalBeeRefinedTemplate(beeType), 5);
+					new BeeMutation(beeType.speciesRefined, getBeeParent2(beeType), getMetalBeeReforgedTemplate(beeType), 2);
 				}
 			}
 
 			// register centrifuge recipes
-			RecipeManagers.centrifugeManager.addRecipe(20, new ItemStack(honeyComb, 1, i), new ItemStack[]{getMetalDust(beeType.name), new ItemStack(GameRegistry.findItem("Forestry", "beeswax")), new ItemStack(GameRegistry.findItem("Forestry", "honeyDrop"))}, new int[]{25, 50, 25});
+			Map<ItemStack, Float> output = newMap();
+			output.put(getMetalDust(beeType.name), 0.25f);
+			output.put(new ItemStack(GameRegistry.findItem("Forestry", "beeswax")), 0.5f);
+			output.put(new ItemStack(GameRegistry.findItem("Forestry", "honeyDrop")), 0.25f);
+			RecipeManagers.centrifugeManager.addRecipe(20, new ItemStack(honeyComb, 1, i), output);
 
 			// add hives and their drops
 			if(beeType.hasHive) {
@@ -207,9 +217,16 @@ public class MetallurgyBees {
 					//MinecraftForge.setBlockHarvestLevel(beehive, i, "pickaxe", MinecraftForge.getBlockHarvestLevel(Block.blocksList[ore.itemID], ore.getItemDamage(), "pickaxe"));
 				}
 			}
+			i++;
 		}
 		// create alloy bee mutations
 		createAlloyBeeMutations();
+		
+		LogHelper.info("Postinit completed");
+	}
+	
+	private static Map<ItemStack, Float> newMap() {
+		return new Hashtable<ItemStack, Float>();
 	}
 
 	public void createAlloyBeeMutations() {
@@ -235,64 +252,63 @@ public class MetallurgyBees {
 
 	public void createMutations(MetallurgyBeeTypes parent1, MetallurgyBeeTypes parent2, MetallurgyBeeTypes child) {
 		new BeeMutation(parent1.speciesRough, parent2.speciesRough, getMetalBeeRoughTemplate(child), 10);
-		new BeeMutation(child.speciesRough, AlleleManager.alleleRegistry.getAllele(getBeeParent1(child)), getMetalBeeRefinedTemplate(child), 5);
-		new BeeMutation(child.speciesRefined, AlleleManager.alleleRegistry.getAllele(getBeeParent2(child)), getMetalBeeReforgedTemplate(child), 2);
+		new BeeMutation(child.speciesRough, getBeeParent1(child), getMetalBeeRefinedTemplate(child), 5);
+		new BeeMutation(child.speciesRefined, getBeeParent2(child), getMetalBeeReforgedTemplate(child), 2);
 	}
 
-	private String getBeeParent1(MetallurgyBeeTypes types) {
+	private IAlleleSpecies getBeeParent1(MetallurgyBeeTypes types) {
 		if(types.metal.setName == "base") {
-			return "forestry.speciesUnweary";
+			return getBaseSpecies("Unweary");
 
 		} else if(types.metal.setName == "precious") {
-			return "forestry.speciesMajestic";
+			return getBaseSpecies("Majestic");
 
 		} else if(types.metal.setName == "nether") {
-			return "forestry.speciesFiendish";
+			return getBaseSpecies("Fiendish");
 
 		} else if(types.metal.setName == "fantasy") {
-			return "forestry.speciesValiant";
+			return getBaseSpecies("Valiant");
 
 		} else if(types.metal.setName == "ender") {
-			return "forestry.speciesSpectral";
+			return getBaseSpecies("Spectral");
 
 		} else if(types.metal.setName == "utility") {
-			return "forestry.speciesRural";
+			return getBaseSpecies("Rural");
 		}
 		if(types.name == "iron") {
-			return "forestry.speciesUnweary";
+			return getBaseSpecies("Unweary");
 
 		} else if(types.name == "gold") {
-			return "forestry.speciesMajestic";
+			return getBaseSpecies("Majestic");
 		}
-		return "";
+		return null;
 	}
 
-	private String getBeeParent2(MetallurgyBeeTypes types) {
+	private IAlleleSpecies getBeeParent2(MetallurgyBeeTypes types) {
 		if(types.metal.setName == "base") {
-			return "forestry.speciesIndustrious";
+			return getBaseSpecies("Industrious");
 
 		} else if(types.metal.setName == "precious") {
-			return "forestry.speciesImperial";
+			return getBaseSpecies("Imperial");
 
 		} else if(types.metal.setName == "nether") {
-			return "forestry.speciesDemonic";
+			return getBaseSpecies("Demonic");
 
 		} else if(types.metal.setName == "fantasy") {
-			return "forestry.speciesHeroic";
+			return getBaseSpecies("Heroic");
 
 		} else if(types.metal.setName == "ender") {
-			return "forestry.speciesPhantasmal";
+			return getBaseSpecies("Phantasmal");
 
 		} else if(types.metal.setName == "utility") {
-			return "forestry.speciesRural";
+			return getBaseSpecies("Rural");
 		}
 		if(types.name == "iron") {
-			return "forestry.speciesIndustrious";
-
+			return getBaseSpecies("Industrious");
 		} else if(types.name == "gold") {
-			return "forestry.speciesImperial";
+			return getBaseSpecies("Imperial");
 		}
-		return "";
+		return null;
 	}
 
 	public ItemStack getMetalDust(String beeType) {
@@ -311,31 +327,31 @@ public class MetallurgyBees {
 	}
 
 	public IAllele[] getDefaultMetalBeeTemplate() {
-		IAllele[] alleles = beeRoot.getDefaultTemplate();
-		alleles[EnumBeeChromosome.FLOWER_PROVIDER.ordinal()] = alleleFlowerStone;
-		alleles[EnumBeeChromosome.CAVE_DWELLING.ordinal()] = AlleleManager.alleleRegistry.getAllele("forestry.boolTrue");
-		return alleles;
+		IAllele[] allelespecies = beeRoot.getDefaultTemplate();
+		allelespecies[EnumBeeChromosome.FLOWER_PROVIDER.ordinal()] = alleleFlowerStone;
+		allelespecies[EnumBeeChromosome.CAVE_DWELLING.ordinal()] = AlleleManager.alleleRegistry.getAllele("forestry.boolTrue");
+		return allelespecies;
 	}
 
 	public IAllele[] getMetalBeeRoughTemplate(MetallurgyBeeTypes beeType) {
-		IAllele[] alleles = getDefaultMetalBeeTemplate();
-		alleles[EnumBeeChromosome.SPECIES.ordinal()] = beeType.speciesRough;
-		return alleles;
+		IAllele[] allelespecies = getDefaultMetalBeeTemplate();
+		allelespecies[EnumBeeChromosome.SPECIES.ordinal()] = beeType.speciesRough;
+		return allelespecies;
 	}
 
 	public IAllele[] getMetalBeeRefinedTemplate(MetallurgyBeeTypes beeType) {
-		IAllele[] alleles = getDefaultMetalBeeTemplate();
-		alleles[EnumBeeChromosome.SPECIES.ordinal()] = beeType.speciesRefined;
-		return alleles;
+		IAllele[] allelespecies = getDefaultMetalBeeTemplate();
+		allelespecies[EnumBeeChromosome.SPECIES.ordinal()] = beeType.speciesRefined;
+		return allelespecies;
 	}
 
 	public IAllele[] getMetalBeeReforgedTemplate(MetallurgyBeeTypes beeType) {
-		IAllele[] alleles = getDefaultMetalBeeTemplate();
-		alleles[EnumBeeChromosome.SPECIES.ordinal()] = beeType.speciesReforged;
-		return alleles;
+		IAllele[] allelespecies = getDefaultMetalBeeTemplate();
+		allelespecies[EnumBeeChromosome.SPECIES.ordinal()] = beeType.speciesReforged;
+		return allelespecies;
 	}
 
-	@SubscribeEvent
+	/*@SubscribeEvent
 	public void onBlockBreak(BreakEvent event) {
 		if(event.block != null) {
 			if(beehives.containsValue(event.block)) {
@@ -345,7 +361,7 @@ public class MetallurgyBees {
 					return;
 				}
 				Block block = event.world.getBlock(event.x, event.y, event.z);
-				int meta = ((BlockExtendedMetadata) event.block).getMetadata(event.world, event.x, event.y, event.z);
+				int meta = event.world.getBlockMetadata(event.x, event.y, event.z);
 				event.world.playAuxSFXAtEntity(event.getPlayer(), 2001, event.x, event.y, event.z, Block.getIdFromBlock(block) + (meta << 12));
 				boolean flag = false;
 				if(event.getPlayer().capabilities.isCreativeMode) {
@@ -373,9 +389,9 @@ public class MetallurgyBees {
 				}
 			}
 		}
-	}
+	}*/
 
-	private boolean removeBlock(World world, int x, int y, int z, int meta, EntityPlayer player, boolean drop) {
+	/*private boolean removeBlock(World world, int x, int y, int z, int meta, EntityPlayer player, boolean drop) {
 		Block block = world.getBlock(x, y, z);
 		if(block != null) {
 			block.onBlockHarvested(world, x, y, z, meta, player);
@@ -393,5 +409,9 @@ public class MetallurgyBees {
 			}
 			return flag;
 		}
+	}*/
+	
+	public static IAlleleBeeSpecies getBaseSpecies(String name) {
+		return (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele((new StringBuilder()).append("forestry.species").append(name).toString());
 	}
 }
