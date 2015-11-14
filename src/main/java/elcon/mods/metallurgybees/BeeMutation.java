@@ -12,7 +12,6 @@ import forestry.api.apiculture.IBeeMutation;
 import forestry.api.apiculture.IBeeRoot;
 import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IAlleleSpecies;
-import forestry.api.genetics.IGenome;
 import net.minecraft.world.World;
 
 public class BeeMutation implements IBeeMutation {
@@ -82,31 +81,10 @@ public class BeeMutation implements IBeeMutation {
 	public float getChance(IBeeHousing housing, IAlleleBeeSpecies allele0, IAlleleBeeSpecies allele1, IBeeGenome genome0, IBeeGenome genome1) {
 		World world = housing.getWorld();
 
-		/*IBeeModifier housingBeeModifier = BeeManager.beeRoot.createBeeHousingModifier(housing);
-		IBeeModifier modeBeeModifier = BeeManager.beeRoot.getBeekeepingMode(housing.getWorld()).getBeeModifier();*/
-
-		int processedChance = Math.round(chance * housing.getMutationModifier((IBeeGenome)genome0,
-				(IBeeGenome)genome1, chance)
-				* BeeManager.beeRoot.getBeekeepingMode(housing.getWorld())
-				.getMutationModifier((IBeeGenome)genome0,
-						(IBeeGenome)genome1, chance));
-
-		if(processedChance <= 0.0F) {
-			return 0.0F;
-		}
-		if((this.parent1.getUID().equals(allele0.getUID())) && (this.parent2.getUID().equals(allele1.getUID())))
-			return processedChance;
-		if((this.parent2.getUID().equals(allele0.getUID())) && (this.parent1.getUID().equals(allele1.getUID()))) {
-			return processedChance;
-		}
-		return 0.0F;
-	}
-
-	@Override
-	public float getChance(IBeeHousing housing, IAllele allele0, IAllele allele1, IGenome genome0, IGenome genome1) {
-		World world = housing.getWorld();
-
-		int processedChance = Math.round(this.chance * housing.getMutationModifier((IBeeGenome) genome0, (IBeeGenome) genome1, 1.0F) * getRoot().getBeekeepingMode(world).getMutationModifier((IBeeGenome) genome0, (IBeeGenome) genome1, 1.0F));
+		IBeeModifier housingBeeModifier = BeeManager.beeRoot.createBeeHousingModifier(housing);
+		IBeeModifier modeBeeModifier = BeeManager.beeRoot.getBeekeepingMode(housing.getWorld()).getBeeModifier();
+		
+		int processedChance = Math.round(this.chance * housingBeeModifier.getMutationModifier((IBeeGenome) genome0, (IBeeGenome) genome1, 1.0F) * modeBeeModifier.getMutationModifier((IBeeGenome) genome0, (IBeeGenome) genome1, 1.0F));
 
 		if(processedChance <= 0.0F) {
 			return 0.0F;

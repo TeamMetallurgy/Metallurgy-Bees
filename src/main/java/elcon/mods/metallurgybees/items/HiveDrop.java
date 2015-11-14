@@ -14,21 +14,31 @@ import forestry.api.genetics.IAllele;
 
 public class HiveDrop implements IHiveDrop {
 	
-	public IAllele[] template;
+	public IAllele[] beeTemplate;
 	private ArrayList<ItemStack> additional = new ArrayList<ItemStack>();
 	public int chance;
 	private float ignoblePercent = 0f;
 
 	public HiveDrop(IAllele[] template, ItemStack[] bonus, int chance) {
-		this.template = template;
+		this.beeTemplate = template;
 		this.chance = chance;
-		for(ItemStack stack : bonus)
+		for(ItemStack stack : bonus) {
 			this.additional.add(stack);
+		}
+
+		if(MetallurgyBees.enableIgnobleBees){
+			ignoblePercent = 0.7f;
+		}
 	}
 
 	@Override
 	public ItemStack getPrincess(World world, int x, int y, int z, int fortune) {
-		return getRoot().getMemberStack(getBee(world), EnumBeeType.PRINCESS.ordinal());
+		IBee bee = getBee(world);
+		if (world.rand.nextFloat() < ignoblePercent) {
+			bee.setIsNatural(false);
+		}
+
+		return getRoot().getMemberStack(bee, EnumBeeType.PRINCESS.ordinal());
 	}
 
 	@Override
@@ -57,7 +67,7 @@ public class HiveDrop implements IHiveDrop {
 	}
 	
 	private IBee getBee(World w) {
-		IBee bee = BeeManager.beeRoot.getBee(w, BeeManager.beeRoot.templateAsGenome(this.template));
+		IBee bee = BeeManager.beeRoot.getBee(w, BeeManager.beeRoot.templateAsGenome(this.beeTemplate));
 		if (w.rand.nextFloat() < this.ignoblePercent) {
 			bee.setIsNatural(false);
 		}

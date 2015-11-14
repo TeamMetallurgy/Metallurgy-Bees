@@ -21,6 +21,7 @@ public class AlleleFlowers implements IAlleleFlowers {
 		return StatCollector.translateToLocal(getUnlocalizedName());
 	}
 
+
 	@Override
 	public String getUnlocalizedName() {
 		return "flowers.stone";
@@ -28,6 +29,6 @@ public class AlleleFlowers implements IAlleleFlowers {
 
 	@Override
 	public IFlowerProvider getProvider() {
-		return new FlowerProviderStone(1);
+		return new FlowerProviderStone();
 	}
 }

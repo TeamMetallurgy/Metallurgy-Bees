@@ -27,8 +27,8 @@ import net.minecraftforge.oredict.OreDictionary;
 public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 
 	IIcon[][] icons;
-	private HashMap<ItemStack, Integer> products;
-	private HashMap<ItemStack, Integer> specialties;
+	private HashMap<ItemStack, Float> products;
+	private HashMap<ItemStack, Float> specialties;
 
 	String uid;
 	boolean dominant;
@@ -47,8 +47,8 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 		this.binomial = binomial;
 		this.colorBeeRoughPrimary = colorBeeRoughPrimary;
 		this.colorBeeRoughSecondary = colorBeeRoughSecondary;
-		this.products = new HashMap<ItemStack, Integer>();
-		this.specialties = new HashMap<ItemStack, Integer>();
+		this.products = new HashMap<ItemStack, Float>();
+		this.specialties = new HashMap<ItemStack, Float>();
 	}
 
 	@Override
@@ -114,13 +114,7 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 			}
 		}
 
-		/*if (itemStack.getItem() == ForestryHelper.honeyDrop) {
-			return 0.5f;
-		} else if (itemStack.getItem() == ForestryHelper.honeydew) {
-			return 0.7f;
-		} else if (itemStack.getItem() == ForestryHelper.beeComb || itemStack.getItem() == Config.combs) {
-			return 0.4f;
-		} else*/ if (getRoot().isMember(itemStack)) {
+		if (getRoot().isMember(itemStack)) {
 			return 1.0f;
 		} else {
 			for (Map.Entry<ItemStack, Float> catalyst : BeeManager.beeRoot.getResearchCatalysts().entrySet()) {
@@ -191,12 +185,12 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 		return this;
 	}
 
-	public AlleleBeeSpecies addProduct(ItemStack product, int chance) {
+	public AlleleBeeSpecies addProduct(ItemStack product, float chance) {
 		products.put(product, chance);
 		return this;
 	}
 	
-	public AlleleBeeSpecies addSpecialty(ItemStack produce, int chance) {
+	public AlleleBeeSpecies addSpecialty(ItemStack produce, float chance) {
 		specialties.put(produce, chance);
 		return this;
 	}
@@ -239,24 +233,14 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 		return "textures/entity/bees/honeyBee.png";
 	}
 
-	@Deprecated
+	@Override
 	public Map<ItemStack, Float> getProductChances() {
-		return null;
+		return products;
 	}
 
-	@Deprecated
+	@Override
 	public Map<ItemStack, Float> getSpecialtyChances() {
-		return null;
-	}
-
-	@Override
-	public Map<ItemStack, Integer> getProducts() {
-		return this.products;
-	}
-
-	@Override
-	public Map<ItemStack, Integer> getSpecialty() {
-		return this.specialties;
+		return specialties;
 	}
 
 }

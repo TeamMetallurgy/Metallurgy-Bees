@@ -33,7 +33,7 @@ repositories {
 }
 apply plugin: 'forge'
 
-version = "1.0"
+version = "0.1.4"
 group= "elcon.mods.metallurgybees" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "MetallurgyBees"
 

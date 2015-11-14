@@ -2,6 +2,12 @@ package elcon.mods.metallurgybees.items;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import elcon.mods.metallurgybees.MetallurgyBees;
@@ -10,12 +16,8 @@ import elcon.mods.metallurgybees.util.MBUtil;
 import forestry.api.apiculture.IBee;
 import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeHousing;
+import forestry.api.apiculture.IBeeModifier;
 import forestry.api.apiculture.IHiveFrame;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 public class ItemHiveFrame extends Item implements IHiveFrame {
 
@@ -32,7 +34,7 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 	public String getItemStackDisplayName(ItemStack stack) {
 		return StatCollector.translateToLocal("metallurgy.frames." + types.name().toLowerCase()) + " " + StatCollector.translateToLocal(getUnlocalizedName());
 	}
-
+	
 	@Override
 	public String getUnlocalizedName() {
 		return "item.metallurgyFrame.name";
@@ -43,9 +45,9 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 		frame.setItemDamage(frame.getItemDamage() + wear);
 
 		if (frame.getItemDamage() >= frame.getMaxDamage()) {
-			// Break the frame.
-			frame = null;
-		}
+ 			// Break the frame.
+ 			frame = null;
+ 		}
 
 		return frame;
 	}
@@ -66,61 +68,7 @@ public class ItemHiveFrame extends Item implements IHiveFrame {
 	}
 
 	@Override
-	public float getTerritoryModifier(IBeeGenome genome, float currentModifier)
-	{
-		return this.types.territoryModifer;
-	}
-
-	@Override
-	public float getMutationModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier)
-	{
-		return this.types.mutationModifier;
-	}
-
-	@Override
-	public float getLifespanModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier)
-	{
-		return this.types.lifespanModifer;
-	}
-
-	@Override
-	public float getProductionModifier(IBeeGenome genome, float currentModifier)
-	{
-		return this.types.productionModifer;
-	}
-
-	@Override
-	public float getFloweringModifier(IBeeGenome genome, float currentModifier)
-	{
-		return this.types.floweringModifer;
-	}
-
-	@Override
-	public boolean isSealed()
-	{
-		return false;
-	}
-
-	@Override
-	public boolean isSelfLighted()
-	{
-		return false;
-	}
-
-	@Override
-	public boolean isSunlightSimulated()
-	{
-		return false;
-	}
-
-	@Override
-	public boolean isHellish()
-	{
-		return false;
-	}
-
-	@Override
-	public float getGeneticDecay(IBeeGenome arg0, float arg1) {
-		return 1.0f;
+	public IBeeModifier getBeeModifier() {
+		return types;
 	}
 }

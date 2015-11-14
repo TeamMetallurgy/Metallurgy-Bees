@@ -74,14 +74,14 @@ public class MetallurgyBees {
 
 	public static Material materialBeeHive;
 
+	public static boolean enableIgnobleBees = true, enableSpecialBeesMutation = true;
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinit started");
 
 		// init config
 		config = new MBConfig(event.getSuggestedConfigurationFile());
-		config.load();
-		config.save();
 
 		// init creative tab
 		creativeTab = new MBCreativeTabForestry("MetallurgyAddonForestry");
@@ -90,15 +90,15 @@ public class MetallurgyBees {
 		materialBeeHive = new MaterialBeeHive();
 
 		// init and register beehive blocks
-		
+
 		String[] setNames = MetallurgyApi.getSetNames();
 		for (String setName : setNames) {
-			
+
 			String blockSetName = setName.substring(0, 1).toUpperCase() + setName.substring(1).toLowerCase();
 			Block beehive = new BlockBeehive().setSetName(setName).setBlockName("metallurgyBeehive" + blockSetName);
-		
+
 			GameRegistry.registerBlock(beehive, ItemBlockExtendedMetadata.class, "metallurgyBeehive" + blockSetName);
-			
+
 			beehives.put(setName, beehive);
 		}
 
@@ -113,7 +113,7 @@ public class MetallurgyBees {
 
 		// register items
 		GameRegistry.registerItem(honeyComb, "metallurgyHoneyComb");
-		
+
 
 		// register tileentities
 		GameRegistry.registerTileEntity(TileEntityExtended.class, "MetallurgyTileExtended");
@@ -129,7 +129,7 @@ public class MetallurgyBees {
 
 		// register events
 		MinecraftForge.EVENT_BUS.register(this);
-		
+
 		LogHelper.info("Init completed");
 	}
 
@@ -155,16 +155,18 @@ public class MetallurgyBees {
 			beeType.metal = Metals.getMetal(beeType.name);
 
 			if (beeType.metal == null || beeType.metal.metalInfo == null){
+				LogHelper.error("No metal found for "+beeType.name);
+				i++;
 				continue;
 			}
 
 			beeType.hasHive = beeType.metal.metalInfo.getType() != MetalType.Alloy;
 
-			beeType.speciesRough = new AlleleBeeSpecies("metallurgy.species." + beeType.name + "Rough", true, "metallurgy.bees." + beeType.name + ".rough", branchMetal, "metallum", beeType.colorBeeRoughPrimary, beeType.colorBeeRoughSecondary).addProduct(new ItemStack(honeyComb, 1, i), 30);
+			beeType.speciesRough = new AlleleBeeSpecies("metallurgy.species." + beeType.name + "Rough", true, "metallurgy.bees." + beeType.name + ".rough", branchMetal, "metallum", beeType.colorBeeRoughPrimary, beeType.colorBeeRoughSecondary).addProduct(new ItemStack(honeyComb, 1, i), 0.3f);
 			if(beeType.metal.setName != "utility") {
-				beeType.speciesRefined = new AlleleBeeSpecies("metallurgy.species." + beeType.name + "Refined", true, "metallurgy.bees." + beeType.name + ".refined", branchMetal, "metallum", beeType.colorBeeRefinedPrimary, beeType.colorBeeRefinedSecondary).addProduct(new ItemStack(honeyComb, 1, i), 50);
+				beeType.speciesRefined = new AlleleBeeSpecies("metallurgy.species." + beeType.name + "Refined", true, "metallurgy.bees." + beeType.name + ".refined", branchMetal, "metallum", beeType.colorBeeRefinedPrimary, beeType.colorBeeRefinedSecondary).addProduct(new ItemStack(honeyComb, 1, i), 0.5f);
 			}
-			beeType.speciesReforged = new AlleleBeeSpecies("metallurgy.species." + beeType.name + "Reforged", true, "metallurgy.bees." + beeType.name + ".reforged", branchMetal, "metallum", beeType.colorBeeReforgedPrimary, beeType.colorBeeReforgedSecondary).addProduct(new ItemStack(honeyComb, 1, i), 70);
+			beeType.speciesReforged = new AlleleBeeSpecies("metallurgy.species." + beeType.name + "Reforged", true, "metallurgy.bees." + beeType.name + ".reforged", branchMetal, "metallum", beeType.colorBeeReforgedPrimary, beeType.colorBeeReforgedSecondary).addProduct(new ItemStack(honeyComb, 1, i), 0.7f);
 
 			// init bee species alleles
 			if(beeType.metal.setName == "nether") {
@@ -221,33 +223,32 @@ public class MetallurgyBees {
 		}
 		// create alloy bee mutations
 		createAlloyBeeMutations();
-		
+
 		LogHelper.info("Postinit completed");
 	}
-	
+
 	private static Map<ItemStack, Float> newMap() {
 		return new Hashtable<ItemStack, Float>();
 	}
 
 	public void createAlloyBeeMutations() {
-		// TODO: Enable disabled mutations
-		/*
-		createMutations(MetallurgyBeeTypes.COPPER, MetallurgyBeeTypes.TIN, MetallurgyBeeTypes.BRONZE);
-		createMutations(MetallurgyBeeTypes.BRONZE, MetallurgyBeeTypes.GOLD, MetallurgyBeeTypes.HEPATIZON);
-		createMutations(MetallurgyBeeTypes.BRONZE, MetallurgyBeeTypes.IRON, MetallurgyBeeTypes.DAMASCUS_STEEL);
-		createMutations(MetallurgyBeeTypes.IRON, MetallurgyBeeTypes.GOLD, MetallurgyBeeTypes.ANGMALLEN);
-		createMutations(MetallurgyBeeTypes.IRON, MetallurgyBeeTypes.MANGANESE, MetallurgyBeeTypes.STEEL);
-		createMutations(MetallurgyBeeTypes.ZINC, MetallurgyBeeTypes.COPPER, MetallurgyBeeTypes.BRASS);
-		createMutations(MetallurgyBeeTypes.GOLD, MetallurgyBeeTypes.SILVER, MetallurgyBeeTypes.ELECTRUM);
-		createMutations(MetallurgyBeeTypes.CERUCLASE, MetallurgyBeeTypes.ALDUORITE, MetallurgyBeeTypes.INOLASHITE);
-		createMutations(MetallurgyBeeTypes.KALENDRITE, MetallurgyBeeTypes.PLATINUM, MetallurgyBeeTypes.AMORDRINE);
-		createMutations(MetallurgyBeeTypes.DEEP_IRON, MetallurgyBeeTypes.INFUSCOLIUM, MetallurgyBeeTypes.BLACK_STEEL);
-		createMutations(MetallurgyBeeTypes.MITHRIL, MetallurgyBeeTypes.SILVER, MetallurgyBeeTypes.QUICKSILVER);
-		createMutations(MetallurgyBeeTypes.MITHRIL, MetallurgyBeeTypes.RUBRACIUM, MetallurgyBeeTypes.HADEROTH);
-		createMutations(MetallurgyBeeTypes.ORICHALCUM, MetallurgyBeeTypes.PLATINUM, MetallurgyBeeTypes.CELENEGIL);
-		createMutations(MetallurgyBeeTypes.ADAMANTINE, MetallurgyBeeTypes.ATLARUS, MetallurgyBeeTypes.TARTARITE);
-		createMutations(MetallurgyBeeTypes.EXIMITE, MetallurgyBeeTypes.MEUTOITE, MetallurgyBeeTypes.DESICHALKOS);
-		*/
+		if(enableSpecialBeesMutation){
+			createMutations(MetallurgyBeeTypes.COPPER, MetallurgyBeeTypes.TIN, MetallurgyBeeTypes.BRONZE);
+			//createMutations(MetallurgyBeeTypes.BRONZE, MetallurgyBeeTypes.GOLD, MetallurgyBeeTypes.HEPATIZON);
+			//createMutations(MetallurgyBeeTypes.BRONZE, MetallurgyBeeTypes.IRON, MetallurgyBeeTypes.DAMASCUS_STEEL);
+			//createMutations(MetallurgyBeeTypes.IRON, MetallurgyBeeTypes.GOLD, MetallurgyBeeTypes.ANGMALLEN);
+			//createMutations(MetallurgyBeeTypes.IRON, MetallurgyBeeTypes.MANGANESE, MetallurgyBeeTypes.STEEL);
+			createMutations(MetallurgyBeeTypes.ZINC, MetallurgyBeeTypes.COPPER, MetallurgyBeeTypes.BRASS);
+			//createMutations(MetallurgyBeeTypes.GOLD, MetallurgyBeeTypes.SILVER, MetallurgyBeeTypes.ELECTRUM);
+			createMutations(MetallurgyBeeTypes.CERUCLASE, MetallurgyBeeTypes.ALDUORITE, MetallurgyBeeTypes.INOLASHITE);
+			createMutations(MetallurgyBeeTypes.KALENDRITE, MetallurgyBeeTypes.PLATINUM, MetallurgyBeeTypes.AMORDRINE);
+			createMutations(MetallurgyBeeTypes.DEEP_IRON, MetallurgyBeeTypes.INFUSCOLIUM, MetallurgyBeeTypes.BLACK_STEEL);
+			createMutations(MetallurgyBeeTypes.MITHRIL, MetallurgyBeeTypes.SILVER, MetallurgyBeeTypes.QUICKSILVER);
+			createMutations(MetallurgyBeeTypes.MITHRIL, MetallurgyBeeTypes.RUBRACIUM, MetallurgyBeeTypes.HADEROTH);
+			createMutations(MetallurgyBeeTypes.ORICHALCUM, MetallurgyBeeTypes.PLATINUM, MetallurgyBeeTypes.CELENEGIL);
+			createMutations(MetallurgyBeeTypes.ADAMANTINE, MetallurgyBeeTypes.ATLARUS, MetallurgyBeeTypes.TARTARITE);
+			createMutations(MetallurgyBeeTypes.EXIMITE, MetallurgyBeeTypes.MEUTOITE, MetallurgyBeeTypes.DESICHALKOS);
+		}
 	}
 
 	public void createMutations(MetallurgyBeeTypes parent1, MetallurgyBeeTypes parent2, MetallurgyBeeTypes child) {
@@ -410,7 +411,7 @@ public class MetallurgyBees {
 			return flag;
 		}
 	}*/
-	
+
 	public static IAlleleBeeSpecies getBaseSpecies(String name) {
 		return (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele((new StringBuilder()).append("forestry.species").append(name).toString());
 	}
