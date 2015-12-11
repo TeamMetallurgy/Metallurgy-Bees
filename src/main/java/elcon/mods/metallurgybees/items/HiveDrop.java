@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import elcon.mods.metallurgybees.MBConfig;
 import elcon.mods.metallurgybees.MetallurgyBees;
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeType;
@@ -26,7 +27,7 @@ public class HiveDrop implements IHiveDrop {
 			this.additional.add(stack);
 		}
 
-		if(MetallurgyBees.enableIgnobleBees){
+		if(MBConfig.enableIgnobleBees){
 			ignoblePercent = 0.7f;
 		}
 	}
@@ -63,7 +64,7 @@ public class HiveDrop implements IHiveDrop {
 	}
 
 	public IBeeRoot getRoot() {
-		return MetallurgyBees.beeRoot;
+		return BeeManager.beeRoot;
 	}
 	
 	private IBee getBee(World w) {

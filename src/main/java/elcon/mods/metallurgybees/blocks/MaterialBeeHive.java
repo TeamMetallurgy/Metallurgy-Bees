@@ -1,4 +1,4 @@
-package elcon.mods.metallurgybees;
+package elcon.mods.metallurgybees.blocks;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;

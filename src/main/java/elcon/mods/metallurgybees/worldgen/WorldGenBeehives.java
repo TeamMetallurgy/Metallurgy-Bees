@@ -6,6 +6,7 @@ import cpw.mods.fml.common.IWorldGenerator;
 import elcon.mods.metallurgybees.MetallurgyBees;
 import elcon.mods.metallurgybees.Metals;
 import elcon.mods.metallurgybees.Metals.Metal;
+import elcon.mods.metallurgybees.blocks.MBBlocks;
 import elcon.mods.metallurgybees.tileentities.TileEntityMetadata;
 import elcon.mods.metallurgybees.types.MetallurgyBeeTypes;
 import net.minecraft.block.Block;
@@ -45,7 +46,7 @@ public class WorldGenBeehives extends WorldGenerator implements IWorldGenerator 
 				if(ore != null && oreStack != null) {
 					if(block.isReplaceableOreGen(world, x, y, z, ore)) {
 						if(world.getBlockMetadata(x, y, z) == oreStack.getItemDamage()) {
-							Block beehive = MetallurgyBees.beehives.get(metal.setName);
+							Block beehive = MBBlocks.beehives.get(metal.setName);
 							world.setBlock(x, y, z, beehive, 1, 0);
 							((TileEntityMetadata) world.getTileEntity(x, y, z)).setTileMetadata(beeType.ordinal());
 							return true;

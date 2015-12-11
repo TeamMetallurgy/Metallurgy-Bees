@@ -1,4 +1,4 @@
-package elcon.mods.metallurgybees;
+package elcon.mods.metallurgybees.bees;
 
 import net.minecraft.util.StatCollector;
 import forestry.api.genetics.IAlleleFlowers;

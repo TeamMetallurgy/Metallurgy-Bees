@@ -6,8 +6,6 @@ import com.teammetallurgy.metallurgy.api.IMetalInfo;
 import com.teammetallurgy.metallurgy.api.IMetalSet;
 import com.teammetallurgy.metallurgy.api.MetallurgyApi;
 
-import elcon.mods.metallurgybees.util.LogHelper;
-
 public class Metals {
 
 	public static class Metal {

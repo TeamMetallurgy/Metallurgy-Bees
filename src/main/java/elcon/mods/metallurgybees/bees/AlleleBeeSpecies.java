@@ -1,4 +1,4 @@
-package elcon.mods.metallurgybees;
+package elcon.mods.metallurgybees.bees;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.mojang.authlib.GameProfile;
 
+import elcon.mods.metallurgybees.MetallurgyBees;
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeType;
 import forestry.api.apiculture.IAlleleBeeSpecies;
@@ -27,17 +28,19 @@ import net.minecraftforge.oredict.OreDictionary;
 public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 
 	IIcon[][] icons;
-	private HashMap<ItemStack, Float> products;
-	private HashMap<ItemStack, Float> specialties;
+	private HashMap<ItemStack, Float> products, specialties;
 
-	String uid;
+	private String uid;
 	boolean dominant;
-	String name;
-	IClassification branch;
-	String binomial;
-	int colorBeeRoughPrimary;
-	int colorBeeRoughSecondary;
-	EnumTemperature temperature = EnumTemperature.NORMAL;
+	boolean hasEffect = false;
+	boolean isNocturnal = false;
+	private String name;
+	private IClassification branch;
+	private String binomial;
+	private int colorBeeRoughPrimary;
+	private int colorBeeRoughSecondary;
+	private EnumTemperature temperature = EnumTemperature.NORMAL;
+	private EnumHumidity humidity = EnumHumidity.NORMAL;
 
 	public AlleleBeeSpecies(String uid, boolean dominant, String name, IClassification branch, String binomial, int colorBeeRoughPrimary, int colorBeeRoughSecondary) {
 		this.uid = uid;
@@ -68,7 +71,7 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 
 	@Override
 	public IBeeRoot getRoot() {
-		return MetallurgyBees.beeRoot;
+		return BeeManager.beeRoot;
 	}
 
 	@Override
@@ -134,7 +137,11 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 
 	@Override
 	public boolean hasEffect() {
-		return false;
+		return hasEffect;
+	}
+	
+	public void setHasEffect() {
+		hasEffect = true;
 	}
 
 	@Override
@@ -152,9 +159,13 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 		return dominant;
 	}
 
+	public void setNocturnal() {
+		this.isNocturnal = true;
+	}
+	
 	@Override
 	public boolean isNocturnal() {
-		return false;
+		return isNocturnal;
 	}
 
 	public void setTemperature(EnumTemperature temp) {
@@ -165,10 +176,14 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 	public EnumTemperature getTemperature() {
 		return temperature;
 	}
+	
+	public void setHumidity(EnumHumidity humidity) {
+		this.humidity = humidity;
+	}
 
 	@Override
 	public EnumHumidity getHumidity() {
-		return EnumHumidity.NORMAL;
+		return humidity;
 	}
 
 	@Override
@@ -242,5 +257,4 @@ public class AlleleBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
 	public Map<ItemStack, Float> getSpecialtyChances() {
 		return specialties;
 	}
-
 }
